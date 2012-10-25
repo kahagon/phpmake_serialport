@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package>
+
+  <name>Gorilla</name>
+  <summary>API for talking to serialport and arduino</summary>
+  <description>
+    API for talking to serialport and arduino.
+  </description>
+
+  <license>PHP</license>
+
+  <maintainers>
+    <maintainer>
+      <user>oasynnoum</user>
+      <name>Keng-ichi Ahagon</name>
+      <email>k.ahagon@n-3.so</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <notes>unknown</notes>
+    <date>2012-10-25</date>
+  </release>
+  <changelog>
+
+  </changelog>
+  <deps>
+    <dep type="php" rel="ge" version="5.0.0"/>
+  </deps>
+
+  <filelist>
+    <dir name="/">
+      <file role='doc' name='EXPERIMENTAL'/>
+      <file role='doc' name='CREDITS'/>
+      <file role='src' name='config.m4'/>
+      <file role='src' name='Gorilla.dsp'/>
+      <file role='src' name='config.w32'/>
+      <file role='src' name='Gorilla.c'/>
+      <file role='src' name='php_Gorilla.h'/>
+      <dir name="tests">
+        <file role='test' name='SerialPort____construct.phpt'/>
+        <file role='test' name='SerialPort__open.phpt'/>
+        <file role='test' name='SerialPort__close.phpt'/>
+        <file role='test' name='SerialPort__isOpen.phpt'/>
+        <file role='test' name='SerialPort__getBaudRate.phpt'/>
+        <file role='test' name='SerialPort__setBaudRate.phpt'/>
+        <file role='test' name='SerialPort__getCharSize.phpt'/>
+        <file role='test' name='SerialPort__setCharSize.phpt'/>
+        <file role='test' name='SerialPort__getFlowControl.phpt'/>
+        <file role='test' name='SerialPort__setFlowControl.phpt'/>
+        <file role='test' name='SerialPort__getNumOfStopBits.phpt'/>
+        <file role='test' name='SerialPort__setNumOfStopBits.phpt'/>
+        <file role='test' name='SerialPort__getParity.phpt'/>
+        <file role='test' name='SerialPort__setParity.phpt'/>
+        <file role='test' name='SerialPort__setCanonical.phpt'/>
+        <file role='test' name='SerialPort__isCanonical.phpt'/>
+        <file role='test' name='SerialPort__getVMin.phpt'/>
+        <file role='test' name='SerialPort__setVMin.phpt'/>
+        <file role='test' name='SerialPort__getVTime.phpt'/>
+        <file role='test' name='SerialPort__setVTime.phpt'/>
+        <file role='test' name='Arduino____construct.phpt'/>
+        <file role='test' name='Arduino__output.phpt'/>
+        <file role='test' name='Arduino__close.phpt'/>
+        <file role='test' name='Arduino__digitalWrite.phpt'/>
+        <file role='test' name='Arduino__setHigh.phpt'/>
+        <file role='test' name='Arduino__setLow.phpt'/>
+        <file role='test' name='Arduino__digitalRead.phpt'/>
+        <file role='test' name='Arduino__getState.phpt'/>
+        <file role='test' name='Arduino__isHigh.phpt'/>
+        <file role='test' name='Arduino__isLow.phpt'/>
+        <file role='test' name='Arduino__turnOff.phpt'/>
+      </dir>
+    </dir>
+  </filelist>
+</package>

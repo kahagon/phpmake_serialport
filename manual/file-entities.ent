@@ -1,0 +1,5 @@
+<!ENTITY reference.Gorilla.reference SYSTEM './Gorilla/reference.xml'>
+<!ENTITY reference.Gorilla.constants SYSTEM './Gorilla/constants.xml'>
+<!ENTITY reference.Gorilla.ini SYSTEM './Gorilla/ini.xml'>
+<!ENTITY reference.Gorilla.configure SYSTEM './Gorilla/configure.xml'>
+<!ENTITY reference.Gorilla.functions SYSTEM './functions.xml'>

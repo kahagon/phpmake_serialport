@@ -1,4 +1,4 @@
-nbproject/private
+nbproject
 
 # copy from https://github.com/chobie/php-mruby/blob/master/.gitignore
 *.o

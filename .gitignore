@@ -1,0 +1,32 @@
+nbproject/private
+
+# copy from https://github.com/chobie/php-mruby/blob/master/.gitignore
+*.o
+
+# ignore phpized files
+Makefile.global
+acinclude.m4
+aclocal.m4
+autom4te.cache
+build
+config.*
+configure
+configure*
+install-sh
+iltmain.sh
+missing
+mkinstalldirs
+run-tests.php
+*.lo
+*.o
+.deps
+.libs
+libtool
+Makefile
+Makefile.fragments
+Makefile.objects
+modules
+ltmain.sh
+*.la
+tmp-php.ini
+php_test_results*

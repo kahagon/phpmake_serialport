@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+<!DOCTYPE extension SYSTEM "../extension.dtd">
+<extension name="Gorilla" version="0.0.1">
+  <summary>API for talking to serialport and arduino</summary>
+  <description>
+    API for talking to serialport and arduino.
+  </description>
+  <maintainers>
+    <maintainer>
+      <user>oasynnoum</user>
+      <name>Keng-ichi Ahagon</name>
+      <email>k.ahagon@n-3.so</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <license>GPL v2 or later</license>
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <notes></notes>
+  </release>
+  <changelog></changelog>
+
+  <class name="SerialPort">
+    <constant type="int" name="BAUD_RATE_50" value="50"></constant>
+    <constant type="int" name="BAUD_RATE_75" value="75"></constant>
+    <constant type="int" name="BAUD_RATE_110" value="110"></constant>
+    <constant type="int" name="BAUD_RATE_134" value="134"></constant>
+    <constant type="int" name="BAUD_RATE_150" value="150"></constant>
+    <constant type="int" name="BAUD_RATE_200" value="200"></constant>
+    <constant type="int" name="BAUD_RATE_300" value="300"></constant>
+    <constant type="int" name="BAUD_RATE_600" value="600"></constant>
+    <constant type="int" name="BAUD_RATE_1200" value="1200"></constant>
+    <constant type="int" name="BAUD_RATE_1800" value="1800"></constant>
+    <constant type="int" name="BAUD_RATE_2400" value="2400"></constant>
+    <constant type="int" name="BAUD_RATE_4800" value="4800"></constant>
+    <constant type="int" name="BAUD_RATE_9600" value="9600"></constant>
+    <constant type="int" name="BAUD_RATE_19200" value="19200"></constant>
+    <constant type="int" name="BAUD_RATE_38400" value="38400"></constant>
+    <constant type="int" name="BAUD_RATE_57600" value="57600"></constant>
+    <constant type="int" name="BAUD_RATE_115200" value="115200"></constant>
+    <constant type="int" name="BAUD_RATE_230400" value="230400"></constant>
+    <constant type="int" name="CHAR_SIZE_5" value="5"></constant>
+    <constant type="int" name="CHAR_SIZE_6" value="6"></constant>
+    <constant type="int" name="CHAR_SIZE_7" value="7"></constant>
+    <constant type="int" name="CHAR_SIZE_8" value="8"></constant>
+    <constant type="int" name="CHAR_SIZE_DEFAULT" value="8"></constant>
+    <constant type="string" name="FLOW_CONTROL_HARD" value="FLOW_CONTROL_HARD"></constant>
+    <constant type="string" name="FLOW_CONTROL_SOFT" value="FLOW_CONTROL_SOFT"></constant>
+    <constant type="string" name="FLOW_CONTROL_NONE" value="FLOW_CONTROL_NONE"></constant>
+    <constant type="string" name="FLOW_CONTROL_DEFAULT" value="FLOW_CONTROL_NONE"></constant>
+    <constant type="string" name="PARITY_EVEN" value="PARITY_EVEN"></constant>
+    <constant type="string" name="PARITY_ODD" value="PARITY_ODD"></constant>
+    <constant type="string" name="PARITY_NONE" value="PARITY_NONE"></constant>
+    <constant type="string" name="PARITY_DEFAULT" value="PARITY_NONE"></constant>
+    <function name="__construct">
+      <proto>object __construct(string dev)</proto>
+    </function>
+    <function name="open">
+      <proto>object open()</proto>
+    </function>
+    <function name="close">
+      <proto>bool close()</proto>
+    </function>
+    <function name="isOpen">
+      <proto>bool isOpen()</proto>
+    </function>
+    <function name="getBaudRate">
+      <proto>int getBaudRate()</proto>
+    </function>
+    <function name="setBaudRate">
+      <proto>object setBaudRate(int baudRate)</proto>
+    </function>
+    <function name="getCharSize">
+      <proto>int getCharSize()</proto>
+    </function>
+    <function name="setCharSize">
+      <proto>object setCharSize(int charSize)</proto>
+    </function>
+    <function name="getFlowControl">
+      <proto>string getFlowControl()</proto>
+    </function>
+    <function name="setFlowControl">
+      <proto>object setFlowControl(string flowControl)</proto>
+    </function>
+    <function name="getNumOfStopBits">
+      <proto>object getNumOfStopBits()</proto>
+    </function>
+    <function name="setNumOfStopBits">
+      <proto>bool setNumOfStopBits(int numOfStopBits)</proto>
+    </function>
+    <function name="getParity">
+      <proto>string getParity()</proto>
+    </function>
+    <function name="setParity">
+      <proto>object setParity(string parity)</proto>
+    </function>
+    <function name="setCanonical">
+      <proto>object setCanonical(bool canonical)</proto>
+    </function>
+    <function name="isCanonical">
+      <proto>bool isCanonical()</proto>
+    </function>
+    <function name="getVMin">
+      <proto>int getVMin()</proto>
+    </function>
+    <function name="setVMin">
+      <proto>object setVMin(int vMin)</proto>
+    </function>
+    <function name="getVTime">
+      <proto>int getVTime()</proto>
+    </function>
+    <function name="setVTime">
+      <proto>object setVTime(int vTime)</proto>
+    </function>
+  </class>
+  <class name="Arduino">
+    <constant type="int" name="HIGH" value="1"></constant>
+    <constant type="int" name="LOW" value="0"></constant>
+    <property name="_serialPort" access="protected"></property>
+    <property name="_pinList" access="protected"></property>
+    <function name="__construct">
+      <proto>object __construct(object serialPort)</proto>
+    </function>
+    <function name="output">
+      <proto>object output(array pinList)</proto>
+    </function>
+    <function name="close">
+      <proto>bool close()</proto>
+    </function>
+    <function name="digitalWrite">
+      <proto>object digitalWrite(int pin, int value)</proto>
+    </function>
+    <function name="setHigh">
+      <proto>object setHigh(int pin)</proto>
+      <description>digitalWrite(pin, Arduino::HIGH)</description>
+    </function>
+    <function name="setLow">
+      <proto>object setLow(int pin)</proto>
+      <description>digitalWrite(pin, Arduino::LOW)</description>
+    </function>
+    <function name="digitalRead">
+      <proto>int digitalRead(int pin)</proto>
+    </function>
+    <function name="getState">
+      <proto>int getState(int pin)</proto>
+      <description>this method is an alias of digitalRead()</description>
+    </function>
+    <function name="isHigh">
+      <proto>bool isHigh(int pin)</proto>
+    </function>
+    <function name="isLow">
+      <proto>bool isLow(int pin)</proto>
+    </function>
+    <function name="turnOff">
+      <proto>object turnOff()</proto>
+    </function>
+  </class>
+</extension>

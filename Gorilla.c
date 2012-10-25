@@ -31,25 +31,25 @@ static zend_class_entry * SerialPort_ce_ptr = NULL;
    */
 PHP_METHOD(SerialPort, __construct)
 {
-	zend_class_entry * _this_ce;
-	zval * _this_zval;
+    zend_class_entry * _this_ce;
+    zval * _this_zval;
 
-	const char * dev = NULL;
-	int dev_len = 0;
-
-
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &dev_len) == FAILURE) {
-		return;
-	}
-
-	_this_zval = getThis();
-	_this_ce = Z_OBJCE_P(_this_zval);
+    const char * dev = NULL;
+    int dev_len = 0;
 
 
-	php_error(E_WARNING, "__construct: not yet implemented"); RETURN_FALSE;
 
-	object_init(return_value);
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &dev_len) == FAILURE) {
+        return;
+    }
+
+    _this_zval = getThis();
+    _this_ce = Z_OBJCE_P(_this_zval);
+
+
+    PROP_SET_STRINGL(_device, dev, dev_len);
+
+    return_value_ptr = &_this_zval;
 }
 /* }}} __construct */
 
@@ -59,22 +59,20 @@ PHP_METHOD(SerialPort, __construct)
    */
 PHP_METHOD(SerialPort, open)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    php_stream *stream;
+    zval *_stream;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "open: not yet implemented"); RETURN_FALSE;
-
-	object_init(return_value);
+    SerialPort_open_impl(_this_ce, _this_zval, PROP_GET_STRING(_device));
+    
+    return_value_ptr = &_this_ce;
 }
 /* }}} open */
 
@@ -128,6 +126,56 @@ PHP_METHOD(SerialPort, isOpen)
 }
 /* }}} isOpen */
 
+
+/* {{{ proto string read(int length)
+   */
+PHP_METHOD(SerialPort, read)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	long length = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "read: not yet implemented"); RETURN_FALSE;
+
+	RETURN_STRINGL("", 0, 1);
+}
+/* }}} read */
+
+
+/* {{{ proto int write(string data)
+   */
+PHP_METHOD(SerialPort, write)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	const char * data = NULL;
+	int data_len = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &data, &data_len) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "write: not yet implemented"); RETURN_FALSE;
+
+	RETURN_LONG(0);
+}
+/* }}} write */
 
 
 /* {{{ proto int getBaudRate()
@@ -544,6 +592,8 @@ static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, open, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, close, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, isOpen, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, read, SerialPort__read_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, write, SerialPort__write_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getBaudRate, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, setBaudRate, SerialPort__setBaudRate_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getCharSize, NULL, /**/ZEND_ACC_PUBLIC)
@@ -571,6 +621,18 @@ static void class_init_SerialPort(void)
 
 	INIT_CLASS_ENTRY(ce, "SerialPort", SerialPort_methods);
 	SerialPort_ce_ptr = zend_register_internal_class(&ce);
+
+           /* {{{ Property registration */
+
+            zend_declare_property_string(SerialPort_ce_ptr,
+              "_device", 7, "",
+              ZEND_ACC_PROTECTED TSRMLS_DC);
+
+	zend_declare_property_null(SerialPort_ce_ptr, 
+		"_stream", 7, 
+		ZEND_ACC_PROTECTED TSRMLS_DC);
+
+           /* }}} Property registration */
 
 	/* {{{ Constant registration */
 
@@ -626,24 +688,23 @@ static zend_class_entry * Arduino_ce_ptr = NULL;
    */
 PHP_METHOD(Arduino, __construct)
 {
-	zend_class_entry * _this_ce;
-	zval * _this_zval;
+    zend_class_entry * _this_ce;
+    zval * _this_zval;
 
-	zval * serialPort = NULL;
-
-
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "o", &serialPort) == FAILURE) {
-		return;
-	}
-
-	_this_zval = getThis();
-	_this_ce = Z_OBJCE_P(_this_zval);
+    zval * serialPort = NULL;
 
 
-	php_error(E_WARNING, "__construct: not yet implemented"); RETURN_FALSE;
 
-	object_init(return_value);
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "o", &serialPort) == FAILURE) {
+        return;
+    }
+
+    _this_zval = getThis();
+    _this_ce = Z_OBJCE_P(_this_zval);
+
+    php_error(E_WARNING, "__construct: not yet implemented"); RETURN_FALSE;
+
+    object_init(return_value);
 }
 /* }}} __construct */
 

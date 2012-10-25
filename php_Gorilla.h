@@ -35,6 +35,7 @@ extern "C" {
 #include <SAPI.h>
 #include <ext/standard/info.h>
 #include <Zend/zend_extensions.h>
+#include <Zend/zend_exceptions.h>
 #ifdef  __cplusplus
 } // extern "C" 
 #endif
@@ -75,6 +76,9 @@ PHP_MINFO_FUNCTION(Gorilla);
 #define PROP_SET_STRINGL(name, s, l) zend_update_property_stringl(_this_ce, _this_zval, #name, strlen(#name), s, l TSRMLS_CC)
 
 
+PHPAPI void SerialPort_open_impl(zend_class_entry * _this_ce, zval * _this_zval, const char *device);
+
+
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(SerialPort____construct_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
@@ -107,6 +111,24 @@ ZEND_END_ARG_INFO()
 #define SerialPort__isOpen_args NULL
 #endif
 
+PHP_METHOD(SerialPort, read);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__read_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, length)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__read_args NULL
+#endif
+
+PHP_METHOD(SerialPort, write);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__write_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, data)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__write_args NULL
+#endif
+        
 PHP_METHOD(SerialPort, getBaudRate);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(SerialPort__getBaudRate_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)

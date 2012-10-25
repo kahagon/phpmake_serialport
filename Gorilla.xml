@@ -53,6 +53,8 @@
     <constant type="string" name="PARITY_ODD" value="PARITY_ODD"></constant>
     <constant type="string" name="PARITY_NONE" value="PARITY_NONE"></constant>
     <constant type="string" name="PARITY_DEFAULT" value="PARITY_NONE"></constant>
+    <property name="_device" access="protected" type="string"></property>
+    <property name="_stream" access="protected" ></property>
     <function name="__construct">
       <proto>object __construct(string dev)</proto>
     </function>
@@ -64,6 +66,12 @@
     </function>
     <function name="isOpen">
       <proto>bool isOpen()</proto>
+    </function>
+    <function name="read">
+      <proto>string read(int length)</proto>
+    </function>
+    <function name="write">
+      <proto>int write(string data)</proto>
     </function>
     <function name="getBaudRate">
       <proto>int getBaudRate()</proto>

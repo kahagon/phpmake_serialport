@@ -185,22 +185,16 @@ PHP_METHOD(SerialPort, write)
    */
 PHP_METHOD(SerialPort, getBaudRate)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getBaudRate: not yet implemented"); RETURN_FALSE;
-
-	RETURN_LONG(0);
+   RETURN_LONG(SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAM_PASSTHRU));
 }
 /* }}} getBaudRate */
 
@@ -634,6 +628,10 @@ static void class_init_SerialPort(void)
 	zend_declare_property_null(SerialPort_ce_ptr, 
 		"_stream", 7, 
 		ZEND_ACC_PROTECTED TSRMLS_DC);
+        
+        	zend_declare_property_long(SerialPort_ce_ptr, 
+		"_streamFd", 9, -1, 
+		ZEND_ACC_PRIVATE TSRMLS_DC);
 
            /* }}} Property registration */
 
@@ -641,37 +639,37 @@ static void class_init_SerialPort(void)
 
 	do {
 		zval *tmp, *val;
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_50", 12, 50 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_75", 12, 75 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_110", 13, 110 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_134", 13, 134 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_150", 13, 150 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_200", 13, 200 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_300", 13, 300 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_600", 13, 600 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_1200", 14, 1200 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_1800", 14, 1800 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_2400", 14, 2400 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_4800", 14, 4800 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_9600", 14, 9600 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_19200", 15, 19200 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_38400", 15, 38400 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_57600", 15, 57600 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_115200", 16, 115200 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_230400", 16, 230400 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_5", 11, 5 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_6", 11, 6 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_7", 11, 7 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_8", 11, 8 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_DEFAULT", 17, 8 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_HARD", 17, "FLOW_CONTROL_HARD", 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_SOFT", 17, "FLOW_CONTROL_SOFT", 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_NONE", 17, "FLOW_CONTROL_NONE", 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_DEFAULT", 20, "FLOW_CONTROL_NONE", 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_EVEN", 11, "PARITY_EVEN", 11 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_ODD", 10, "PARITY_ODD", 10 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_NONE", 11, "PARITY_NONE", 11 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_DEFAULT", 14, "PARITY_NONE", 11 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_50", 12, BAUD_RATE_50 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_75", 12, BAUD_RATE_75 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_110", 13, BAUD_RATE_110 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_134", 13, BAUD_RATE_134 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_150", 13, BAUD_RATE_150 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_200", 13, BAUD_RATE_200 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_300", 13, BAUD_RATE_300 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_600", 13, BAUD_RATE_600 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_1200", 14, BAUD_RATE_1200 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_1800", 14, BAUD_RATE_1800 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_2400", 14, BAUD_RATE_2400 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_4800", 14, BAUD_RATE_4800 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_9600", 14, BAUD_RATE_9600 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_19200", 15, BAUD_RATE_19200 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_38400", 15, BAUD_RATE_38400 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_57600", 15, BAUD_RATE_57600 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_115200", 16, BAUD_RATE_115200 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "BAUD_RATE_230400", 16, BAUD_RATE_230400 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_5", 11, CHAR_SIZE_5 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_6", 11, CHAR_SIZE_6 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_7", 11, CHAR_SIZE_7 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_8", 11, CHAR_SIZE_8 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_DEFAULT", 17, CHAR_SIZE_DEFAULT TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_HARD", 17, FLOW_CONTROL_HARD, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_SOFT", 17, FLOW_CONTROL_SOFT, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_NONE", 17, FLOW_CONTROL_NONE, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_DEFAULT", 20, FLOW_CONTROL_NONE, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_EVEN", 11, PARITY_EVEN, 11 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_ODD", 10, PARITY_ODD, 10 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_NONE", 11, PARITY_NONE, 11 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_DEFAULT", 14, PARITY_NONE, 11 TSRMLS_CC );
 	} while(0);
 
 	/* } Constant registration */

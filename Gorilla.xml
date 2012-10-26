@@ -55,6 +55,7 @@
     <constant type="string" name="PARITY_DEFAULT" value="PARITY_NONE"></constant>
     <property name="_device" access="protected" type="string"></property>
     <property name="_stream" access="protected" ></property>
+    <property name="_streamFd" access="private" type="int"></property>
     <function name="__construct">
       <proto>object __construct(string dev)</proto>
     </function>

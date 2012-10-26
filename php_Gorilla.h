@@ -114,6 +114,8 @@ PHP_MINFO_FUNCTION(Gorilla);
 PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
 PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

@@ -15,7 +15,7 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY);
     if (serial_port_fd == -1) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
-        return NULL;
+        return;
     }
     
     zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), serial_port_fd TSRMLS_CC);
@@ -26,6 +26,40 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     return;
 }
 
+PHPAPI void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    if (canonical) {
+        attr.c_lflag |= ICANON;
+    } else {
+        attr.c_lflag &= ~ICANON;
+    }
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+}
+
+PHPAPI int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return 0;
+    }
+    
+    return attr.c_lflag & ICANON;
+}
+
 PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
@@ -33,6 +67,7 @@ PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
     serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return 0;
     }
     
     switch (cfgetospeed(&attr)) {

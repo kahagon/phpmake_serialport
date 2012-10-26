@@ -48,8 +48,6 @@ PHP_METHOD(SerialPort, __construct)
 
 
     PROP_SET_STRINGL(_device, dev, dev_len);
-
-    return_value_ptr = &_this_zval;
 }
 /* }}} __construct */
 
@@ -70,7 +68,7 @@ PHP_METHOD(SerialPort, open)
 
     SerialPort_open_impl(PROP_GET_STRING(_device), GORILLA_METHOD_PARAM_PASSTHRU);
     
-    return_value_ptr = &_this_ce;
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} open */
 
@@ -215,7 +213,8 @@ PHP_METHOD(SerialPort, setBaudRate)
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setBaudRate_impl(baudRate, GORILLA_METHOD_PARAM_PASSTHRU);
-    object_init(return_value);
+    
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setBaudRate */
 
@@ -431,23 +430,20 @@ PHP_METHOD(SerialPort, setParity)
    */
 PHP_METHOD(SerialPort, setCanonical)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
 
-	zval * _this_zval = NULL;
-	zend_bool canonical = 0;
+    zval * _this_zval = NULL;
+    zend_bool canonical = 0;
 
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &canonical) == FAILURE) {
+        return;
+    }
+    
+    _this_ce = Z_OBJCE_P(_this_zval);
 
+    SerialPort_setCanonical_impl(canonical, GORILLA_METHOD_PARAM_PASSTHRU);
 
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &canonical) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setCanonical: not yet implemented"); RETURN_FALSE;
-
-	object_init(return_value);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setCanonical */
 
@@ -457,22 +453,20 @@ PHP_METHOD(SerialPort, setCanonical)
    */
 PHP_METHOD(SerialPort, isCanonical)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "isCanonical: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+    if (SerialPort_isCanonical_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} isCanonical */
 

@@ -76,7 +76,12 @@ PHP_MINFO_FUNCTION(Gorilla);
 #define PROP_SET_STRINGL(name, s, l) zend_update_property_stringl(_this_ce, _this_zval, #name, strlen(#name), s, l TSRMLS_CC)
 
 
-PHPAPI void SerialPort_open_impl(zend_class_entry * _this_ce, zval * _this_zval, const char *device);
+#define GORILLA_METHOD_PARAMETERS zend_class_entry * _this_ce, zval * _this_zval, INTERNAL_FUNCTION_PARAMETERS
+#define GORILLA_METHOD_PARAM_PASSTHRU _this_ce, _this_zval, INTERNAL_FUNCTION_PARAM_PASSTHRU
+
+PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
+/* SerialPort_close_impl returns zero on success.  On error, -1 is returned */
+PHPAPI int SerialPort_close_impl(GORILLA_METHOD_PARAMETERS);
 
 
 PHP_METHOD(SerialPort, __construct);

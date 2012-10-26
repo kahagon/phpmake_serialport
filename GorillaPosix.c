@@ -3,9 +3,9 @@
 #include "php_Gorilla.h"
 #include <fcntl.h>
 
-PHPAPI void SerialPort_open_impl(zend_class_entry * _this_ce, zval * _this_zval, const char *device) {
+PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     php_stream *stream;
-    zval *_stream;
+    zval *zval_stream;
     
     int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY);
     if (serial_port_fd == -1) {
@@ -14,10 +14,18 @@ PHPAPI void SerialPort_open_impl(zend_class_entry * _this_ce, zval * _this_zval,
     }
     
     stream = php_stream_fopen_from_fd_rel(serial_port_fd, "r+", NULL);
-    _stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
-    php_stream_to_zval(stream, _stream);
+    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
+    php_stream_to_zval(stream, zval_stream);
     
     return;
 }
 
+PHPAPI int SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
+    zval *zval_stream;
+    php_stream *stream;
+    
+    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
+    php_stream_from_zval(stream, &zval_stream);
+    return php_stream_close(stream);
+}
 #endif

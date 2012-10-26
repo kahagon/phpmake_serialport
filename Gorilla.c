@@ -204,23 +204,18 @@ PHP_METHOD(SerialPort, getBaudRate)
    */
 PHP_METHOD(SerialPort, setBaudRate)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    long baudRate = 0;
 
-	zval * _this_zval = NULL;
-	long baudRate = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &baudRate) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &baudRate) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setBaudRate: not yet implemented"); RETURN_FALSE;
-
-	object_init(return_value);
+    SerialPort_setBaudRate_impl(baudRate, GORILLA_METHOD_PARAM_PASSTHRU);
+    object_init(return_value);
 }
 /* }}} setBaudRate */
 

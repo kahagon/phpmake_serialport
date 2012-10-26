@@ -60,6 +60,75 @@ PHPAPI int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
     return attr.c_lflag & ICANON;
 }
 
+PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    long _char_size = CS8;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    switch (char_size) {
+        case CHAR_SIZE_5:
+            _char_size = CS5;
+            break;
+        case CHAR_SIZE_6:
+            _char_size = CS6;
+            break;
+        case CHAR_SIZE_7:
+            _char_size = CS7;
+            break;
+        case CHAR_SIZE_8:
+            _char_size = CS8;
+            break;
+        default:
+            zend_throw_exception(NULL, "invalid char size specified", 5 TSRMLS_CC);
+            return;
+    }
+    
+    if (_char_size != CS8) {
+        attr.c_iflag &= ~ISTRIP;
+    } else {
+        attr.c_iflag |= ISTRIP;
+    }
+    
+    attr.c_cflag &= ~CSIZE;
+    attr.c_cflag |= _char_size;
+    
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+}
+
+PHPAPI long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return 0;
+    }
+    
+    switch (attr.c_cflag & CSIZE) {
+        case CS5:
+            return CHAR_SIZE_5;
+        case CS6:
+            return CHAR_SIZE_6;
+        case CS7:
+            return CHAR_SIZE_7;
+        case CS8:
+            return CHAR_SIZE_8;
+        default:
+            zend_throw_exception(NULL, "unknow char size detected.", 5 TSRMLS_CC);
+            return 0;
+    }
+}
+
 PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;

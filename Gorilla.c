@@ -224,22 +224,16 @@ PHP_METHOD(SerialPort, setBaudRate)
    */
 PHP_METHOD(SerialPort, getCharSize)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
-
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getCharSize: not yet implemented"); RETURN_FALSE;
-
-	RETURN_LONG(0);
+    _this_ce = Z_OBJCE_P(_this_zval);
+    
+    RETURN_LONG(SerialPort_getCharSize_impl(GORILLA_METHOD_PARAM_PASSTHRU));
 }
 /* }}} getCharSize */
 
@@ -249,23 +243,18 @@ PHP_METHOD(SerialPort, getCharSize)
    */
 PHP_METHOD(SerialPort, setCharSize)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    long charSize = 0;
 
-	zval * _this_zval = NULL;
-	long charSize = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &charSize) == FAILURE) {
+        return;
+    }
 
-
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &charSize) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setCharSize: not yet implemented"); RETURN_FALSE;
-
-	object_init(return_value);
+    _this_ce = Z_OBJCE_P(_this_zval);
+    
+    SerialPort_setCharSize_impl(charSize, GORILLA_METHOD_PARAM_PASSTHRU);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setCharSize */
 

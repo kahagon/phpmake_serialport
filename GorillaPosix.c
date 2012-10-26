@@ -20,12 +20,4 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     return;
 }
 
-PHPAPI int SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
-    zval *zval_stream;
-    php_stream *stream;
-    
-    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
-    php_stream_from_zval(stream, &zval_stream);
-    return php_stream_close(stream);
-}
 #endif

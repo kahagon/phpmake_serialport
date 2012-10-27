@@ -1,9 +1,11 @@
 Gorilla
 =======
-シリアルポート(RS-232C)、 arduino とのインタフェースを備えた PHP 拡張です。  
-arduino インタフェースは[Ruby arduino](https://rubygems.org/gems/arduino)
+シリアルポート(RS-232)、 arduino とのインタフェースを備えた PHP 拡張です。  
+ arduino インタフェースは[Ruby arduino](https://rubygems.org/gems/arduino)
 により提供される aruduino スケッチと互換なものとして実装する予定です。
 
+現在は Linux などの POSIX システムのための実装を行なっています。
+Windows 用の実装も今後行います。
 
 This is a standalone PHP extension created using CodeGen_PECL 1.1.3
 

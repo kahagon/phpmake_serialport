@@ -264,22 +264,20 @@ PHP_METHOD(SerialPort, setCharSize)
    */
 PHP_METHOD(SerialPort, getFlowControl)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    int flow_control;
+    char *flow_control_str;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getFlowControl: not yet implemented"); RETURN_FALSE;
-
-	RETURN_STRINGL("", 0, 1);
+    flow_control = SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAM_PASSTHRU);
+    flow_control_str = FLOW_CONTROL_STR(flow_control);
+    RETURN_STRINGL(flow_control_str, strlen(flow_control_str), 1);
 }
 /* }}} getFlowControl */
 
@@ -289,24 +287,31 @@ PHP_METHOD(SerialPort, getFlowControl)
    */
 PHP_METHOD(SerialPort, setFlowControl)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    const char * flowControl = NULL;
+    int flowControl_len = 0;
+    int flow_control;
 
-	zval * _this_zval = NULL;
-	const char * flowControl = NULL;
-	int flowControl_len = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &flowControl, &flowControl_len) == FAILURE) {
+        return;
+    }
 
-
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &flowControl, &flowControl_len) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setFlowControl: not yet implemented"); RETURN_FALSE;
-
-	object_init(return_value);
+    _this_ce = Z_OBJCE_P(_this_zval);
+    
+    if (strncmp(flowControl, FLOW_CONTROL_HARD_STR, flowControl_len) == 0) {
+        flow_control = FLOW_CONTROL_HARD;
+    } else if (strncmp(flowControl, FLOW_CONTROL_SOFT_STR, flowControl_len) == 0) {
+        flow_control = FLOW_CONTROL_SOFT;
+    } else if (strncmp(flowControl, FLOW_CONTROL_NONE_STR, flowControl_len) == 0) {
+        flow_control = FLOW_CONTROL_NONE;
+    } else {
+        zend_throw_exception(NULL, "invalid flow control", FLOW_CONTROL_INVALID TSRMLS_CC);
+        return;
+    }
+    
+    SerialPort_setFlowControl_impl(flow_control, GORILLA_METHOD_PARAM_PASSTHRU);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setFlowControl */
 
@@ -640,14 +645,14 @@ static void class_init_SerialPort(void)
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_7", 11, CHAR_SIZE_7 TSRMLS_CC );
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_8", 11, CHAR_SIZE_8 TSRMLS_CC );
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_DEFAULT", 17, CHAR_SIZE_DEFAULT TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_HARD", 17, FLOW_CONTROL_HARD, 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_SOFT", 17, FLOW_CONTROL_SOFT, 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_NONE", 17, FLOW_CONTROL_NONE, 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_DEFAULT", 20, FLOW_CONTROL_NONE, 17 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_EVEN", 11, PARITY_EVEN, 11 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_ODD", 10, PARITY_ODD, 10 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_NONE", 11, PARITY_NONE, 11 TSRMLS_CC );
-		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_DEFAULT", 14, PARITY_NONE, 11 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_HARD", 17, FLOW_CONTROL_HARD_STR, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_SOFT", 17, FLOW_CONTROL_SOFT_STR, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_NONE", 17, FLOW_CONTROL_NONE_STR, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_DEFAULT", 20, FLOW_CONTROL_NONE_STR, 17 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_EVEN", 11, PARITY_EVEN_STR, 11 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_ODD", 10, PARITY_ODD_STR, 10 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_NONE", 11, PARITY_NONE_STR, 11 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_DEFAULT", 14, PARITY_NONE_STR, 11 TSRMLS_CC );
 	} while(0);
 
 	/* } Constant registration */

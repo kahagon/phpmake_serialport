@@ -60,6 +60,66 @@ PHPAPI int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
     return attr.c_lflag & ICANON;
 }
 
+PHPAPI int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return FLOW_CONTROL_INVALID;
+    }
+    
+    if (attr.c_iflag & (IXON|IXOFF)
+            && attr.c_cc[VSTART] == ASCII_DC1
+            && attr.c_cc[VSTOP] == ASCII_DC3) 
+    {
+        return FLOW_CONTROL_SOFT;
+    } else if (attr.c_cflag & CRTSCTS) {
+        return FLOW_CONTROL_HARD;
+    } else {
+        return FLOW_CONTROL_DEFAULT;
+    }
+    
+}
+
+PHPAPI void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return FLOW_CONTROL_INVALID;
+    }
+    
+    if (flow_control == FLOW_CONTROL_HARD) {
+        attr.c_cflag |= CRTSCTS;
+    } else {
+        attr.c_cflag &= ~CRTSCTS;
+    }
+    
+    if (flow_control == FLOW_CONTROL_SOFT) {
+        attr.c_iflag |= (IXON | IXOFF | IXANY);
+    } else {
+        attr.c_iflag &= ~(IXON | IXOFF | IXANY);
+    }
+    
+    if (
+            flow_control == FLOW_CONTROL_HARD 
+            && flow_control == FLOW_CONTROL_SOFT 
+            && flow_control != FLOW_CONTROL_NONE) 
+    {
+        zend_throw_exception(NULL, "invalid flow control", FLOW_CONTROL_INVALID TSRMLS_CC);
+        return;
+    }
+    
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, "failed to set flow control", FLOW_CONTROL_INVALID TSRMLS_CC);
+        return;
+    }
+}
+
 PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;

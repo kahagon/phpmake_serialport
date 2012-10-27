@@ -103,6 +103,8 @@ PHPAPI void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARA
         attr.c_iflag |= (IXON | IXOFF | IXANY);
     } else {
         attr.c_iflag &= ~(IXON | IXOFF | IXANY);
+        attr.c_cc[VSTART] = ASCII_DC1;
+        attr.c_cc[VSTOP] = ASCII_DC3;
     }
     
     if (

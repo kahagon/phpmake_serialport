@@ -211,6 +211,51 @@ PHPAPI int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS) {
     return line_status & TIOCM_RNG ? 1 : 0;
 }
 
+PHPAPI int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    if (attr.c_cflag & CSTOPB) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+
+PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    switch (stop_bits) {
+        case 1:
+            attr.c_cflag &= ~CSTOPB;
+            break;
+        case 2:
+            attr.c_cflag |= CSTOPB;
+            break;
+        default:
+            zend_throw_exception(NULL, "unknown stop bits specified. stop bits must be 1 or 2.", 6 TSRMLS_CC);
+            return;
+    }
+    
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+}
+
 PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;

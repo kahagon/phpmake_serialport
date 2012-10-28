@@ -146,6 +146,8 @@ PHPAPI int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

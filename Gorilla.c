@@ -505,22 +505,16 @@ PHP_METHOD(SerialPort, setFlowControl)
    */
 PHP_METHOD(SerialPort, getNumOfStopBits)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
-	zval * _this_zval = NULL;
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getNumOfStopBits: not yet implemented"); RETURN_FALSE;
-
-	RETURN_LONG(0);
+    RETURN_LONG(SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAM_PASSTHRU));
 }
 /* }}} getNumOfStopBits */
 
@@ -530,23 +524,18 @@ PHP_METHOD(SerialPort, getNumOfStopBits)
    */
 PHP_METHOD(SerialPort, setNumOfStopBits)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    long numOfStopBits = 0;
 
-	zval * _this_zval = NULL;
-	long numOfStopBits = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &numOfStopBits) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &numOfStopBits) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setNumOfStopBits: not yet implemented"); RETURN_FALSE;
-
-	RETVAL_ZVAL(_this_zval, 1, 0);
+    SerialPort_setNumOfStopBits_impl(numOfStopBits, GORILLA_METHOD_PARAM_PASSTHRU);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setNumOfStopBits */
 

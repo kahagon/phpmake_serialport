@@ -138,6 +138,14 @@ PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETER
 PHPAPI long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getCTS_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getRTS_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setRTS_impl(zend_bool rts, GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getDSR_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

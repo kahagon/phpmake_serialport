@@ -4,11 +4,24 @@ function serialPortDump(SerialPort $sp) {
             'flow control: %s' . PHP_EOL .
             'baud rate: %d' . PHP_EOL .
             'canonical: %s' . PHP_EOL .
-            'char size: %d' . PHP_EOL, 
+            'char size: %d' . PHP_EOL .
+            'CTS: %s' . PHP_EOL .
+            'RTS: %s' . PHP_EOL .
+            'DSR: %s' . PHP_EOL .
+            'DTR: %s' . PHP_EOL .
+            'DCD: %s' . PHP_EOL .
+            'RNG: %s' . PHP_EOL .
+            PHP_EOL, 
             $sp->getFlowControl(),
             $sp->getBaudRate(),
             $sp->isCanonical() ? 'true' : 'false',
-            $sp->getCharSize());
+            $sp->getCharSize(),
+            $sp->getCTS() ? 'true' : 'false',
+            $sp->getRTS() ? 'true' : 'false',
+            $sp->getDSR() ? 'true' : 'false',
+            $sp->getDTR() ? 'true' : 'false',
+            $sp->getDCD() ? 'true' : 'false',
+            $sp->getRNG() ? 'true' : 'false');
 }
 
 if ($argc < 2) {

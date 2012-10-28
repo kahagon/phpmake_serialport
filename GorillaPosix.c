@@ -3,9 +3,46 @@
 #include "php_Gorilla.h"
 #include <fcntl.h>
 #include <termios.h>
+#include <sys/ioctl.h>
 
 static long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS) {
     return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), 1 TSRMLS_CC));
+}
+
+static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
+    int serial_port_fd, line_status;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (ioctl(serial_port_fd, TIOCMGET, &line_status) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return 0;
+    }
+    
+    return line_status;
+}
+
+
+static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PARAMETERS) {
+    int serial_port_fd, line_status;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (ioctl(serial_port_fd, TIOCMGET, &line_status) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    if (stat) {
+        line_status |= line;
+    } else {
+        line_status &= ~line;
+    }
+    
+    if (ioctl(serial_port_fd, TIOCMSET, &line_status) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    return;
 }
 
 PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
@@ -120,6 +157,58 @@ PHPAPI void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARA
         zend_throw_exception(NULL, "failed to set flow control", FLOW_CONTROL_INVALID TSRMLS_CC);
         return;
     }
+}
+
+PHPAPI int SerialPort_getCTS_impl(GORILLA_METHOD_PARAMETERS) {
+    int line_status;
+    
+    line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return line_status & TIOCM_CTS ? 1 : 0;
+}
+
+PHPAPI int SerialPort_getRTS_impl(GORILLA_METHOD_PARAMETERS) {
+    int line_status;
+    
+    line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return line_status & TIOCM_RTS ? 1 : 0;
+}
+
+PHPAPI void SerialPort_setRTS_impl(zend_bool rts, GORILLA_METHOD_PARAMETERS) {
+    SerialPort_setLineStatus(rts, TIOCM_RTS, GORILLA_METHOD_PARAM_PASSTHRU);
+    return;
+}
+
+PHPAPI int SerialPort_getDSR_impl(GORILLA_METHOD_PARAMETERS) {
+    int line_status;
+    
+    line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return line_status & TIOCM_DSR ? 1 : 0;
+}
+
+PHPAPI int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS) {
+    int line_status;
+    
+    line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return line_status & TIOCM_DTR ? 1 : 0;
+}
+
+PHPAPI void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS) {
+    SerialPort_setLineStatus(dtr, TIOCM_DTR, GORILLA_METHOD_PARAM_PASSTHRU);
+    return;
+}
+
+PHPAPI int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS) {
+    int line_status;
+    
+    line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return line_status & TIOCM_CD ? 1 : 0;
+}
+
+PHPAPI int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS) {
+    int line_status;
+    
+    line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return line_status & TIOCM_RNG ? 1 : 0;
 }
 
 PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {

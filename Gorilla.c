@@ -187,22 +187,20 @@ PHP_METHOD(SerialPort, write)
    */
 PHP_METHOD(SerialPort, getCTS)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getCTS: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+    if (SerialPort_getCTS_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} getCTS */
 
@@ -212,22 +210,20 @@ PHP_METHOD(SerialPort, getCTS)
    */
 PHP_METHOD(SerialPort, getRTS)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getRTS: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+    if (SerialPort_getRTS_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} getRTS */
 
@@ -237,23 +233,19 @@ PHP_METHOD(SerialPort, getRTS)
    */
 PHP_METHOD(SerialPort, setRTS)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    zend_bool rts = 0;
 
-	zval * _this_zval = NULL;
-	zend_bool rts = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &rts) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
+    SerialPort_setRTS_impl(rts, GORILLA_METHOD_PARAM_PASSTHRU);
 
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &rts) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setRTS: not yet implemented"); RETURN_FALSE;
-
-	RETVAL_ZVAL(_this_zval, 1, 0);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setRTS */
 
@@ -263,22 +255,20 @@ PHP_METHOD(SerialPort, setRTS)
    */
 PHP_METHOD(SerialPort, getDSR)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getDSR: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+    if (SerialPort_getDSR_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} getDSR */
 
@@ -288,22 +278,20 @@ PHP_METHOD(SerialPort, getDSR)
    */
 PHP_METHOD(SerialPort, getDTR)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getDTR: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+    if (SerialPort_getDTR_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} getDTR */
 
@@ -313,23 +301,18 @@ PHP_METHOD(SerialPort, getDTR)
    */
 PHP_METHOD(SerialPort, setDTR)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    zend_bool dtr = 0;
 
-	zval * _this_zval = NULL;
-	zend_bool dtr = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &dtr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &dtr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setDTR: not yet implemented"); RETURN_FALSE;
-
-	RETVAL_ZVAL(_this_zval, 1, 0);
+    SerialPort_setDTR_impl(dtr, GORILLA_METHOD_PARAM_PASSTHRU);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setDTR */
 
@@ -339,22 +322,20 @@ PHP_METHOD(SerialPort, setDTR)
    */
 PHP_METHOD(SerialPort, getDCD)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getDCD: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+    if (SerialPort_getDCD_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} getDCD */
 
@@ -364,22 +345,20 @@ PHP_METHOD(SerialPort, getDCD)
    */
 PHP_METHOD(SerialPort, getRNG)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getRNG: not yet implemented"); RETURN_FALSE;
-
-	RETURN_FALSE;
+   if (SerialPort_getRNG_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_TRUE;
+    } else {
+        RETURN_FALSE;
+    }
 }
 /* }}} getRNG */
 

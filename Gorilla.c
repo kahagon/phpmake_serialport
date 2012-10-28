@@ -182,6 +182,208 @@ PHP_METHOD(SerialPort, write)
 /* }}} write */
 
 
+
+/* {{{ proto bool getCTS()
+   */
+PHP_METHOD(SerialPort, getCTS)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getCTS: not yet implemented"); RETURN_FALSE;
+
+	RETURN_FALSE;
+}
+/* }}} getCTS */
+
+
+
+/* {{{ proto bool getRTS()
+   */
+PHP_METHOD(SerialPort, getRTS)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getRTS: not yet implemented"); RETURN_FALSE;
+
+	RETURN_FALSE;
+}
+/* }}} getRTS */
+
+
+
+/* {{{ proto object setRTS(bool rts)
+   */
+PHP_METHOD(SerialPort, setRTS)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	zend_bool rts = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &rts) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setRTS: not yet implemented"); RETURN_FALSE;
+
+	RETVAL_ZVAL(_this_zval, 1, 0);
+}
+/* }}} setRTS */
+
+
+
+/* {{{ proto bool getDSR()
+   */
+PHP_METHOD(SerialPort, getDSR)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getDSR: not yet implemented"); RETURN_FALSE;
+
+	RETURN_FALSE;
+}
+/* }}} getDSR */
+
+
+
+/* {{{ proto bool getDTR()
+   */
+PHP_METHOD(SerialPort, getDTR)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getDTR: not yet implemented"); RETURN_FALSE;
+
+	RETURN_FALSE;
+}
+/* }}} getDTR */
+
+
+
+/* {{{ proto object setDTR(bool dtr)
+   */
+PHP_METHOD(SerialPort, setDTR)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	zend_bool dtr = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &dtr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setDTR: not yet implemented"); RETURN_FALSE;
+
+	RETVAL_ZVAL(_this_zval, 1, 0);
+}
+/* }}} setDTR */
+
+
+
+/* {{{ proto bool getDCD()
+   */
+PHP_METHOD(SerialPort, getDCD)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getDCD: not yet implemented"); RETURN_FALSE;
+
+	RETURN_FALSE;
+}
+/* }}} getDCD */
+
+
+
+/* {{{ proto bool getRNG()
+   */
+PHP_METHOD(SerialPort, getRNG)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getRNG: not yet implemented"); RETURN_FALSE;
+
+	RETURN_FALSE;
+}
+/* }}} getRNG */
+
+
 /* {{{ proto int getBaudRate()
    */
 PHP_METHOD(SerialPort, getBaudRate)
@@ -577,6 +779,14 @@ static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, isOpen, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, read, SerialPort__read_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, write, SerialPort__write_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getCTS, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getRTS, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setRTS, SerialPort__setRTS_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getDSR, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getDTR, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setDTR, SerialPort__setDTR_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getDCD, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getRNG, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getBaudRate, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, setBaudRate, SerialPort__setBaudRate_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getCharSize, NULL, /**/ZEND_ACC_PUBLIC)

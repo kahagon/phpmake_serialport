@@ -188,6 +188,72 @@ ZEND_END_ARG_INFO()
 #else /* PHP 4.x */
 #define SerialPort__write_args NULL
 #endif
+
+PHP_METHOD(SerialPort, getCTS);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getCTS_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getCTS_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getRTS);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getRTS_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getRTS_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setRTS);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setRTS_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, rts)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setRTS_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getDSR);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getDSR_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getDSR_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getDTR);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getDTR_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getDTR_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setDTR);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setDTR_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, dtr)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setDTR_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getDCD);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getDCD_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getDCD_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getRNG);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getRNG_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getRNG_args NULL
+#endif
         
 PHP_METHOD(SerialPort, getBaudRate);
 #if (PHP_MAJOR_VERSION >= 5)

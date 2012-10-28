@@ -74,6 +74,30 @@
     <function name="write">
       <proto>int write(string data)</proto>
     </function>
+    <function name="getCTS">
+      <proto>bool getCTS()</proto>
+    </function>
+    <function name="getRTS">
+      <proto>bool getRTS()</proto>
+    </function>
+    <function name="setRTS">
+      <proto>object setRTS(bool rts)</proto>
+    </function>
+    <function name="getDSR">
+      <proto>bool getDSR()</proto>
+    </function>
+    <function name="getDTR">
+      <proto>bool getDTR()</proto>
+    </function>
+    <function name="setDTR">
+      <proto>object setDTR(bool dtr)</proto>
+    </function>
+    <function name="getDCD">
+      <proto>bool getDCD()</proto>
+    </function>
+    <function name="getRNG">
+      <proto>bool getRNG()</proto>
+    </function>
     <function name="getBaudRate">
       <proto>int getBaudRate()</proto>
     </function>

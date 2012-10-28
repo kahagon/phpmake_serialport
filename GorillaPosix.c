@@ -49,7 +49,7 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     php_stream *stream;
     zval *zval_stream;
     
-    int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY);
+    int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY|O_NDELAY);
     if (serial_port_fd == -1) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;

@@ -501,7 +501,7 @@ PHP_METHOD(SerialPort, setFlowControl)
 
 
 
-/* {{{ proto object getNumOfStopBits()
+/* {{{ proto int getNumOfStopBits()
    */
 PHP_METHOD(SerialPort, getNumOfStopBits)
 {
@@ -520,13 +520,13 @@ PHP_METHOD(SerialPort, getNumOfStopBits)
 
 	php_error(E_WARNING, "getNumOfStopBits: not yet implemented"); RETURN_FALSE;
 
-	object_init(return_value);
+	RETURN_LONG(0);
 }
 /* }}} getNumOfStopBits */
 
 
 
-/* {{{ proto bool setNumOfStopBits(int numOfStopBits)
+/* {{{ proto object setNumOfStopBits(int numOfStopBits)
    */
 PHP_METHOD(SerialPort, setNumOfStopBits)
 {
@@ -546,7 +546,7 @@ PHP_METHOD(SerialPort, setNumOfStopBits)
 
 	php_error(E_WARNING, "setNumOfStopBits: not yet implemented"); RETURN_FALSE;
 
-	RETURN_FALSE;
+	RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setNumOfStopBits */
 

@@ -117,10 +117,10 @@
       <proto>object setFlowControl(string flowControl)</proto>
     </function>
     <function name="getNumOfStopBits">
-      <proto>object getNumOfStopBits()</proto>
+      <proto>int getNumOfStopBits()</proto>
     </function>
     <function name="setNumOfStopBits">
-      <proto>bool setNumOfStopBits(int numOfStopBits)</proto>
+      <proto>object setNumOfStopBits(int numOfStopBits)</proto>
     </function>
     <function name="getParity">
       <proto>string getParity()</proto>

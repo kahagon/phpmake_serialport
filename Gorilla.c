@@ -48,6 +48,7 @@ PHP_METHOD(SerialPort, __construct)
 
 
     PROP_SET_STRINGL(_device, dev, dev_len);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} __construct */
 
@@ -89,10 +90,12 @@ PHP_METHOD(SerialPort, close)
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
-    
+
+    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), -1 TSRMLS_CC);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_from_zval(stream, &zval_stream);
     result = php_stream_close(stream);
+    ZVAL_NULL(zval_stream);
 
     if (result == 0) {
         RETURN_TRUE;

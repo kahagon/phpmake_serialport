@@ -49,7 +49,7 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     php_stream *stream;
     zval *zval_stream;
     
-    int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY|O_NDELAY);
+    int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY);
     if (serial_port_fd == -1) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -303,6 +303,68 @@ PHPAPI void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
             zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
             return;
     }
+    
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+}
+
+PHPAPI long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return -1;
+    }
+    
+    return attr.c_cc[VMIN];
+}
+
+PHPAPI void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    attr.c_cc[VMIN] = (cc_t)vmin;
+    
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+}
+
+PHPAPI int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return -1;
+    }
+    
+    return attr.c_cc[VTIME];
+}
+
+PHPAPI void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    attr.c_cc[VTIME] = (cc_t)vtime;
     
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);

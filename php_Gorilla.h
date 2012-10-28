@@ -153,6 +153,10 @@ PHPAPI int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS);
+PHPAPI long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

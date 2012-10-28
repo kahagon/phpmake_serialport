@@ -7,6 +7,8 @@ function serialPortDump(SerialPort $sp) {
             'char size: %d' . PHP_EOL .
             'stop bits: %d' . PHP_EOL .
             'parity: %s' . PHP_EOL .
+            'vmin: %d' . PHP_EOL .
+            'vtime: %d' . PHP_EOL .
             'CTS: %s' . PHP_EOL .
             'RTS: %s' . PHP_EOL .
             'DSR: %s' . PHP_EOL .
@@ -20,6 +22,8 @@ function serialPortDump(SerialPort $sp) {
             $sp->getCharSize(),
             $sp->getNumOfStopBits(),
             $sp->getParity(),
+            $sp->getVMin(),
+            $sp->getVTime(),
             $sp->getCTS() ? 'true' : 'false',
             $sp->getRTS() ? 'true' : 'false',
             $sp->getDSR() ? 'true' : 'false',
@@ -42,6 +46,8 @@ $sp->setFlowControl(SerialPort::FLOW_CONTROL_HARD)
         ->setCanonical(!$sp->isCanonical())
         ->setCharSize(SerialPort::CHAR_SIZE_8)
         ->setNumOfStopBits(2)
+        ->setVMin(1)
+        ->setVTime(0)
         ->setParity(SerialPort::PARITY_NONE);
 
 serialPortDump($sp);

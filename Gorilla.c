@@ -545,22 +545,21 @@ PHP_METHOD(SerialPort, setNumOfStopBits)
    */
 PHP_METHOD(SerialPort, getParity)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    int parity;
+    char *parity_str;
 
-	zval * _this_zval = NULL;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "getParity: not yet implemented"); RETURN_FALSE;
-
-	RETURN_STRINGL("", 0, 1);
+    parity = SerialPort_getParity_impl(GORILLA_METHOD_PARAM_PASSTHRU);
+    parity_str = PARITY_STR(parity);
+    
+    RETURN_STRINGL(parity_str, strlen(parity_str), 1);
 }
 /* }}} getParity */
 
@@ -570,24 +569,32 @@ PHP_METHOD(SerialPort, getParity)
    */
 PHP_METHOD(SerialPort, setParity)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    const char * parity = NULL;
+    int parity_len = 0;
+    int _parity;
 
-	zval * _this_zval = NULL;
-	const char * parity = NULL;
-	int parity_len = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &parity, &parity_len) == FAILURE) {
+            return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &parity, &parity_len) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "setParity: not yet implemented"); RETURN_FALSE;
-
-	object_init(return_value);
+    
+    if (strncmp(parity, PARITY_EVEN_STR, parity_len) == 0) {
+        _parity = PARITY_EVEN;
+    } else if (strncmp(parity, PARITY_ODD_STR, parity_len) == 0) {
+        _parity = PARITY_ODD;
+    } else if (strncmp(parity, PARITY_NONE_STR, parity) == 0) {
+        _parity = PARITY_NONE;
+    } else {
+        zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
+        return;
+    }
+    
+    SerialPort_setParity_impl(_parity, GORILLA_METHOD_PARAM_PASSTHRU);
+    RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setParity */
 

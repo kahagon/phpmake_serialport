@@ -128,6 +128,9 @@ PHP_MINFO_FUNCTION(Gorilla);
 #define FLOW_CONTROL_STR(c) c == FLOW_CONTROL_HARD ? FLOW_CONTROL_HARD_STR : \
                 c == FLOW_CONTROL_SOFT ? FLOW_CONTROL_SOFT_STR : \
                 c == FLOW_CONTROL_NONE ? FLOW_CONTROL_NONE_STR : FLOW_CONTROL_INVALID
+#define PARITY_STR(c) c == PARITY_EVEN ? PARITY_EVEN_STR : \
+                c == PARITY_ODD ? PARITY_ODD_STR : \
+                c == PARITY_NONE ? PARITY_NONE_STR : PARITY_INVALID_STR
 
 PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
 PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS);
@@ -148,6 +151,8 @@ PHPAPI int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS);
+PHPAPI int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS);
+PHPAPI void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

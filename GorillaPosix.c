@@ -256,6 +256,60 @@ PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARA
     }
 }
 
+PHPAPI int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return PARITY_INVALID;
+    }
+    
+    if (attr.c_cflag & PARENB) {
+        if (attr.c_cflag & PARODD) {
+            return PARITY_ODD;
+        } else {
+            return PARITY_EVEN;
+        }
+    } else {
+        return PARITY_NONE;
+    }
+}
+
+PHPAPI void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
+    struct termios attr;
+    long serial_port_fd;
+    
+    serial_port_fd = SerialPort_read__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return PARITY_INVALID;
+    }
+    
+    switch (parity) {
+        case PARITY_EVEN:
+            attr.c_cflag |= PARENB;
+            attr.c_cflag &= ~PARODD;
+            break;
+        case PARITY_ODD:
+            attr.c_cflag |= PARENB;
+            attr.c_cflag |= PARODD;
+            break;
+        case PARITY_NONE:
+            attr.c_cflag &= ~PARENB;
+            break;
+        default:
+            zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
+            return;
+    }
+    
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+}
+
 PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;

@@ -63,6 +63,15 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     return;
 }
 
+PHPAPI long SerialPort_write_impl(const char *data, int data_len, GORILLA_METHOD_PARAMETERS) {
+    zval *zval_stream;
+    php_stream *stream;
+    
+    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
+    php_stream_from_zval(stream, &zval_stream);
+    return (long)php_stream_write(stream, data, data_len);
+}
+
 PHPAPI void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;

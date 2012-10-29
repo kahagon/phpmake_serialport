@@ -157,7 +157,6 @@ PHPAPI long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS);
 PHPAPI int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS);
 PHPAPI void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
-PHPAPI long SerialPort_write_impl(const char *data, int data_len, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

@@ -135,23 +135,30 @@ PHP_METHOD(SerialPort, isOpen)
    */
 PHP_METHOD(SerialPort, read)
 {
-	zend_class_entry * _this_ce;
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    long length = 0;
+    zval *zval_stream;
+    php_stream *stream;
+    char *buf;
+    long actual_length;
 
-	zval * _this_zval = NULL;
-	long length = 0;
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
+        return;
+    }
 
+    _this_ce = Z_OBJCE_P(_this_zval);
 
-
-	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
-		return;
-	}
-
-	_this_ce = Z_OBJCE_P(_this_zval);
-
-
-	php_error(E_WARNING, "read: not yet implemented"); RETURN_FALSE;
-
-	RETURN_STRINGL("", 0, 1);
+    buf = emalloc(length);
+    
+    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
+    php_stream_from_zval(stream, &zval_stream);
+    
+    actual_length = php_stream_read(stream, buf, length);
+    
+    RETVAL_STRINGL(buf, actual_length, 1);
+    efree(buf);
+    return;
 }
 /* }}} read */
 
@@ -164,15 +171,22 @@ PHP_METHOD(SerialPort, write)
     zval * _this_zval = NULL;
     const char * data = NULL;
     int data_len = 0;
-    int actual_size;
+    zval *zval_stream;
+    php_stream *stream;
+    long actual_size;
 
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &data, &data_len) == FAILURE) {
         return;
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
+    
+    
+    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
+    php_stream_from_zval(stream, &zval_stream);
+    actual_size = (long)php_stream_write(stream, data, data_len);
 
-    RETURN_LONG(SerialPort_write_impl(data, data_len, GORILLA_METHOD_PARAM_PASSTHRU));
+    RETURN_LONG(actual_size);
 }
 /* }}} write */
 

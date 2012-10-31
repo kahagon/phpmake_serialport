@@ -135,19 +135,26 @@ PHP_METHOD(SerialPort, isOpen)
 /* }}} isOpen */
 
 
-/* {{{ proto string read(int length)
+/* {{{ proto string read([int length])
    */
 PHP_METHOD(SerialPort, read)
 {
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
-    long length = 0;
+    long length = 1;
     zval *zval_stream;
     php_stream *stream;
     char *buf;
     long actual_length;
 
-    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O|l", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
+        return;
+    }
+    
+    if (length == 0) {
+        RETURN_STRINGL("", 0, 1);
+    } else if (length < 0) {
+        zend_throw_exception(NULL, "invalid length. length must be positive integer or zero.", 23 TSRMLS_CC);
         return;
     }
 

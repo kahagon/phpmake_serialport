@@ -69,7 +69,7 @@
       <proto>bool isOpen()</proto>
     </function>
     <function name="read">
-      <proto>string read(int length)</proto>
+      <proto>string read([int length])</proto>
     </function>
     <function name="write">
       <proto>int write(string data)</proto>

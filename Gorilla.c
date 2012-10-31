@@ -697,6 +697,11 @@ PHP_METHOD(SerialPort, setVMin)
         return;
     }
 
+    if (vMin < 0 || vMin > 255) {
+        zend_throw_exception(NULL, "range exception. VMIN must be greater than or equal to 0, and less than or equal to 255.", 4395 TSRMLS_CC);
+        RETURN_NULL;
+    }
+    
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setVMin_impl(vMin, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -737,6 +742,11 @@ PHP_METHOD(SerialPort, setVTime)
             return;
     }
 
+    if (vTime < 0 || vTime > 255) {
+        zend_throw_exception(NULL, "range exception. VTIME must be greater than or equal to 0, and less than or equal to 255.", 4324 TSRMLS_CC);
+        RETURN_NULL;
+    }
+    
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setVTime_impl(vTime, GORILLA_METHOD_PARAM_PASSTHRU);

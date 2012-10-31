@@ -699,7 +699,7 @@ PHP_METHOD(SerialPort, setVMin)
 
     if (vMin < 0 || vMin > 255) {
         zend_throw_exception(NULL, "range exception. VMIN must be greater than or equal to 0, and less than or equal to 255.", 4395 TSRMLS_CC);
-        RETURN_NULL;
+        RETURN_NULL();
     }
     
     _this_ce = Z_OBJCE_P(_this_zval);
@@ -744,7 +744,7 @@ PHP_METHOD(SerialPort, setVTime)
 
     if (vTime < 0 || vTime > 255) {
         zend_throw_exception(NULL, "range exception. VTIME must be greater than or equal to 0, and less than or equal to 255.", 4324 TSRMLS_CC);
-        RETURN_NULL;
+        RETURN_NULL();
     }
     
     _this_ce = Z_OBJCE_P(_this_zval);

@@ -27,46 +27,50 @@ static zend_class_entry * SerialPort_ce_ptr = NULL;
 /* {{{ Methods */
 
 
-/* {{{ proto object __construct(string dev)
+/* {{{ proto object __construct([string device])
    */
 PHP_METHOD(SerialPort, __construct)
 {
     zend_class_entry * _this_ce;
     zval * _this_zval;
 
-    const char * dev = NULL;
-    int dev_len = 0;
+    const char * device = NULL;
+    int device_len = 0;
 
-
-
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &dev_len) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s", &device, &device_len) == FAILURE) {
         return;
     }
 
     _this_zval = getThis();
     _this_ce = Z_OBJCE_P(_this_zval);
 
-
-    PROP_SET_STRINGL(_device, dev, dev_len);
+    if (device_len > 0) {
+        PROP_SET_STRINGL(_device, device, device_len);
+        SerialPort_open_impl(PROP_GET_STRING(_device), GORILLA_METHOD_PARAM_PASSTHRU);
+    }
+    
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} __construct */
 
 
 
-/* {{{ proto object open()
+/* {{{ proto object open(string device)
    */
 PHP_METHOD(SerialPort, open)
 {
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
+    const char * device = NULL;
+    int device_len = 0;
 
-    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &device, &device_len) == FAILURE) {
         return;
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
 
+    PROP_SET_STRINGL(_device, device, device_len);
     SerialPort_open_impl(PROP_GET_STRING(_device), GORILLA_METHOD_PARAM_PASSTHRU);
     
     RETVAL_ZVAL(_this_zval, 1, 0);

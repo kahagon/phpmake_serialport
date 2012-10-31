@@ -57,10 +57,10 @@
     <property name="_stream" access="protected" ></property>
     <property name="_streamFd" access="private" type="int"></property>
     <function name="__construct">
-      <proto>object __construct(string dev)</proto>
+      <proto>object __construct([string device])</proto>
     </function>
     <function name="open">
-      <proto>object open()</proto>
+      <proto>object open(string device)</proto>
     </function>
     <function name="close">
       <proto>bool close()</proto>

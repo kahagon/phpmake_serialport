@@ -168,7 +168,8 @@ ZEND_END_ARG_INFO()
 
 PHP_METHOD(SerialPort, open);
 #if (PHP_MAJOR_VERSION >= 5)
-ZEND_BEGIN_ARG_INFO_EX(SerialPort__open_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__open_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, device)
 ZEND_END_ARG_INFO()
 #else /* PHP 4.x */
 #define SerialPort__open_args NULL

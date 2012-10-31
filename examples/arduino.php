@@ -9,7 +9,7 @@
 $pins_asc = array('7', '8', '9', ':', ';', '<', '=');
 $pins_desc = array_reverse($pins_asc);
 $port = new SerialPort('/dev/ttyUSB0');
-$port->open()
+$port
   ->setFlowControl(SerialPort::FLOW_CONTROL_SOFT)
   ->setBaudRate(SerialPort::BAUD_RATE_38400);
 

@@ -37,7 +37,6 @@ if ($argc < 2) {
 }
 
 $sp = new SerialPort($argv[1]);
-$sp->open();
 
 serialPortDump($sp);
 

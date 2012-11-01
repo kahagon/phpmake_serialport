@@ -5,7 +5,7 @@ if ($argc != 3) {
 port から送信されてきたファイルを dir に保存します。
 使い方: php $filename port dir
     port    対象のシリアルポート
-    dir     受診したファイルの保存ディレクトリ
+    dir     受信したファイルの保存ディレクトリ
 
 EOU;
   print $usage;

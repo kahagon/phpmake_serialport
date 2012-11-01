@@ -3,11 +3,10 @@
 class Server {
 
   private $_port;
-  private $_baseDir = './';
   private $_status;
   private $_chunkSize = 1024;
 
-  private $_limit = 30;
+  private $_limit = 3;
   private $_statusChanged;
 
   private $_fileName = '';
@@ -28,6 +27,10 @@ class Server {
       ->setVMin(0)->setVTime(1);
     $this->_status = self::WAIT_FOR_START;
     $this->_run();
+  }
+
+  public function __destruct() {
+    $this->_port->close();
   }
 
   function _changeStatus($status) {
@@ -177,6 +180,10 @@ class Client {
       // Server::_sendData() で最後のチャンクを Server が受け取る際の
       // read タイムアウトよりも先にタイムアウトさせないため。
       ->setVTime(3);
+  }
+
+  public function __destruct() {
+    $this->_port->close();
   }
 
   function _expect($expect) {

@@ -1,0 +1,8 @@
+// $ Id: $
+// vim:ft=javascript
+
+ARG_ENABLE('Gorilla' , 'API for talking to serialport and arduino', 'no');
+if (PHP_GORILLA == "yes") {
+  EXTENSION("Gorilla", "Gorilla.c  GorillaPosix.c GorillaWin32.c");
+  AC_DEFINE("HAVE_GORILLA", 1, "Gorilla support");
+}

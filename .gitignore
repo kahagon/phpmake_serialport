@@ -9,9 +9,14 @@ acinclude.m4
 aclocal.m4
 autom4te.cache
 build
-config.*
+config.log
+config.h
+config.nice
+config.status
+config.sub
+config.guess
 configure
-configure*
+configure.in
 install-sh
 iltmain.sh
 missing

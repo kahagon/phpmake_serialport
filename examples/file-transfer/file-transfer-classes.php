@@ -1,8 +1,4 @@
 <?php
-if (!dl('Gorilla.so')) {
-  print "Gorilla.so のロードに失敗しました。" . PHP_EOL;
-  exit(1);
-}
 
 class Server {
 

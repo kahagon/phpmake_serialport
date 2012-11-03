@@ -1,0 +1,173 @@
+// このスケッチは https://github.com/HashNuke/arduino/blob/master/arduino.pde のコピーです
+/*
+Copyright (c) 2009-2010 Akash Manohar J <akash@akash.im>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+// variable to store the data from the serial port
+int cmd = 0;
+
+// command arguments
+int cmd_arg[2];
+
+int serialStatus = 0;
+
+void setup() {
+  // connect to the serial port
+  Serial.begin(38400);
+  setupPins();
+  serialStatus = 1;
+}
+
+void loop()
+{
+
+  if(serialStatus==0)
+  {
+    Serial.flush();
+    setupPins();
+  }
+  askCmd();
+
+  {
+    if(Serial.available()>0)
+    {
+      cmd = int(Serial.read()) - 48;
+  
+      if(cmd==0) //set digital low
+      {
+        cmd_arg[0] = int(readData()) - 48;
+        digitalWrite(cmd_arg[0],LOW);
+      }
+  
+      if(cmd==1) //set digital high
+      {
+        cmd_arg[0] = int(readData()) - 48;
+        digitalWrite(cmd_arg[0],HIGH);
+      }
+  
+      if(cmd==2) //get digital value
+      {
+        cmd_arg[0] = int(readData()) - 48;
+        cmd_arg[0] = digitalRead(cmd_arg[0]);
+        Serial.println(cmd_arg[0]);
+      }
+  
+      if(cmd==3) // set analog value
+      {
+        Serial.println("I'm in the right place");
+        cmd_arg[0] = int(readData()) - 48;
+        cmd_arg[1] = readHexValue();
+        analogWrite(cmd_arg[0],cmd_arg[1]);
+      }
+  
+      if(cmd==4) //read analog value
+      {
+        cmd_arg[0] = int(readData()) - 48;
+        cmd_arg[0] = analogRead(cmd_arg[0]);
+        Serial.println(cmd_arg[0]);
+      }
+  
+      if(cmd==5)
+      {
+        serialStatus = 0;
+      }
+    }
+  }
+}
+
+char readData()
+{
+  askData();
+
+  while(1)
+  {
+    if(Serial.available()>0)
+    {
+      return Serial.read();
+    }
+  }
+}
+
+
+//read hex value from serial and convert to integer
+int readHexValue()
+{
+  int strval[2];
+  int converted_str;
+
+  while(1)
+  {
+    if(Serial.available()>0)
+    {
+      strval[0] = convert_hex_to_int(Serial.read());
+      break;
+    }
+  }
+
+  askData();
+
+  while(1)
+  {
+    if(Serial.available()>0)
+    {
+      strval[1] = convert_hex_to_int(Serial.read());
+      break;
+    }
+  }
+
+  converted_str = (strval[0]*16) + strval[1];
+  return converted_str;
+}
+
+
+int convert_hex_to_int(char c)
+{
+  return (c <= '9') ? c-'0' : c-'a'+10;
+}
+
+
+void askData()
+{
+  Serial.println("?");
+}
+
+
+void askCmd()
+{
+  askData();
+  while(Serial.available()<=0)
+  {}
+}
+
+
+void setupPins()
+{
+  while(Serial.available()<1)
+  {
+    // get number of output pins and convert to int
+    cmd = int(readData()) - 48;
+    for(int i=0; i<cmd; i++)
+    {
+      cmd_arg[0] = int(readData()) - 48;
+      pinMode(cmd_arg[0], OUTPUT);
+    }
+    break;
+  }
+}

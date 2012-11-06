@@ -126,7 +126,7 @@ PHP_METHOD(SerialPort, isOpen)
     _this_ce = Z_OBJCE_P(_this_zval);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     
-    if (zend_rsrc_list_get_rsrc_type(Z_LVAL_P(zval_stream)) != NULL) {
+    if (zend_rsrc_list_get_rsrc_type(Z_LVAL_P(zval_stream) TSRMLS_CC) != NULL) {
         RETURN_TRUE;
     } else {
         RETURN_FALSE;
@@ -791,26 +791,26 @@ static zend_function_entry SerialPort_methods[] = {
 
 /* }}} Methods */
 
-static void class_init_SerialPort(void)
+static void class_init_SerialPort(TSRMLS_D)
 {
 	zend_class_entry ce;
 
 	INIT_CLASS_ENTRY(ce, "SerialPort", SerialPort_methods);
-	SerialPort_ce_ptr = zend_register_internal_class(&ce);
+	SerialPort_ce_ptr = zend_register_internal_class(&ce TSRMLS_CC);
 
            /* {{{ Property registration */
 
             zend_declare_property_string(SerialPort_ce_ptr,
               "_device", 7, "",
-              ZEND_ACC_PROTECTED TSRMLS_DC);
+              ZEND_ACC_PROTECTED TSRMLS_CC);
 
 	zend_declare_property_null(SerialPort_ce_ptr, 
 		"_stream", 7, 
-		ZEND_ACC_PROTECTED TSRMLS_DC);
+		ZEND_ACC_PROTECTED TSRMLS_CC);
         
         	zend_declare_property_long(SerialPort_ce_ptr, 
 		"_streamFd", 9, -1, 
-		ZEND_ACC_PRIVATE TSRMLS_DC);
+		ZEND_ACC_PRIVATE TSRMLS_CC);
 
            /* }}} Property registration */
 
@@ -1169,22 +1169,22 @@ static zend_function_entry Arduino_methods[] = {
 
 /* }}} Methods */
 
-static void class_init_Arduino(void)
+static void class_init_Arduino(TSRMLS_D)
 {
 	zend_class_entry ce;
 
 	INIT_CLASS_ENTRY(ce, "Arduino", Arduino_methods);
-	Arduino_ce_ptr = zend_register_internal_class(&ce);
+	Arduino_ce_ptr = zend_register_internal_class(&ce TSRMLS_CC);
 
 	/* {{{ Property registration */
 
 	zend_declare_property_null(Arduino_ce_ptr, 
 		"_serialPort", 11, 
-		ZEND_ACC_PROTECTED TSRMLS_DC);
+		ZEND_ACC_PROTECTED TSRMLS_CC);
 
 	zend_declare_property_null(Arduino_ce_ptr, 
 		"_pinList", 8, 
-		ZEND_ACC_PROTECTED TSRMLS_DC);
+		ZEND_ACC_PROTECTED TSRMLS_CC);
 
 	/* }}} Property registration */
 
@@ -1236,8 +1236,8 @@ ZEND_GET_MODULE(Gorilla)
 /* {{{ PHP_MINIT_FUNCTION */
 PHP_MINIT_FUNCTION(Gorilla)
 {
-	class_init_SerialPort();
-	class_init_Arduino();
+	class_init_SerialPort(TSRMLS_C);
+	class_init_Arduino(TSRMLS_C);
 
 	/* add your stuff here */
 

@@ -11,6 +11,13 @@ static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PA
 }
 
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
+    php_stream *stream;
+    zval *zval_stream;
+    
+    stream = php_stream_open_wrapper(device, "rwb", IGNORE_PATH | REPORT_ERRORS, NULL);
+    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
+    php_stream_to_zval(stream, zval_stream);
+    
     return;
 }
 

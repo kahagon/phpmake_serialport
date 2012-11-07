@@ -45,7 +45,7 @@ static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PA
     return;
 }
 
-PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     php_stream *stream;
     zval *zval_stream;
     
@@ -63,7 +63,7 @@ PHPAPI void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) 
     return;
 }
 
-PHPAPI void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -84,7 +84,7 @@ PHPAPI void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PAR
     }
 }
 
-PHPAPI int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -97,7 +97,7 @@ PHPAPI int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
     return attr.c_lflag & ICANON;
 }
 
-PHPAPI int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -120,7 +120,7 @@ PHPAPI int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS) {
     
 }
 
-PHPAPI void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -159,59 +159,59 @@ PHPAPI void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARA
     }
 }
 
-PHPAPI int SerialPort_getCTS_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getCTS_impl(GORILLA_METHOD_PARAMETERS) {
     int line_status;
     
     line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
     return line_status & TIOCM_CTS ? 1 : 0;
 }
 
-PHPAPI int SerialPort_getRTS_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getRTS_impl(GORILLA_METHOD_PARAMETERS) {
     int line_status;
     
     line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
     return line_status & TIOCM_RTS ? 1 : 0;
 }
 
-PHPAPI void SerialPort_setRTS_impl(zend_bool rts, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setRTS_impl(zend_bool rts, GORILLA_METHOD_PARAMETERS) {
     SerialPort_setLineStatus(rts, TIOCM_RTS, GORILLA_METHOD_PARAM_PASSTHRU);
     return;
 }
 
-PHPAPI int SerialPort_getDSR_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getDSR_impl(GORILLA_METHOD_PARAMETERS) {
     int line_status;
     
     line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
     return line_status & TIOCM_DSR ? 1 : 0;
 }
 
-PHPAPI int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS) {
     int line_status;
     
     line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
     return line_status & TIOCM_DTR ? 1 : 0;
 }
 
-PHPAPI void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS) {
     SerialPort_setLineStatus(dtr, TIOCM_DTR, GORILLA_METHOD_PARAM_PASSTHRU);
     return;
 }
 
-PHPAPI int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS) {
     int line_status;
     
     line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
     return line_status & TIOCM_CD ? 1 : 0;
 }
 
-PHPAPI int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS) {
     int line_status;
     
     line_status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
     return line_status & TIOCM_RNG ? 1 : 0;
 }
 
-PHPAPI int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -228,7 +228,7 @@ PHPAPI int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -256,7 +256,7 @@ PHPAPI void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARA
     }
 }
 
-PHPAPI int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -277,7 +277,7 @@ PHPAPI int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -310,7 +310,7 @@ PHPAPI void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS) {
+long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -323,7 +323,7 @@ PHPAPI long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS) {
     return attr.c_cc[VMIN];
 }
 
-PHPAPI void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -341,7 +341,7 @@ PHPAPI void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS) {
+int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -354,7 +354,7 @@ PHPAPI int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS) {
     return attr.c_cc[VTIME];
 }
 
-PHPAPI void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -372,7 +372,7 @@ PHPAPI void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     long _char_size = CS8;
@@ -416,7 +416,7 @@ PHPAPI void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETER
     }
 }
 
-PHPAPI long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
+long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -441,7 +441,7 @@ PHPAPI long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
+long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
@@ -493,7 +493,7 @@ PHPAPI long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
     }
 }
 
-PHPAPI void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     long _baud_rate;

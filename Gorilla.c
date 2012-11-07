@@ -24,6 +24,12 @@
 
 static zend_class_entry * SerialPort_ce_ptr = NULL;
 
+
+long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS) {
+    return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), 1 TSRMLS_CC));
+}
+
+
 /* {{{ Methods */
 
 

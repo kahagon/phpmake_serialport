@@ -158,6 +158,8 @@ void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS);
 int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
 
+long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS);
+
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(SerialPort____construct_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)

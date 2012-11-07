@@ -5,10 +5,6 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 
-static long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS) {
-    return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), 1 TSRMLS_CC));
-}
-
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
     int serial_port_fd, line_status;
     

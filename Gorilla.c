@@ -41,8 +41,8 @@ long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS) {
     return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), 1 TSRMLS_CC));
 }
 
-long SerialPort_read__win32Handle(GORILLA_METHOD_PARAMETERS) {
-    return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC));
+zval *SerialPort_read__win32Handle(GORILLA_METHOD_PARAMETERS) {
+    return zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC);
 }
 
 

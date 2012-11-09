@@ -6,6 +6,24 @@
 #include <fcntl.h>
 #include <share.h>
 
+#define SerialPort_read_current_dcb(win32Handle, dcb) do { \
+                    win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
+                    ZeroMemory(&dcb, sizeof(DCB)); \
+                    GetCommState(win32Handle, &dcb); \
+                } while(0);
+
+static HANDLE SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAMETERS) {
+    zval *zval_win32Handle;
+    int zval_win32Handle_id = -1;
+    HANDLE win32Handle;
+    
+    zval_win32Handle = SerialPort_read__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
+    ZEND_FETCH_RESOURCE(win32Handle, HANDLE, &zval_win32Handle, zval_win32Handle_id, "Win32Handle", le_Win32Handle);
+    
+    return win32Handle;
+}
+
+
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
     return 0;
 }
@@ -148,10 +166,20 @@ long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
 }
 
 long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
-    return BAUD_RATE_9600;
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    return dcb.BaudRate;
 }
 
 void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS) {
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    dcb.BaudRate = baud_rate;
+    SetCommState(win32Handle, &dcb);
     return;
 }
 

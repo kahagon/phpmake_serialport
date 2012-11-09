@@ -18,6 +18,18 @@
 
 #if HAVE_GORILLA
 
+/* {{{ Resource destructors */
+int le_Win32Handle;
+void Win32Handle_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+{
+	void * resource = (void *)(rsrc->ptr);
+
+	do {
+	} while (0);
+}
+
+/* }}} */
+
 /* {{{ Class definitions */
 
 /* {{{ Class SerialPort */
@@ -27,6 +39,10 @@ static zend_class_entry * SerialPort_ce_ptr = NULL;
 
 long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS) {
     return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), 1 TSRMLS_CC));
+}
+
+long SerialPort_read__win32Handle(GORILLA_METHOD_PARAMETERS) {
+    return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC));
 }
 
 
@@ -817,6 +833,10 @@ static void class_init_SerialPort(TSRMLS_D)
         	zend_declare_property_long(SerialPort_ce_ptr, 
 		"_streamFd", 9, -1, 
 		ZEND_ACC_PRIVATE TSRMLS_CC);
+                
+	zend_declare_property_null(SerialPort_ce_ptr, 
+		"_win32Handle", 12, 
+		ZEND_ACC_PRIVATE TSRMLS_CC);
 
            /* }}} Property registration */
 
@@ -1242,6 +1262,8 @@ ZEND_GET_MODULE(Gorilla)
 /* {{{ PHP_MINIT_FUNCTION */
 PHP_MINIT_FUNCTION(Gorilla)
 {
+	le_Win32Handle = zend_register_list_destructors_ex(Win32Handle_dtor, 
+						   NULL, "Win32Handle", module_number);
 	class_init_SerialPort(TSRMLS_C);
 	class_init_Arduino(TSRMLS_C);
 

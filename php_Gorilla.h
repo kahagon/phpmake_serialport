@@ -132,6 +132,8 @@ PHP_MINFO_FUNCTION(Gorilla);
                 c == PARITY_ODD ? PARITY_ODD_STR : \
                 c == PARITY_NONE ? PARITY_NONE_STR : PARITY_INVALID_STR
 
+int le_Win32Handle;
+
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
 long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS);

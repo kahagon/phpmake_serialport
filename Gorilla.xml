@@ -21,6 +21,10 @@
   </release>
   <changelog></changelog>
 
+  <resources>
+    <resource name="Win32Handle" payload="void" alloc="no"></resource>
+  </resources>
+
   <class name="SerialPort">
     <constant type="int" name="BAUD_RATE_50" value="50"></constant>
     <constant type="int" name="BAUD_RATE_75" value="75"></constant>
@@ -56,6 +60,7 @@
     <property name="_device" access="protected" type="string"></property>
     <property name="_stream" access="protected" ></property>
     <property name="_streamFd" access="private" type="int"></property>
+    <property name="_win32Handle" access="private" ></property>
     <function name="__construct">
       <proto>object __construct([string device])</proto>
     </function>

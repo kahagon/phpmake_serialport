@@ -1,5 +1,10 @@
 #ifdef PHP_WIN32
 #include "php_Gorilla.h"
+#include <tchar.h>
+#include <Windows.h>
+#include <io.h>
+#include <fcntl.h>
+#include <share.h>
 
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
     return 0;
@@ -13,8 +18,40 @@ static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PA
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     php_stream *stream;
     zval *zval_stream;
+    zval *zval_win32Handle;
+    HANDLE win32Handle = NULL;
+    int serial_port_fd;
+    int res = 0;
+    int flags = 0;
     
-    stream = php_stream_open_wrapper(device, "rwb", IGNORE_PATH | REPORT_ERRORS, NULL);
+    
+#define mode "ab+"
+    
+    if (php_stream_parse_fopen_modes(mode, &flags) == FAILURE) {
+        zend_throw_exception(NULL, "failed to get flags", 344 TSRMLS_CC);
+        return;
+    }
+    
+    res = _sopen_s(&serial_port_fd, device, flags, _SH_DENYNO, _S_IREAD|_S_IWRITE);
+    if (res != 0) {
+        zend_throw_exception(NULL, "failed to open device", 345 TSRMLS_CC);
+        return;
+    }
+    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), serial_port_fd TSRMLS_CC);
+    
+    win32Handle = _get_osfhandle(serial_port_fd);
+    if (win32Handle == INVALID_HANDLE_VALUE) {
+        zend_throw_exception(NULL, "failed to open Win32Handle", 346 TSRMLS_CC);
+        return;
+    }
+    zval_win32Handle = zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC);
+    ZEND_REGISTER_RESOURCE(zval_win32Handle, win32Handle, le_Win32Handle);
+    
+    stream = php_stream_fopen_from_fd(serial_port_fd, mode, NULL);
+    if (stream == NULL) {
+        zend_throw_exception(NULL, "failed to open stream from file descriptor", 347 TSRMLS_CC);
+        return;
+    }
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_to_zval(stream, zval_stream);
     

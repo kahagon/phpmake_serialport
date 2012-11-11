@@ -1,3 +1,11 @@
+#if 1
+#ifndef PHP_WIN32
+#define PHP_WIN32
+#ifdef ZTS
+#undef ZTS
+#endif
+#endif
+#endif
 #ifdef PHP_WIN32
 #include "php_Gorilla.h"
 #include <tchar.h>
@@ -7,13 +15,13 @@
 #include <share.h>
 
 #define SerialPort_read_current_dcb(win32Handle, dcb) do { \
-                    win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
-                    memset(&dcb, 0, sizeof(DCB)); \
-                    if (GetCommState(win32Handle, &dcb) == FALSE) { \
-                        zend_throw_exception(NULL, "failed to GetCommState()", 2134 TSRMLS_CC); \
-                        return; \
-                    } \
-                } while(0);
+            win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
+            memset(&dcb, 0, sizeof(DCB)); \
+            if (GetCommState(win32Handle, &dcb) == FALSE) { \
+                zend_throw_exception(NULL, "failed to GetCommState()", 2134 TSRMLS_CC); \
+                return; \
+            } \
+        } while(0);
 
 static HANDLE SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAMETERS) {
     zval *zval_win32Handle;
@@ -28,7 +36,16 @@ static HANDLE SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAMETERS) {
 
 
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
-    return 0;
+    HANDLE win32Handle;
+    int status;
+    
+    win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (GetCommModemStatus(win32Handle, (LPDWORD)&status) == FALSE) {
+        zend_throw_exception(NULL, "failed to get line status", 641 TSRMLS_CC);
+        return 0;
+    }
+    
+    return status;
 }
 
 
@@ -56,7 +73,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     
     res = _sopen_s(&serial_port_fd, device, flags, _SH_DENYNO, _S_IREAD|_S_IWRITE);
     if (res != 0) {
-        zend_throw_exception(NULL, "failed to open device", 345 TSRMLS_CC);
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }
     zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), serial_port_fd TSRMLS_CC);
@@ -158,35 +175,65 @@ void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS)
 }
 
 int SerialPort_getCTS_impl(GORILLA_METHOD_PARAMETERS) {
-    return 0;
+    int status;
+    
+    status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return status & MS_CTS_ON ? 1 : 0;
 }
 
 int SerialPort_getRTS_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_WARNING, "getRTS() not implemented on Windows");
     return 0;
 }
 
 void SerialPort_setRTS_impl(zend_bool rts, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    
+    win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (EscapeCommFunction(win32Handle, rts ? SETRTS : CLRRTS) == FALSE) {
+        zend_throw_exception(NULL, "failed to set rts", 2165 TSRMLS_CC);
+        return;
+    }
+    
     return;
 }
 
 int SerialPort_getDSR_impl(GORILLA_METHOD_PARAMETERS) {
-    return 0;
+    int status;
+    
+    status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return status & MS_DSR_ON ? 1 : 0;
 }
 
 int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_WARNING, "getDTR() not implemented on Windows");
     return 0;
 }
 
 void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    
+    win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
+    if (EscapeCommFunction(win32Handle, dtr ? SETDTR : CLRDTR) == FALSE) {
+        zend_throw_exception(NULL, "failed to set dtr", 2365 TSRMLS_CC);
+        return;
+    }
+    
     return;
 }
 
 int SerialPort_getDCD_impl(GORILLA_METHOD_PARAMETERS) {
-    return 0;
+    int status;
+    
+    status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return status & MS_RLSD_ON ? 1 : 0;
 }
 
 int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS) {
-    return 0;
+    int status;
+    
+    status = SerialPort_getLineStatus(GORILLA_METHOD_PARAM_PASSTHRU);
+    return status & MS_RING_ON ? 1 : 0;
 }
 
 int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {

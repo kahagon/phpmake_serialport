@@ -8,8 +8,11 @@
 
 #define SerialPort_read_current_dcb(win32Handle, dcb) do { \
                     win32Handle = SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
-                    ZeroMemory(&dcb, sizeof(DCB)); \
-                    GetCommState(win32Handle, &dcb); \
+                    memset(&dcb, 0, sizeof(DCB)); \
+                    if (GetCommState(win32Handle, &dcb) == FALSE) { \
+                        zend_throw_exception(NULL, "failed to GetCommState()", 2134 TSRMLS_CC); \
+                        return; \
+                    } \
                 } while(0);
 
 static HANDLE SerialPort_read__win32Handle_entity(GORILLA_METHOD_PARAMETERS) {
@@ -38,6 +41,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     zval *zval_stream;
     zval *zval_win32Handle;
     HANDLE win32Handle = NULL;
+    DCB dcb;
     int serial_port_fd;
     int res = 0;
     int flags = 0;
@@ -62,12 +66,22 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         zend_throw_exception(NULL, "failed to open Win32Handle", 346 TSRMLS_CC);
         return;
     }
-    zval_win32Handle = zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC);
+    
+    memset(&dcb, 0, sizeof(DCB));
+    GetCommState(win32Handle, &dcb);
+    dcb.fDtrControl = DTR_CONTROL_ENABLE;
+    dcb.fRtsControl = RTS_CONTROL_ENABLE;
+    if (SetCommState(win32Handle, &dcb) == FALSE) {
+        zend_throw_exception(NULL, "failed to SetCommState()", 347 TSRMLS_CC);
+        return;
+    }
+    
+    zval_win32Handle = SerialPort_read__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
     ZEND_REGISTER_RESOURCE(zval_win32Handle, win32Handle, le_Win32Handle);
     
     stream = php_stream_fopen_from_fd(serial_port_fd, mode, NULL);
     if (stream == NULL) {
-        zend_throw_exception(NULL, "failed to open stream from file descriptor", 347 TSRMLS_CC);
+        zend_throw_exception(NULL, "failed to open stream from file descriptor", 348 TSRMLS_CC);
         return;
     }
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
@@ -84,12 +98,62 @@ int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
     return 0;
 }
 
+static int SerialPort_getFlowControl_hardware(DCB *dcb) {
+    return (dcb->fOutxCtsFlow == TRUE 
+            && dcb->fRtsControl == RTS_CONTROL_HANDSHAKE)
+                ? FLOW_CONTROL_HARD : 0;
+}
+
+static int SerialPort_getFlowControl_software(DCB *dcb) {
+    return (dcb->fOutX == TRUE 
+            && dcb->fInX == TRUE) 
+                ? FLOW_CONTROL_SOFT : 0;
+}
+
 int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    DCB dcb;
+    int is_soft, is_hard;
     
-    return FLOW_CONTROL_DEFAULT;
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    is_soft = (dcb.fOutX == TRUE 
+            && dcb.fInX == TRUE) 
+                ? FLOW_CONTROL_SOFT : 0;
+    is_hard = (dcb.fOutxCtsFlow == TRUE 
+            && dcb.fRtsControl == RTS_CONTROL_HANDSHAKE)
+                ? FLOW_CONTROL_HARD : 0;
+    
+    return is_soft | is_hard;
 }
 
 void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    DCB dcb;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    if (flow_control & FLOW_CONTROL_HARD) {
+        dcb.fOutxCtsFlow = TRUE;
+        dcb.fRtsControl = RTS_CONTROL_HANDSHAKE;
+    } else {
+        dcb.fOutxCtsFlow = FALSE;
+        dcb.fRtsControl = RTS_CONTROL_ENABLE;
+    }
+    
+    if (flow_control & FLOW_CONTROL_SOFT) {
+        dcb.fOutX = TRUE;
+        dcb.fInX = TRUE;
+    } else {
+        dcb.fOutX = FALSE;
+        dcb.fInX = FALSE;
+    }
+    
+    if (SetCommState(win32Handle, &dcb) == FALSE) {
+        zend_throw_exception(NULL, "failed to SetCommState()", 2135 TSRMLS_CC);
+        return;
+    }
+    
     return;
 }
 

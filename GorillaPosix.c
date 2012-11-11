@@ -126,13 +126,13 @@ void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS)
         return FLOW_CONTROL_INVALID;
     }
     
-    if (flow_control == FLOW_CONTROL_HARD) {
+    if (flow_control & FLOW_CONTROL_HARD) {
         attr.c_cflag |= CRTSCTS;
     } else {
         attr.c_cflag &= ~CRTSCTS;
     }
     
-    if (flow_control == FLOW_CONTROL_SOFT) {
+    if (flow_control & FLOW_CONTROL_SOFT) {
         attr.c_iflag |= (IXON | IXOFF | IXANY);
     } else {
         attr.c_iflag &= ~(IXON | IXOFF | IXANY);

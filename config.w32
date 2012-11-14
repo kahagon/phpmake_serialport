@@ -3,7 +3,7 @@
 
 ARG_ENABLE('Gorilla' , 'API for talking to serialport and arduino', 'no');
 if (PHP_GORILLA == "yes") {
-  EXTENSION("Gorilla", "Gorilla.c  GorillaPosix.c GorillaWin32.c");
+  EXTENSION("Gorilla", "Gorilla.c  GorillaWin32.c");
   AC_DEFINE("HAVE_GORILLA", 1, "Gorilla support");
   ADD_FLAG("CFLAGS_GORILLA", " \
     /D HAVE_GORILLA \

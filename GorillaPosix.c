@@ -8,7 +8,7 @@
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
     int serial_port_fd, line_status;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (ioctl(serial_port_fd, TIOCMGET, &line_status) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return 0;
@@ -21,7 +21,7 @@ static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
 static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PARAMETERS) {
     int serial_port_fd, line_status;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (ioctl(serial_port_fd, TIOCMGET, &line_status) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -51,7 +51,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
-    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), serial_port_fd TSRMLS_CC);
+    SerialPort_property_set__streamFd(serial_port_fd, GORILLA_METHOD_PARAM_PASSTHRU);
     stream = php_stream_fopen_from_fd_rel(serial_port_fd, "r+", NULL);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_to_zval(stream, zval_stream);
@@ -64,7 +64,7 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
     php_stream *stream;
     int result = -1;
     
-    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), -1 TSRMLS_CC);
+    SerialPort_property_set__streamFd(-1, GORILLA_METHOD_PARAM_PASSTHRU);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_from_zval(stream, &zval_stream);
     result = php_stream_close(stream);
@@ -106,7 +106,7 @@ void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -127,7 +127,7 @@ int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return 0;
@@ -140,7 +140,7 @@ int SerialPort_getFlowControl_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return FLOW_CONTROL_INVALID;
@@ -163,7 +163,7 @@ void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS)
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return FLOW_CONTROL_INVALID;
@@ -254,7 +254,7 @@ int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -271,7 +271,7 @@ void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS)
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -299,7 +299,7 @@ int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return PARITY_INVALID;
@@ -320,7 +320,7 @@ void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return PARITY_INVALID;
@@ -353,7 +353,7 @@ long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return -1;
@@ -366,7 +366,7 @@ void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -384,7 +384,7 @@ int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return -1;
@@ -397,7 +397,7 @@ void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -416,7 +416,7 @@ void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
     long serial_port_fd;
     long _char_size = CS8;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -459,7 +459,7 @@ long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return 0;
@@ -484,7 +484,7 @@ long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return 0;
@@ -537,7 +537,7 @@ void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS) {
     long serial_port_fd;
     long _baud_rate;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;

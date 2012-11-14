@@ -61,6 +61,8 @@
     <property name="_stream" access="protected" ></property>
     <property name="_streamFd" access="private" type="int"></property>
     <property name="_win32Handle" access="private" ></property>
+    <property name="_win32IsCanonical" access="private" ></property>
+    <property name="_win32NewLine" access="private" type="string"></property>
     <function name="__construct">
       <proto>object __construct([string device])</proto>
     </function>
@@ -138,6 +140,12 @@
     </function>
     <function name="isCanonical">
       <proto>bool isCanonical()</proto>
+    </function>
+    <function name="getWin32NewLine">
+      <proto>string getWin32NewLine()</proto>
+    </function>
+    <function name="setWin32NewLine">
+      <proto>object setWin32NewLine(string nl)</proto>
     </function>
     <function name="getVMin">
       <proto>int getVMin()</proto>

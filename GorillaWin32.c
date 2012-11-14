@@ -1,3 +1,6 @@
+#ifndef PHP_WIN32
+#define PHP_WIN32
+#endif
 #ifdef PHP_WIN32
 #include "php_Gorilla.h"
 #include <tchar.h>
@@ -20,7 +23,7 @@ static HANDLE SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAMETERS)
     int zval_win32Handle_id = -1;
     HANDLE win32Handle;
     
-    zval_win32Handle = SerialPort_property__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
+    zval_win32Handle = SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
     ZEND_FETCH_RESOURCE(win32Handle, HANDLE, &zval_win32Handle, zval_win32Handle_id, "Win32Handle", le_Win32Handle);
     
     return win32Handle;
@@ -64,7 +67,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         zend_throw_exception(NULL, "failed to CreateFile()", 346 TSRMLS_CC);
         return;
     }
-    zval_win32Handle = SerialPort_property__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
+    zval_win32Handle = SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
     ZEND_REGISTER_RESOURCE(zval_win32Handle, win32Handle, le_Win32Handle);
     
     serial_port_fd = _open_osfhandle(win32Handle, flags);
@@ -72,7 +75,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }
-    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), serial_port_fd TSRMLS_CC);
+    SerialPort_property_set__streamFd(serial_port_fd, GORILLA_METHOD_PARAM_PASSTHRU);
     
     memset(&dcb, 0, sizeof(DCB));
     GetCommState(win32Handle, &dcb);
@@ -90,9 +93,9 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
     long serial_port_fd;
     int result = -1;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     result = _close(serial_port_fd);
-    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), -1 TSRMLS_CC);
+    SerialPort_property_set__streamFd(-1, GORILLA_METHOD_PARAM_PASSTHRU);
     
     return (zend_bool)(result == 0);
 }
@@ -102,7 +105,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     char *buf;
     long serial_port_fd, actual_length;
  
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     
     ALLOC_INIT_ZVAL(zval_data);
     buf = emalloc(length);
@@ -117,7 +120,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
 size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PARAMETERS) {
     long serial_port_fd, actual_length;
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     actual_length = write(serial_port_fd, data, data_len);
     if (actual_length < 0) {
         php_error(E_WARNING, "failed to write data. %s", strerror(errno));
@@ -128,11 +131,11 @@ size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PAR
 }
 
 void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS) {
-    return;
+    SerialPort_property_set__win32IsCanonical(canonical, GORILLA_METHOD_PARAM_PASSTHRU);
 }
 
 int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS) {
-    return 0;
+    return SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAM_PASSTHRU);
 }
 
 static int SerialPort_getFlowControl_hardware(DCB *dcb) {

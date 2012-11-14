@@ -37,15 +37,33 @@ void Win32Handle_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 static zend_class_entry * SerialPort_ce_ptr = NULL;
 
 
-long SerialPort_property__streamFd(GORILLA_METHOD_PARAMETERS) {
+long SerialPort_property_get__streamFd(GORILLA_METHOD_PARAMETERS) {
     return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), 1 TSRMLS_CC));
 }
 
-zval *SerialPort_property__win32Handle(GORILLA_METHOD_PARAMETERS) {
+void SerialPort_property_set__streamFd(long _streamFd, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_long(_this_ce, _this_zval, "_streamFd", strlen("_streamFd"), _streamFd TSRMLS_CC);
+}
+
+zval *SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAMETERS) {
     return zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC);
 }
 
+zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS) {
+    return Z_BVAL_P(zend_read_property(_this_ce, _this_zval, "_win32IsCanonical", strlen("_win32IsCanonical"), 1 TSRMLS_CC));
+}
 
+void SerialPort_property_set__win32IsCanonical(zend_bool _isCanonical, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_bool(_this_ce, _this_zval, "_win32IsCanonical", strlen("_win32IsCanonical"), _isCanonical TSRMLS_CC);
+}
+
+char *SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAMETERS) {
+    return Z_STRVAL_P(zend_read_property(_this_ce, _this_zval, "_win32NewLine", strlen("_win32NewLine"), 1 TSRMLS_CC));
+}
+
+void SerialPort_property_set__win32NewLine(const char *nl, long nl_len, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_stringl(_this_ce, _this_zval, "_win32NewLine", strlen("_win32NewLine"), nl, nl_len TSRMLS_CC);
+}
 /* {{{ Methods */
 
 
@@ -138,7 +156,7 @@ PHP_METHOD(SerialPort, isOpen)
 
     _this_ce = Z_OBJCE_P(_this_zval);
     
-    serial_port_fd = SerialPort_property__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (serial_port_fd != -1) {
         RETURN_TRUE;
     } else {
@@ -665,6 +683,47 @@ PHP_METHOD(SerialPort, isCanonical)
 /* }}} isCanonical */
 
 
+/* {{{ proto string getWin32NewLine()
+   */
+PHP_METHOD(SerialPort, getWin32NewLine)
+{
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    char *nl;
+
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
+
+    _this_ce = Z_OBJCE_P(_this_zval);
+
+    nl = SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAM_PASSTHRU);
+    RETURN_STRING(nl, 1);
+}
+/* }}} getWin32NewLine */
+
+
+
+/* {{{ proto object setWin32NewLine(string nl)
+   */
+PHP_METHOD(SerialPort, setWin32NewLine)
+{
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+    const char * nl = NULL;
+    int nl_len = 0;
+
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Os", &_this_zval, SerialPort_ce_ptr, &nl, &nl_len) == FAILURE) {
+            return;
+    }
+
+    _this_ce = Z_OBJCE_P(_this_zval);
+
+    SerialPort_property_set__win32NewLine(nl, nl_len, GORILLA_METHOD_PARAM_PASSTHRU);
+    RETVAL_ZVAL(_this_zval, 1, 0);
+}
+/* }}} setWin32NewLine */
+
 
 /* {{{ proto int getVMin()
    */
@@ -782,6 +841,8 @@ static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, setParity, SerialPort__setParity_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, setCanonical, SerialPort__setCanonical_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, isCanonical, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getWin32NewLine, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setWin32NewLine, SerialPort__setWin32NewLine_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getVMin, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, setVMin, SerialPort__setVMin_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getVTime, NULL, /**/ZEND_ACC_PUBLIC)
@@ -801,21 +862,29 @@ static void class_init_SerialPort(TSRMLS_D)
            /* {{{ Property registration */
 
             zend_declare_property_string(SerialPort_ce_ptr,
-              "_device", 7, "",
-              ZEND_ACC_PROTECTED TSRMLS_CC);
+                "_device", 7, "",
+                ZEND_ACC_PROTECTED TSRMLS_CC);
 
-	zend_declare_property_null(SerialPort_ce_ptr, 
-		"_stream", 7, 
-		ZEND_ACC_PROTECTED TSRMLS_CC);
+            zend_declare_property_null(SerialPort_ce_ptr, 
+                "_stream", 7, 
+                ZEND_ACC_PROTECTED TSRMLS_CC);
+
+            zend_declare_property_long(SerialPort_ce_ptr, 
+                "_streamFd", 9, -1, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
+            zend_declare_property_null(SerialPort_ce_ptr, 
+                "_win32Handle", 12, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
+            zend_declare_property_bool(SerialPort_ce_ptr, 
+                "_win32IsCanonical", 17, 0, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
+            zend_declare_property_string(SerialPort_ce_ptr, 
+                "_win32NewLine", 13, PHP_EOL, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
         
-        	zend_declare_property_long(SerialPort_ce_ptr, 
-		"_streamFd", 9, -1, 
-		ZEND_ACC_PRIVATE TSRMLS_CC);
-                
-	zend_declare_property_null(SerialPort_ce_ptr, 
-		"_win32Handle", 12, 
-		ZEND_ACC_PRIVATE TSRMLS_CC);
-
            /* }}} Property registration */
 
 	/* {{{ Constant registration */

@@ -163,8 +163,13 @@ void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS);
 int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
 
-long SerialPort_property__streamFd(GORILLA_METHOD_PARAMETERS);
-zval *SerialPort_property__win32Handle(GORILLA_METHOD_PARAMETERS);
+long SerialPort_property_get__streamFd(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__streamFd(long _streamFd, GORILLA_METHOD_PARAMETERS);
+zval *SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAMETERS);
+zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__win32IsCanonical(zend_bool _isCanonical, GORILLA_METHOD_PARAMETERS);
+char *SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__win32NewLine(const char *nl, long nl_len, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)
@@ -385,6 +390,23 @@ ZEND_END_ARG_INFO()
 #define SerialPort__isCanonical_args NULL
 #endif
 
+PHP_METHOD(SerialPort, getWin32NewLine);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getWin32NewLine_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getWin32NewLine_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setWin32NewLine);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setWin32NewLine_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, nl)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setWin32NewLine_args NULL
+#endif
+        
 PHP_METHOD(SerialPort, getVMin);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(SerialPort__getVMin_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)

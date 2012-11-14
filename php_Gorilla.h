@@ -135,6 +135,9 @@ PHP_MINFO_FUNCTION(Gorilla);
 int le_Win32Handle;
 
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
+zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS);
+zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS);
+size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PARAMETERS);
 long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS);
 int SerialPort_isCanonical_impl(GORILLA_METHOD_PARAMETERS);
@@ -160,8 +163,8 @@ void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS);
 int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
 
-long SerialPort_read__streamFd(GORILLA_METHOD_PARAMETERS);
-zval *SerialPort_read__win32Handle(GORILLA_METHOD_PARAMETERS);
+long SerialPort_property__streamFd(GORILLA_METHOD_PARAMETERS);
+zval *SerialPort_property__win32Handle(GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

@@ -23,6 +23,7 @@
 
   <resources>
     <resource name="Win32Handle" payload="void" alloc="no"></resource>
+    <resource name="CanonicalBuffer" payload="SerialPort_canonical_buffer" alloc="yes"></resource>
   </resources>
 
   <class name="SerialPort">
@@ -61,6 +62,7 @@
     <property name="_stream" access="protected" ></property>
     <property name="_streamFd" access="private" type="int"></property>
     <property name="_win32Handle" access="private" ></property>
+    <property name="_canonicalBuffer" access="private" ></property>
     <property name="_win32IsCanonical" access="private" ></property>
     <property name="_win32NewLine" access="private" type="string"></property>
     <function name="__construct">

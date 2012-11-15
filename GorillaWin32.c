@@ -1,6 +1,3 @@
-#ifndef PHP_WIN32
-#define PHP_WIN32
-#endif
 #ifdef PHP_WIN32
 #include "php_Gorilla.h"
 #include <tchar.h>
@@ -49,11 +46,16 @@ static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PA
 }
 
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
-    zval *zval_win32Handle;
+    zval *zval_win32Handle, *zval_canonicalBuffer;
+    SerialPort_canonical_buffer *canonical_buffer;
     HANDLE win32Handle = NULL;
     DCB dcb;
     int serial_port_fd;
     int flags = O_CREAT|O_APPEND|O_RDWR|O_BINARY;
+    
+    SerialPort_canonical_buffer_alloc_init(canonical_buffer);
+    zval_canonicalBuffer = SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
+    ZEND_REGISTER_RESOURCE(zval_canonicalBuffer, canonical_buffer, le_CanonicalBuffer);
     
     win32Handle = CreateFile(
             device, 
@@ -100,6 +102,80 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
     return (zend_bool)(result == 0);
 }
 
+long SerialPort_read_canonical_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
+    char previous, current, _buf[1], *nl;
+    int actual_read = 0, nl_len, written = 0;
+    zval *zval_canonicalBuffer;
+    SerialPort_canonical_buffer *canonical_buffer;
+    
+    zval_canonicalBuffer = SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
+    ZEND_FETCH_RESOURCE(
+            canonical_buffer, 
+            SerialPort_canonical_buffer *, 
+            &zval_canonicalBuffer, 
+            -1, 
+            "CanonicalBuffer", 
+            le_CanonicalBuffer);
+    
+    nl = SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAM_PASSTHRU);
+    nl_len = strlen(nl);
+    
+    if (canonical_buffer->read == 0 && canonical_buffer->written == 0) {
+        while (canonical_buffer->written < canonical_buffer->buffer_size) {
+            actual_read = read(serial_port_fd, _buf, 1);
+            if (actual_read != 1) continue;
+
+            current = _buf[0];
+
+            if (strcmp(nl, "\r") == 0 || strcmp(nl, "\n") == 0) {
+                if (current == nl[0]) {
+                    canonical_buffer->buffer[canonical_buffer->written++] = current;
+                    break;
+                }
+            } else if (strcmp(nl, "\r\n") == 0) {
+                if (previous == '\r' && current == '\n') {
+                    canonical_buffer->buffer[canonical_buffer->written - 1] = '\r';
+                    canonical_buffer->buffer[canonical_buffer->written++] = '\n';
+                    break;
+                }
+            }
+
+            canonical_buffer->buffer[canonical_buffer->written++] = current;
+            previous = current;
+        }
+    }
+
+    if (canonical_buffer->written == canonical_buffer->buffer_size) {
+        if (strcmp(nl, "\r") == 0 || strcmp(nl, "\n") == 0) {
+            canonical_buffer->buffer[canonical_buffer->buffer_size - 2] = nl[0];
+            canonical_buffer->buffer[canonical_buffer->buffer_size - 1] = '\0';
+        } else if (strcmp(nl, "\r\n") == 0) {
+            canonical_buffer->buffer[canonical_buffer->buffer_size - 3] = '\r';
+            canonical_buffer->buffer[canonical_buffer->buffer_size - 2] = '\n';
+            canonical_buffer->buffer[canonical_buffer->buffer_size - 1] = '\0';
+        }
+    } else {
+        canonical_buffer->buffer[canonical_buffer->written] = '\0';
+    }
+    
+    if (canonical_buffer->read < canonical_buffer->written) {
+        for (
+            written = 0;
+            written < buf_len && canonical_buffer->read < canonical_buffer->written; 
+            written++, canonical_buffer->read++) 
+        {
+            buf[written] = canonical_buffer->buffer[canonical_buffer->read];
+        }
+        
+        if (canonical_buffer->read == canonical_buffer->written) {
+            canonical_buffer->read = canonical_buffer->written = 0;
+        }
+    }
+    
+    buf[written] = '\0';
+    return written;
+}
+
 zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     zval *zval_data;
     char *buf;
@@ -110,7 +186,9 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     ALLOC_INIT_ZVAL(zval_data);
     buf = emalloc(length);
  
-    actual_length = read(serial_port_fd, buf, length);
+    actual_length = SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAM_PASSTHRU) 
+            ? SerialPort_read_canonical_impl(serial_port_fd, buf, length, GORILLA_METHOD_PARAM_PASSTHRU) 
+            : read(serial_port_fd, buf, length);
     
     ZVAL_STRINGL(zval_data, buf, actual_length, 1);
     efree(buf);

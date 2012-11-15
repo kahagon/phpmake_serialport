@@ -133,6 +133,21 @@ PHP_MINFO_FUNCTION(Gorilla);
                 c == PARITY_NONE ? PARITY_NONE_STR : PARITY_INVALID_STR
 
 int le_Win32Handle;
+int le_CanonicalBuffer;
+
+#define CANONICAL_BUFFER_SIZE 4096
+typedef struct _SerialPort_canonical_buffer {
+    int written;
+    int read;
+    int buffer_size;
+    char buffer[CANONICAL_BUFFER_SIZE];
+} SerialPort_canonical_buffer;
+#define SerialPort_canonical_buffer_alloc_init(canonical_buffer) { \
+            canonical_buffer = ecalloc(1, sizeof(SerialPort_canonical_buffer)); \
+            canonical_buffer->buffer_size = CANONICAL_BUFFER_SIZE; \
+            canonical_buffer->read = canonical_buffer->written = 0; \
+        }
+        
 
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
 zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS);
@@ -166,6 +181,7 @@ void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
 long SerialPort_property_get__streamFd(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__streamFd(long _streamFd, GORILLA_METHOD_PARAMETERS);
 zval *SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAMETERS);
+zval *SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAMETERS);
 zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__win32IsCanonical(zend_bool _isCanonical, GORILLA_METHOD_PARAMETERS);
 char *SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAMETERS);

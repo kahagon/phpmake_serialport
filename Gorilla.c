@@ -28,6 +28,18 @@ void Win32Handle_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 	} while (0);
 }
 
+int le_CanonicalBuffer;
+void CanonicalBuffer_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
+{
+	SerialPort_canonical_buffer * resource = (SerialPort_canonical_buffer *)(rsrc->ptr);
+
+	do {
+            
+	} while (0);
+	efree(resource);
+}
+
+
 /* }}} */
 
 /* {{{ Class definitions */
@@ -47,6 +59,10 @@ void SerialPort_property_set__streamFd(long _streamFd, GORILLA_METHOD_PARAMETERS
 
 zval *SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAMETERS) {
     return zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC);
+}
+
+zval *SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAMETERS) {
+    return zend_read_property(_this_ce, _this_zval, "_canonicalBuffer", strlen("_canonicalBuffer"), 1 TSRMLS_CC);
 }
 
 zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS) {
@@ -83,7 +99,7 @@ PHP_METHOD(SerialPort, __construct)
 
     _this_zval = getThis();
     _this_ce = Z_OBJCE_P(_this_zval);
-
+    
     if (device_len > 0) {
         PROP_SET_STRINGL(_device, device, device_len);
         SerialPort_open_impl(PROP_GET_STRING(_device), GORILLA_METHOD_PARAM_PASSTHRU);
@@ -719,6 +735,11 @@ PHP_METHOD(SerialPort, setWin32NewLine)
 
     _this_ce = Z_OBJCE_P(_this_zval);
 
+    if (strcmp(nl, "\n") != 0 && strcmp(nl, "\r") == 0 && strcmp(nl, "\r\n") == 0) {
+        zend_throw_exception(NULL, "invalid string. newline must be CR, LF or CRLF.", 435 TSRMLS_CC);
+        RETURN_NULL();
+    }
+    
     SerialPort_property_set__win32NewLine(nl, nl_len, GORILLA_METHOD_PARAM_PASSTHRU);
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
@@ -876,6 +897,10 @@ static void class_init_SerialPort(TSRMLS_D)
             zend_declare_property_null(SerialPort_ce_ptr, 
                 "_win32Handle", 12, 
                 ZEND_ACC_PRIVATE TSRMLS_CC);
+
+	zend_declare_property_null(SerialPort_ce_ptr, 
+		"_canonicalBuffer", 16, 
+		ZEND_ACC_PRIVATE TSRMLS_CC);
 
             zend_declare_property_bool(SerialPort_ce_ptr, 
                 "_win32IsCanonical", 17, 0, 
@@ -1311,6 +1336,8 @@ PHP_MINIT_FUNCTION(Gorilla)
 {
 	le_Win32Handle = zend_register_list_destructors_ex(Win32Handle_dtor, 
 						   NULL, "Win32Handle", module_number);
+	le_CanonicalBuffer = zend_register_list_destructors_ex(CanonicalBuffer_dtor, 
+						   NULL, "CanonicalBuffer", module_number);
 	class_init_SerialPort(TSRMLS_C);
 	class_init_Arduino(TSRMLS_C);
 

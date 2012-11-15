@@ -121,41 +121,38 @@ long SerialPort_read_canonical_impl(long serial_port_fd, char *buf, int buf_len,
     nl_len = strlen(nl);
     
     if (canonical_buffer->read == 0 && canonical_buffer->written == 0) {
-        while (canonical_buffer->written < canonical_buffer->buffer_size) {
+        while (canonical_buffer->written <= canonical_buffer->buffer_size) {
             actual_read = read(serial_port_fd, _buf, 1);
-            if (actual_read != 1) continue;
+            if (actual_read != 1) {
+                Sleep(100);
+                continue;
+            }
 
             current = _buf[0];
-
             if (strcmp(nl, "\r") == 0 || strcmp(nl, "\n") == 0) {
                 if (current == nl[0]) {
-                    canonical_buffer->buffer[canonical_buffer->written++] = current;
+                    int offset = (canonical_buffer->written == canonical_buffer->buffer_size ? 1 : 0);
+                    canonical_buffer->buffer[canonical_buffer->written - offset] = current;
                     break;
                 }
             } else if (strcmp(nl, "\r\n") == 0) {
                 if (previous == '\r' && current == '\n') {
-                    canonical_buffer->buffer[canonical_buffer->written - 1] = '\r';
-                    canonical_buffer->buffer[canonical_buffer->written++] = '\n';
+                    int offset = 1 + (canonical_buffer->written == canonical_buffer->buffer_size ? 1 : 0);
+                    canonical_buffer->buffer[canonical_buffer->written - offset--] = '\r';
+                    canonical_buffer->buffer[canonical_buffer->written - offset] = '\n';
                     break;
                 }
             }
 
-            canonical_buffer->buffer[canonical_buffer->written++] = current;
+            if (canonical_buffer->written < canonical_buffer->buffer_size) {
+                canonical_buffer->buffer[canonical_buffer->written++] = current;
+            }
             previous = current;
         }
     }
 
-    if (canonical_buffer->written == canonical_buffer->buffer_size) {
-        if (strcmp(nl, "\r") == 0 || strcmp(nl, "\n") == 0) {
-            canonical_buffer->buffer[canonical_buffer->buffer_size - 2] = nl[0];
-            canonical_buffer->buffer[canonical_buffer->buffer_size - 1] = '\0';
-        } else if (strcmp(nl, "\r\n") == 0) {
-            canonical_buffer->buffer[canonical_buffer->buffer_size - 3] = '\r';
-            canonical_buffer->buffer[canonical_buffer->buffer_size - 2] = '\n';
-            canonical_buffer->buffer[canonical_buffer->buffer_size - 1] = '\0';
-        }
-    } else {
-        canonical_buffer->buffer[canonical_buffer->written] = '\0';
+    if (canonical_buffer->written < canonical_buffer->buffer_size) {
+        canonical_buffer->written++;
     }
     
     if (canonical_buffer->read < canonical_buffer->written) {
@@ -171,8 +168,7 @@ long SerialPort_read_canonical_impl(long serial_port_fd, char *buf, int buf_len,
             canonical_buffer->read = canonical_buffer->written = 0;
         }
     }
-    
-    buf[written] = '\0';
+
     return written;
 }
 

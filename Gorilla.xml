@@ -50,6 +50,9 @@
     <constant type="int" name="CHAR_SIZE_7" value="7"></constant>
     <constant type="int" name="CHAR_SIZE_8" value="8"></constant>
     <constant type="int" name="CHAR_SIZE_DEFAULT" value="8"></constant>
+    <constant type="int" name="STOP_BITS_1_0" value="10"></constant>
+    <constant type="int" name="STOP_BITS_1_5" value="15"></constant>
+    <constant type="int" name="STOP_BITS_2_0" value="20"></constant>
     <constant type="string" name="FLOW_CONTROL_HARD" value="FLOW_CONTROL_HARD"></constant>
     <constant type="string" name="FLOW_CONTROL_SOFT" value="FLOW_CONTROL_SOFT"></constant>
     <constant type="string" name="FLOW_CONTROL_NONE" value="FLOW_CONTROL_NONE"></constant>
@@ -59,12 +62,14 @@
     <constant type="string" name="PARITY_NONE" value="PARITY_NONE"></constant>
     <constant type="string" name="PARITY_DEFAULT" value="PARITY_NONE"></constant>
     <property name="_device" access="protected" type="string"></property>
-    <property name="_stream" access="protected" ></property>
+    <property name="_stream" access="private" ></property>
     <property name="_streamFd" access="private" type="int"></property>
     <property name="_win32Handle" access="private" ></property>
-    <property name="_canonicalBuffer" access="private" ></property>
+    <property name="_win32CanonicalBuffer" access="private" ></property>
     <property name="_win32IsCanonical" access="private" ></property>
     <property name="_win32NewLine" access="private" type="string"></property>
+    <property name="_win32Dtr" access="private" ></property>
+    <property name="_win32Rts" access="private" ></property>
     <function name="__construct">
       <proto>object __construct([string device])</proto>
     </function>

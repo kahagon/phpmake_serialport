@@ -102,6 +102,9 @@ PHP_MINFO_FUNCTION(Gorilla);
 #define CHAR_SIZE_7 7
 #define CHAR_SIZE_8 8
 #define CHAR_SIZE_DEFAULT CHAR_SIZE_8
+#define STOP_BITS_1_0 10
+#define STOP_BITS_1_5 15
+#define STOP_BITS_2_0 20
 #define FLOW_CONTROL_HARD 1
 #define FLOW_CONTROL_SOFT 2
 #define FLOW_CONTROL_NONE 0
@@ -181,7 +184,7 @@ void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
 long SerialPort_property_get__streamFd(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__streamFd(long _streamFd, GORILLA_METHOD_PARAMETERS);
 zval *SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAMETERS);
-zval *SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAMETERS);
+zval *SerialPort_property_get__win32CanonicalBuffer(GORILLA_METHOD_PARAMETERS);
 zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__win32IsCanonical(zend_bool _isCanonical, GORILLA_METHOD_PARAMETERS);
 char *SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAMETERS);

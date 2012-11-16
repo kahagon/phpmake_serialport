@@ -61,8 +61,8 @@ zval *SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAMETERS) {
     return zend_read_property(_this_ce, _this_zval, "_win32Handle", strlen("_win32Handle"), 1 TSRMLS_CC);
 }
 
-zval *SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAMETERS) {
-    return zend_read_property(_this_ce, _this_zval, "_canonicalBuffer", strlen("_canonicalBuffer"), 1 TSRMLS_CC);
+zval *SerialPort_property_get__win32CanonicalBuffer(GORILLA_METHOD_PARAMETERS) {
+    return zend_read_property(_this_ce, _this_zval, "_win32CanonicalBuffer", strlen("_win32CanonicalBuffer"), 1 TSRMLS_CC);
 }
 
 zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS) {
@@ -888,7 +888,7 @@ static void class_init_SerialPort(TSRMLS_D)
 
             zend_declare_property_null(SerialPort_ce_ptr, 
                 "_stream", 7, 
-                ZEND_ACC_PROTECTED TSRMLS_CC);
+                ZEND_ACC_PRIVATE TSRMLS_CC);
 
             zend_declare_property_long(SerialPort_ce_ptr, 
                 "_streamFd", 9, -1, 
@@ -898,9 +898,9 @@ static void class_init_SerialPort(TSRMLS_D)
                 "_win32Handle", 12, 
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-	zend_declare_property_null(SerialPort_ce_ptr, 
-		"_canonicalBuffer", 16, 
-		ZEND_ACC_PRIVATE TSRMLS_CC);
+            zend_declare_property_null(SerialPort_ce_ptr, 
+                "_win32CanonicalBuffer", 21, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
 
             zend_declare_property_bool(SerialPort_ce_ptr, 
                 "_win32IsCanonical", 17, 0, 
@@ -910,6 +910,14 @@ static void class_init_SerialPort(TSRMLS_D)
                 "_win32NewLine", 13, PHP_EOL, 
                 ZEND_ACC_PRIVATE TSRMLS_CC);
         
+            zend_declare_property_null(SerialPort_ce_ptr, 
+                "_win32Dtr", 9, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
+            zend_declare_property_null(SerialPort_ce_ptr, 
+                "_win32Rts", 9, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+            
            /* }}} Property registration */
 
 	/* {{{ Constant registration */
@@ -939,6 +947,9 @@ static void class_init_SerialPort(TSRMLS_D)
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_7", 11, CHAR_SIZE_7 TSRMLS_CC );
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_8", 11, CHAR_SIZE_8 TSRMLS_CC );
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_DEFAULT", 17, CHAR_SIZE_DEFAULT TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_1_0", 13, 10 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_1_5", 13, 15 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_2_0", 13, 20 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_HARD", 17, FLOW_CONTROL_HARD_STR, 17 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_SOFT", 17, FLOW_CONTROL_SOFT_STR, 17 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_NONE", 17, FLOW_CONTROL_NONE_STR, 17 TSRMLS_CC );

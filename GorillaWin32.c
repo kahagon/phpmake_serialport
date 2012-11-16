@@ -46,7 +46,7 @@ static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PA
 }
 
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
-    zval *zval_win32Handle, *zval_canonicalBuffer;
+    zval *zval_win32Handle, *zval_win32CanonicalBuffer;
     SerialPort_canonical_buffer *canonical_buffer;
     HANDLE win32Handle = NULL;
     DCB dcb;
@@ -54,8 +54,8 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     int flags = O_CREAT|O_APPEND|O_RDWR|O_BINARY;
     
     SerialPort_canonical_buffer_alloc_init(canonical_buffer);
-    zval_canonicalBuffer = SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
-    ZEND_REGISTER_RESOURCE(zval_canonicalBuffer, canonical_buffer, le_CanonicalBuffer);
+    zval_win32CanonicalBuffer = SerialPort_property_get__win32CanonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
+    ZEND_REGISTER_RESOURCE(zval_win32CanonicalBuffer, canonical_buffer, le_CanonicalBuffer);
     
     win32Handle = CreateFile(
             device, 
@@ -105,14 +105,14 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
 long SerialPort_read_canonical_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
     char previous, current, _buf[1], *nl;
     int actual_read = 0, nl_len, written = 0;
-    zval *zval_canonicalBuffer;
+    zval *zval_win32CanonicalBuffer;
     SerialPort_canonical_buffer *canonical_buffer;
     
-    zval_canonicalBuffer = SerialPort_property_get__canonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
+    zval_win32CanonicalBuffer = SerialPort_property_get__win32CanonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
     ZEND_FETCH_RESOURCE(
             canonical_buffer, 
             SerialPort_canonical_buffer *, 
-            &zval_canonicalBuffer, 
+            &zval_win32CanonicalBuffer, 
             -1, 
             "CanonicalBuffer", 
             le_CanonicalBuffer);

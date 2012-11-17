@@ -659,6 +659,10 @@ PHP_METHOD(SerialPort, setParity)
         _parity = PARITY_ODD;
     } else if (strncmp(parity, PARITY_NONE_STR, parity) == 0) {
         _parity = PARITY_NONE;
+    } else if (strncmp(parity, PARITY_MARK_STR, parity) == 0) {
+        _parity = PARITY_MARK;
+    } else if (strncmp(parity, PARITY_SPACE_STR, parity) == 0) {
+        _parity = PARITY_SPACE;
     } else {
         zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
         return;
@@ -973,6 +977,8 @@ static void class_init_SerialPort(TSRMLS_D)
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_DEFAULT", 20, FLOW_CONTROL_NONE_STR, 17 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_EVEN", 11, PARITY_EVEN_STR, 11 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_ODD", 10, PARITY_ODD_STR, 10 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_MARK", 11, PARITY_MARK_STR, 11 TSRMLS_CC );
+		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_SPACE", 12, PARITY_SPACE_STR, 12 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_NONE", 11, PARITY_NONE_STR, 11 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "PARITY_DEFAULT", 14, PARITY_NONE_STR, 11 TSRMLS_CC );
 	} while(0);

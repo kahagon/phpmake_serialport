@@ -323,7 +323,7 @@ void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
     serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
-        return PARITY_INVALID;
+        return;
     }
     
     switch (parity) {
@@ -338,6 +338,9 @@ void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
         case PARITY_NONE:
             attr.c_cflag &= ~PARENB;
             break;
+        case PARITY_MARK: case PARITY_SPACE:
+            zend_throw_exception(NULL, "parity checking 'mark' and 'space' does not supported on POSIX.", PARITY_INVALID TSRMLS_CC);
+            return;
         default:
             zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
             return;

@@ -59,6 +59,8 @@
     <constant type="string" name="FLOW_CONTROL_DEFAULT" value="FLOW_CONTROL_NONE"></constant>
     <constant type="string" name="PARITY_EVEN" value="PARITY_EVEN"></constant>
     <constant type="string" name="PARITY_ODD" value="PARITY_ODD"></constant>
+    <constant type="string" name="PARITY_MARK" value="PARITY_MARK"></constant>
+    <constant type="string" name="PARITY_SPACE" value="PARITY_SPACE"></constant>
     <constant type="string" name="PARITY_NONE" value="PARITY_NONE"></constant>
     <constant type="string" name="PARITY_DEFAULT" value="PARITY_NONE"></constant>
     <property name="_device" access="protected" type="string"></property>

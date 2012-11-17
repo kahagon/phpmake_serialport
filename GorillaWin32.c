@@ -345,10 +345,58 @@ void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS)
 }
 
 int SerialPort_getParity_impl(GORILLA_METHOD_PARAMETERS) {
-    return PARITY_INVALID;
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    
+    switch (dcb.Parity) {
+        case EVENPARITY:
+            return PARITY_EVEN;
+        case ODDPARITY:
+            return PARITY_ODD;
+        case NOPARITY:
+            return PARITY_NONE;
+        case MARKPARITY:
+            return PARITY_MARK;
+        case SPACEPARITY:
+            return PARITY_SPACE;
+        default:
+            return PARITY_INVALID;
+    }
 }
 
 void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    switch (parity) {
+        case PARITY_EVEN:
+            dcb.fParity = TRUE;
+            dcb.Parity = EVENPARITY;
+            break;
+        case PARITY_ODD:
+            dcb.fParity = TRUE;
+            dcb.Parity = ODDPARITY;
+        case PARITY_NONE:
+            dcb.fParity = FALSE;
+            dcb.Parity = NOPARITY;
+        case PARITY_MARK:
+            dcb.fParity = TRUE;
+            dcb.Parity = MARKPARITY;
+        case PARITY_SPACE:
+            dcb.fParity = TRUE;
+            dcb.Parity = SPACEPARITY;
+            break;
+        default:
+            zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
+            return;
+    }
+    
+    SetCommState(win32Handle, &dcb);
     return;
 }
 

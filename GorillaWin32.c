@@ -88,6 +88,9 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
+    SerialPort_setDTR_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);
+    SerialPort_setRTS_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);
+    
     return;
 }
 
@@ -279,19 +282,19 @@ int SerialPort_getCTS_impl(GORILLA_METHOD_PARAMETERS) {
 }
 
 int SerialPort_getRTS_impl(GORILLA_METHOD_PARAMETERS) {
-    php_error(E_WARNING, "getRTS() not implemented on Windows");
-    return 0;
+    return SerialPort_property_get__win32Rts(GORILLA_METHOD_PARAM_PASSTHRU);
 }
 
 void SerialPort_setRTS_impl(zend_bool rts, GORILLA_METHOD_PARAMETERS) {
     HANDLE win32Handle;
     
     win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
-    if (EscapeCommFunction(win32Handle, rts ? SETRTS : CLRRTS) == FALSE) {
-        zend_throw_exception(NULL, "failed to set rts", 2165 TSRMLS_CC);
+    if (EscapeCommFunction(win32Handle, rts ? SETRTS : CLRRTS)) {
+        SerialPort_property_set__win32Rts((zend_bool)(rts ? 1 : 0), GORILLA_METHOD_PARAM_PASSTHRU);
         return;
     }
     
+    zend_throw_exception(NULL, "failed to set rts", 2165 TSRMLS_CC);
     return;
 }
 
@@ -303,19 +306,19 @@ int SerialPort_getDSR_impl(GORILLA_METHOD_PARAMETERS) {
 }
 
 int SerialPort_getDTR_impl(GORILLA_METHOD_PARAMETERS) {
-    php_error(E_WARNING, "getDTR() not implemented on Windows");
-    return 0;
+    return SerialPort_property_get__win32Dtr(GORILLA_METHOD_PARAM_PASSTHRU);
 }
 
 void SerialPort_setDTR_impl(zend_bool dtr, GORILLA_METHOD_PARAMETERS) {
     HANDLE win32Handle;
     
     win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
-    if (EscapeCommFunction(win32Handle, dtr ? SETDTR : CLRDTR) == FALSE) {
-        zend_throw_exception(NULL, "failed to set dtr", 2365 TSRMLS_CC);
+    if (EscapeCommFunction(win32Handle, dtr ? SETDTR : CLRDTR)) {
+        SerialPort_property_set__win32Dtr((zend_bool)(dtr ? 1 : 0), GORILLA_METHOD_PARAM_PASSTHRU);
         return;
     }
     
+    zend_throw_exception(NULL, "failed to set dtr", 2365 TSRMLS_CC);
     return;
 }
 

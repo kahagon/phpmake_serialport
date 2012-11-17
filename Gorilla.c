@@ -80,6 +80,23 @@ char *SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAMETERS) {
 void SerialPort_property_set__win32NewLine(const char *nl, long nl_len, GORILLA_METHOD_PARAMETERS) {
     zend_update_property_stringl(_this_ce, _this_zval, "_win32NewLine", strlen("_win32NewLine"), nl, nl_len TSRMLS_CC);
 }
+
+zend_bool SerialPort_property_get__win32Rts(GORILLA_METHOD_PARAMETERS) {
+    return Z_BVAL_P(zend_read_property(_this_ce, _this_zval, "_win32Rts", strlen("_win32Rts"), 1 TSRMLS_CC));
+}
+
+void SerialPort_property_set__win32Rts(zend_bool rts, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_bool(_this_ce, _this_zval, "_win32Rts", strlen("_win32Rts"), rts TSRMLS_CC);
+}
+
+zend_bool SerialPort_property_get__win32Dtr(GORILLA_METHOD_PARAMETERS) {
+    return Z_BVAL_P(zend_read_property(_this_ce, _this_zval, "_win32Dtr", strlen("_win32Dtr"), 1 TSRMLS_CC));
+}
+
+void SerialPort_property_set__win32Dtr(zend_bool dtr, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_bool(_this_ce, _this_zval, "_win32Dtr", strlen("_win32Dtr"), dtr TSRMLS_CC);
+}
+
 /* {{{ Methods */
 
 

@@ -189,6 +189,10 @@ zend_bool SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__win32IsCanonical(zend_bool _isCanonical, GORILLA_METHOD_PARAMETERS);
 char *SerialPort_property_get__win32NewLine(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__win32NewLine(const char *nl, long nl_len, GORILLA_METHOD_PARAMETERS);
+zend_bool SerialPort_property_get__win32Rts(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__win32Rts(zend_bool _rts, GORILLA_METHOD_PARAMETERS);
+zend_bool SerialPort_property_get__win32Dtr(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__win32Dtr(zend_bool _dtr, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

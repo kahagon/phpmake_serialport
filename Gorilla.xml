@@ -168,6 +168,36 @@
     <function name="setVTime">
       <proto>object setVTime(int vTime)</proto>
     </function>
+    <function name="getWin32ReadIntervalTimeout">
+      <proto>int getWin32ReadIntervalTimeout()</proto>
+    </function>
+    <function name="setWin32ReadIntervalTimeout">
+      <proto>object setWin32ReadIntervalTimeout(int time)</proto>
+    </function>
+    <function name="getWin32ReadTotalTimeoutMultiplier">
+      <proto>int getWin32ReadTotalTimeoutMultiplier()</proto>
+    </function>
+    <function name="setWin32ReadTotalTimeoutMultiplier">
+      <proto>object setWin32ReadTotalTimeoutMultiplier(int time)</proto>
+    </function>
+    <function name="getWin32ReadTotalTimeoutConstant">
+      <proto>int getWin32ReadTotalTimeoutConstant()</proto>
+    </function>
+    <function name="setWin32ReadTotalTimeoutConstant">
+      <proto>object setWin32ReadTotalTimeoutConstant(int time)</proto>
+    </function>
+    <function name="getWin32WriteTotalTimeoutMultiplier">
+      <proto>int getWin32WriteTotalTimeoutMultiplier()</proto>
+    </function>
+    <function name="setWin32WriteTotalTimeoutMultiplier">
+      <proto>object setWin32WriteTotalTimeoutMultiplier(int time)</proto>
+    </function>
+    <function name="getWin32WriteTotalTimeoutConstant">
+      <proto>int getWin32WriteTotalTimeoutConstant()</proto>
+    </function>
+    <function name="setWin32WriteTotalTimeoutConstant">
+      <proto>object setWin32WriteTotalTimeoutConstant(int time)</proto>
+    </function>
   </class>
   <class name="Arduino">
     <constant type="int" name="HIGH" value="1"></constant>

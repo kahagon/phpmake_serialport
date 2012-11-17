@@ -856,6 +856,260 @@ PHP_METHOD(SerialPort, setVTime)
 /* }}} setVTime */
 
 
+/* {{{ proto int getWin32ReadIntervalTimeout()
+   */
+PHP_METHOD(SerialPort, getWin32ReadIntervalTimeout)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getWin32ReadIntervalTimeout: not yet implemented"); RETURN_FALSE;
+
+	RETURN_LONG(0);
+}
+/* }}} getWin32ReadIntervalTimeout */
+
+
+
+/* {{{ proto object setWin32ReadIntervalTimeout(int time)
+   */
+PHP_METHOD(SerialPort, setWin32ReadIntervalTimeout)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	long time = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &time) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setWin32ReadIntervalTimeout: not yet implemented"); RETURN_FALSE;
+
+	object_init(return_value);
+}
+/* }}} setWin32ReadIntervalTimeout */
+
+
+
+/* {{{ proto int getWin32ReadTotalTimeoutMultiplier()
+   */
+PHP_METHOD(SerialPort, getWin32ReadTotalTimeoutMultiplier)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getWin32ReadTotalTimeoutMultiplier: not yet implemented"); RETURN_FALSE;
+
+	RETURN_LONG(0);
+}
+/* }}} getWin32ReadTotalTimeoutMultiplier */
+
+
+
+/* {{{ proto object setWin32ReadTotalTimeoutMultiplier(int time)
+   */
+PHP_METHOD(SerialPort, setWin32ReadTotalTimeoutMultiplier)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	long time = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &time) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setWin32ReadTotalTimeoutMultiplier: not yet implemented"); RETURN_FALSE;
+
+	object_init(return_value);
+}
+/* }}} setWin32ReadTotalTimeoutMultiplier */
+
+
+
+/* {{{ proto int getWin32ReadTotalTimeoutConstant()
+   */
+PHP_METHOD(SerialPort, getWin32ReadTotalTimeoutConstant)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getWin32ReadTotalTimeoutConstant: not yet implemented"); RETURN_FALSE;
+
+	RETURN_LONG(0);
+}
+/* }}} getWin32ReadTotalTimeoutConstant */
+
+
+
+/* {{{ proto object setWin32ReadTotalTimeoutConstant(int time)
+   */
+PHP_METHOD(SerialPort, setWin32ReadTotalTimeoutConstant)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	long time = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &time) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setWin32ReadTotalTimeoutConstant: not yet implemented"); RETURN_FALSE;
+
+	object_init(return_value);
+}
+/* }}} setWin32ReadTotalTimeoutConstant */
+
+
+
+/* {{{ proto int getWin32WriteTotalTimeoutMultiplier()
+   */
+PHP_METHOD(SerialPort, getWin32WriteTotalTimeoutMultiplier)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getWin32WriteTotalTimeoutMultiplier: not yet implemented"); RETURN_FALSE;
+
+	RETURN_LONG(0);
+}
+/* }}} getWin32WriteTotalTimeoutMultiplier */
+
+
+
+/* {{{ proto object setWin32WriteTotalTimeoutMultiplier(int time)
+   */
+PHP_METHOD(SerialPort, setWin32WriteTotalTimeoutMultiplier)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	long time = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &time) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setWin32WriteTotalTimeoutMultiplier: not yet implemented"); RETURN_FALSE;
+
+	object_init(return_value);
+}
+/* }}} setWin32WriteTotalTimeoutMultiplier */
+
+
+
+/* {{{ proto int getWin32WriteTotalTimeoutConstant()
+   */
+PHP_METHOD(SerialPort, getWin32WriteTotalTimeoutConstant)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "getWin32WriteTotalTimeoutConstant: not yet implemented"); RETURN_FALSE;
+
+	RETURN_LONG(0);
+}
+/* }}} getWin32WriteTotalTimeoutConstant */
+
+
+
+/* {{{ proto object setWin32WriteTotalTimeoutConstant(int time)
+   */
+PHP_METHOD(SerialPort, setWin32WriteTotalTimeoutConstant)
+{
+	zend_class_entry * _this_ce;
+
+	zval * _this_zval = NULL;
+	long time = 0;
+
+
+
+	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &time) == FAILURE) {
+		return;
+	}
+
+	_this_ce = Z_OBJCE_P(_this_zval);
+
+
+	php_error(E_WARNING, "setWin32WriteTotalTimeoutConstant: not yet implemented"); RETURN_FALSE;
+
+	object_init(return_value);
+}
+/* }}} setWin32WriteTotalTimeoutConstant */
+
+
 static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, __construct, NULL, /**/ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(SerialPort, open, NULL, /**/ZEND_ACC_PUBLIC)
@@ -889,6 +1143,16 @@ static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, setVMin, SerialPort__setVMin_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getVTime, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, setVTime, SerialPort__setVTime_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getWin32ReadIntervalTimeout, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setWin32ReadIntervalTimeout, SerialPort__setWin32ReadIntervalTimeout_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getWin32ReadTotalTimeoutMultiplier, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setWin32ReadTotalTimeoutMultiplier, SerialPort__setWin32ReadTotalTimeoutMultiplier_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getWin32ReadTotalTimeoutConstant, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setWin32ReadTotalTimeoutConstant, SerialPort__setWin32ReadTotalTimeoutConstant_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getWin32WriteTotalTimeoutMultiplier, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setWin32WriteTotalTimeoutMultiplier, SerialPort__setWin32WriteTotalTimeoutMultiplier_args, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, getWin32WriteTotalTimeoutConstant, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, setWin32WriteTotalTimeoutConstant, SerialPort__setWin32WriteTotalTimeoutConstant_args, /**/ZEND_ACC_PUBLIC)
 	{ NULL, NULL, NULL }
 };
 

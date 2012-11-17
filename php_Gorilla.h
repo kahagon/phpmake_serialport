@@ -470,6 +470,91 @@ ZEND_END_ARG_INFO()
 #define SerialPort__setVTime_args NULL
 #endif
 
+PHP_METHOD(SerialPort, getWin32ReadIntervalTimeout);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getWin32ReadIntervalTimeout_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getWin32ReadIntervalTimeout_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setWin32ReadIntervalTimeout);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setWin32ReadIntervalTimeout_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, time)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setWin32ReadIntervalTimeout_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getWin32ReadTotalTimeoutMultiplier);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getWin32ReadTotalTimeoutMultiplier_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getWin32ReadTotalTimeoutMultiplier_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setWin32ReadTotalTimeoutMultiplier);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setWin32ReadTotalTimeoutMultiplier_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, time)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setWin32ReadTotalTimeoutMultiplier_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getWin32ReadTotalTimeoutConstant);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getWin32ReadTotalTimeoutConstant_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getWin32ReadTotalTimeoutConstant_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setWin32ReadTotalTimeoutConstant);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setWin32ReadTotalTimeoutConstant_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, time)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setWin32ReadTotalTimeoutConstant_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getWin32WriteTotalTimeoutMultiplier);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getWin32WriteTotalTimeoutMultiplier_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getWin32WriteTotalTimeoutMultiplier_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setWin32WriteTotalTimeoutMultiplier);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setWin32WriteTotalTimeoutMultiplier_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, time)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setWin32WriteTotalTimeoutMultiplier_args NULL
+#endif
+
+PHP_METHOD(SerialPort, getWin32WriteTotalTimeoutConstant);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__getWin32WriteTotalTimeoutConstant_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__getWin32WriteTotalTimeoutConstant_args NULL
+#endif
+
+PHP_METHOD(SerialPort, setWin32WriteTotalTimeoutConstant);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__setWin32WriteTotalTimeoutConstant_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 1)
+  ZEND_ARG_INFO(0, time)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__setWin32WriteTotalTimeoutConstant_args NULL
+#endif
+        
 PHP_METHOD(Arduino, __construct);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(Arduino____construct_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)

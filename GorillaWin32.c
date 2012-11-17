@@ -20,6 +20,31 @@
             zend_throw_exception(NULL, "failed to set property.", GetLastError() TSRMLS_CC); \
         } 
 
+#define GET_COMM_TIMEOUTS(win32Handle, lptimeouts, onerror) \
+        if (!GetCommTimeouts(win32Handle, lptimeouts)) { \
+            zend_throw_exception(NULL, "failed to get timeouts property", GetLastError() TSRMLS_CC); \
+            onerror \
+        }
+
+#define SET_COMM_TIMEOUTS(win32Handle, lptimeouts, onerror) \
+        if (!SetCommTimeouts(win32Handle, lptimeouts)) { \
+            zend_throw_exception(NULL, "failed to set timeouts property", GetLastError() TSRMLS_CC); \
+            onerror \
+        }
+
+#define SerialPort_returnWin32TimeoutsProperty(win32Handle, timeouts, prop) { \
+            win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
+            GET_COMM_TIMEOUTS(win32Handle, &timeouts, { return; }); \
+            return timeouts.prop; \
+        }
+
+#define SerialPort_setWin32TimeoutsProperty(win32Handle, timeouts, prop, time) { \
+            win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
+            GET_COMM_TIMEOUTS(win32Handle, &timeouts, { return; }); \
+            timeouts.prop = time; \
+            SET_COMM_TIMEOUTS(win32Handle, &timeouts, {}); \
+        }
+
 static HANDLE SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAMETERS) {
     zval *zval_win32Handle;
     int zval_win32Handle_id = -1;
@@ -449,6 +474,76 @@ int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS) {
 
 void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
     return;
+}
+
+long SerialPort_getWin32ReadIntervalTimeout_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_returnWin32TimeoutsProperty(win32Handle, timeouts, ReadIntervalTimeout);
+}
+
+void SerialPort_setWin32ReadIntervalTimeout_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_setWin32TimeoutsProperty(win32Handle, timeouts, ReadIntervalTimeout, time);
+}
+
+long SerialPort_getWin32ReadTotalTimeoutMultiplier_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_returnWin32TimeoutsProperty(win32Handle, timeouts, ReadTotalTimeoutMultiplier);
+}
+
+void SerialPort_setWin32ReadTotalTimeoutMultiplier_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_setWin32TimeoutsProperty(win32Handle, timeouts, ReadTotalTimeoutMultiplier, time);
+}
+
+long SerialPort_getWin32ReadTotalTimeoutConstant_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_returnWin32TimeoutsProperty(win32Handle, timeouts, ReadTotalTimeoutConstant);
+}
+
+void SerialPort_setWin32ReadTotalTimeoutConstant_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_setWin32TimeoutsProperty(win32Handle, timeouts, ReadTotalTimeoutConstant, time);
+}
+
+long SerialPort_getWin32WriteTotalTimeoutMultiplier_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_returnWin32TimeoutsProperty(win32Handle, timeouts, WriteTotalTimeoutMultiplier);
+}
+
+void SerialPort_setWin32WriteTotalTimeoutMultiplier_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_setWin32TimeoutsProperty(win32Handle, timeouts, WriteTotalTimeoutMultiplier, time);
+}
+
+long SerialPort_getWin32WriteTotalTimeoutConstant_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_returnWin32TimeoutsProperty(win32Handle, timeouts, WriteTotalTimeoutConstant);
+}
+
+void SerialPort_setWin32WriteTotalTimeoutConstant_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle;
+    COMMTIMEOUTS timeouts;
+    
+    SerialPort_setWin32TimeoutsProperty(win32Handle, timeouts, WriteTotalTimeoutConstant, time);
 }
 
 void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {

@@ -186,6 +186,16 @@ long SerialPort_getVMin_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS);
 int SerialPort_getVTime_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS);
+long SerialPort_getWin32ReadIntervalTimeout_impl(GORILLA_METHOD_PARAMETERS);
+void SerialPort_setWin32ReadIntervalTimeout_impl(long time, GORILLA_METHOD_PARAMETERS);
+long SerialPort_getWin32ReadTotalTimeoutMultiplier_impl(GORILLA_METHOD_PARAMETERS);
+void SerialPort_setWin32ReadTotalTimeoutMultiplier_impl(long time, GORILLA_METHOD_PARAMETERS);
+long SerialPort_getWin32ReadTotalTimeoutConstant_impl(GORILLA_METHOD_PARAMETERS);
+void SerialPort_setWin32ReadTotalTimeoutConstant_impl(long time, GORILLA_METHOD_PARAMETERS);
+long SerialPort_getWin32WriteTotalTimeoutMultiplier_impl(GORILLA_METHOD_PARAMETERS);
+void SerialPort_setWin32WriteTotalTimeoutMultiplier_impl(long time, GORILLA_METHOD_PARAMETERS);
+long SerialPort_getWin32WriteTotalTimeoutConstant_impl(GORILLA_METHOD_PARAMETERS);
+void SerialPort_setWin32WriteTotalTimeoutConstant_impl(long time, GORILLA_METHOD_PARAMETERS);
 
 long SerialPort_property_get__streamFd(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__streamFd(long _streamFd, GORILLA_METHOD_PARAMETERS);

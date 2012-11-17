@@ -414,6 +414,52 @@ void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
     }
 }
 
+long SerialPort_getWin32ReadIntervalTimeout_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+    return -1;
+}
+
+void SerialPort_setWin32ReadIntervalTimeout_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+}
+
+long SerialPort_getWin32ReadTotalTimeoutMultiplier_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+    return -1;
+}
+
+void SerialPort_setWin32ReadTotalTimeoutMultiplier_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+}
+
+long SerialPort_getWin32ReadTotalTimeoutConstant_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+    return -1;
+}
+
+void SerialPort_setWin32ReadTotalTimeoutConstant_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+}
+
+long SerialPort_getWin32WriteTotalTimeoutMultiplier_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+    return -1;
+}
+
+void SerialPort_setWin32WriteTotalTimeoutMultiplier_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+}
+
+long SerialPort_getWin32WriteTotalTimeoutConstant_impl(GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+    return -1;
+}
+
+void SerialPort_setWin32WriteTotalTimeoutConstant_impl(long time, GORILLA_METHOD_PARAMETERS) {
+    php_error(E_ERROR, "this method is implemented on Windows only.");
+}
+
+
 void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
     struct termios attr;
     long serial_port_fd;

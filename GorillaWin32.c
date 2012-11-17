@@ -15,6 +15,11 @@
             } \
         } while(0);
 
+#define SET_COMM_STATE(win32Handle, lpdcb) \
+        if (SetCommState(win32Handle, lpdcb) == FALSE) { \
+            zend_throw_exception(NULL, "failed to set property.", GetLastError() TSRMLS_CC); \
+        } 
+
 static HANDLE SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAMETERS) {
     zval *zval_win32Handle;
     int zval_win32Handle_id = -1;
@@ -83,10 +88,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     GetCommState(win32Handle, &dcb);
     dcb.fDtrControl = DTR_CONTROL_ENABLE;
     dcb.fRtsControl = RTS_CONTROL_ENABLE;
-    if (SetCommState(win32Handle, &dcb) == FALSE) {
-        zend_throw_exception(NULL, "failed to SetCommState()", 347 TSRMLS_CC);
-        return;
-    }
+    SET_COMM_STATE(win32Handle, &dcb);
     
     SerialPort_setDTR_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);
     SerialPort_setRTS_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -266,10 +268,7 @@ void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS)
         dcb.fInX = FALSE;
     }
     
-    if (SetCommState(win32Handle, &dcb) == FALSE) {
-        zend_throw_exception(NULL, "failed to SetCommState()", 2135 TSRMLS_CC);
-        return;
-    }
+    SET_COMM_STATE(win32Handle, &dcb);
     
     return;
 }
@@ -337,10 +336,46 @@ int SerialPort_getRNG_impl(GORILLA_METHOD_PARAMETERS) {
 }
 
 int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
-    return 1;
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    switch (dcb.StopBits) {
+        case ONESTOPBIT:
+            return STOP_BITS_1_0;
+        case ONE5STOPBITS:
+            return STOP_BITS_1_5;
+        case TWOSTOPBITS:
+            return STOP_BITS_2_0;
+        default:
+            zend_throw_exception(NULL, "unknown stop bits.", PARITY_INVALID TSRMLS_CC);
+            return 0;
+    }
 }
 
 void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS) {
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    switch (stop_bits) {
+        case STOP_BITS_1_0:
+            dcb.StopBits = ONESTOPBIT;
+            break;
+        case STOP_BITS_1_5:
+            dcb.StopBits = ONE5STOPBITS;
+            break;
+        case STOP_BITS_2_0:
+            dcb.StopBits = TWOSTOPBITS;
+            break;
+        default:
+            zend_throw_exception(NULL, "unknown stop bits specified.", PARITY_INVALID TSRMLS_CC);
+            return;
+    }
+    
+    SET_COMM_STATE(win32Handle, &dcb);
     return;
 }
 
@@ -396,7 +431,7 @@ void SerialPort_setParity_impl(int parity, GORILLA_METHOD_PARAMETERS) {
             return;
     }
     
-    SetCommState(win32Handle, &dcb);
+    SET_COMM_STATE(win32Handle, &dcb);
     return;
 }
 
@@ -438,7 +473,7 @@ void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS) {
     
     SerialPort_read_current_dcb(win32Handle, dcb);
     dcb.BaudRate = baud_rate;
-    SetCommState(win32Handle, &dcb);
+    SET_COMM_STATE(win32Handle, &dcb);
     return;
 }
 

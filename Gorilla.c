@@ -968,9 +968,9 @@ static void class_init_SerialPort(TSRMLS_D)
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_7", 11, CHAR_SIZE_7 TSRMLS_CC );
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_8", 11, CHAR_SIZE_8 TSRMLS_CC );
 		zend_declare_class_constant_long(SerialPort_ce_ptr, "CHAR_SIZE_DEFAULT", 17, CHAR_SIZE_DEFAULT TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_1_0", 13, 10 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_1_5", 13, 15 TSRMLS_CC );
-		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_2_0", 13, 20 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_1_0", 13, STOP_BITS_1_0 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_1_5", 13, STOP_BITS_1_5 TSRMLS_CC );
+		zend_declare_class_constant_long(SerialPort_ce_ptr, "STOP_BITS_2_0", 13, STOP_BITS_2_0 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_HARD", 17, FLOW_CONTROL_HARD_STR, 17 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_SOFT", 17, FLOW_CONTROL_SOFT_STR, 17 TSRMLS_CC );
 		zend_declare_class_constant_stringl(SerialPort_ce_ptr, "FLOW_CONTROL_NONE", 17, FLOW_CONTROL_NONE_STR, 17 TSRMLS_CC );

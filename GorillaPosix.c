@@ -261,9 +261,9 @@ int SerialPort_getNumOfStopBits_impl(GORILLA_METHOD_PARAMETERS) {
     }
     
     if (attr.c_cflag & CSTOPB) {
-        return 2;
+        return STOP_BITS_2_0;
     } else {
-        return 1;
+        return STOP_BITS_1_0;
     }
 }
 
@@ -278,10 +278,10 @@ void SerialPort_setNumOfStopBits_impl(long stop_bits, GORILLA_METHOD_PARAMETERS)
     }
     
     switch (stop_bits) {
-        case 1:
+        case STOP_BITS_1_0:
             attr.c_cflag &= ~CSTOPB;
             break;
-        case 2:
+        case STOP_BITS_2_0:
             attr.c_cflag |= CSTOPB;
             break;
         default:

@@ -452,11 +452,35 @@ void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
 }
 
 void SerialPort_setCharSize_impl(long char_size, GORILLA_METHOD_PARAMETERS) {
+    DCB dcb;
+    HANDLE win32Handle;
+    long _char_size = CHAR_SIZE_8;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    
+    switch (char_size) {
+        case CHAR_SIZE_5:
+        case CHAR_SIZE_6:
+        case CHAR_SIZE_7:
+        case CHAR_SIZE_8:
+            _char_size = char_size;
+            break;
+        default:
+            zend_throw_exception(NULL, "invalid char size specified", 5 TSRMLS_CC);
+            return;
+    }
+    
+    dcb.ByteSize = _char_size;
+    SET_COMM_STATE(win32Handle, &dcb);
     return;
 }
 
 long SerialPort_getCharSize_impl(GORILLA_METHOD_PARAMETERS) {
-    return CHAR_SIZE_DEFAULT;
+    DCB dcb;
+    HANDLE win32Handle;
+    
+    SerialPort_read_current_dcb(win32Handle, dcb);
+    return dcb.ByteSize;
 }
 
 long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
@@ -470,8 +494,35 @@ long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS) {
 void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS) {
     DCB dcb;
     HANDLE win32Handle;
+    long _baud_rate;
     
     SerialPort_read_current_dcb(win32Handle, dcb);
+    switch (baud_rate) {
+        case BAUD_RATE_50:
+        case BAUD_RATE_75:
+        case BAUD_RATE_110:
+        case BAUD_RATE_134:
+        case BAUD_RATE_150:
+        case BAUD_RATE_200:
+        case BAUD_RATE_300:
+        case BAUD_RATE_600:
+        case BAUD_RATE_1200:
+        case BAUD_RATE_1800:
+        case BAUD_RATE_2400:
+        case BAUD_RATE_4800:
+        case BAUD_RATE_9600:
+        case BAUD_RATE_19200:
+        case BAUD_RATE_38400:
+        case BAUD_RATE_57600:
+        case BAUD_RATE_115200:
+        case BAUD_RATE_230400:
+            _baud_rate = baud_rate;
+            break;
+        default:
+            zend_throw_exception(NULL, "invalid baud rate.", baud_rate TSRMLS_CC);
+            return;
+    }
+    
     dcb.BaudRate = baud_rate;
     SET_COMM_STATE(win32Handle, &dcb);
     return;

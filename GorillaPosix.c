@@ -375,6 +375,7 @@ void SerialPort_setVMin_impl(long vmin, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
+    if (vmin < -1) vmin = 0;
     attr.c_cc[VMIN] = (cc_t)vmin;
     
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
@@ -406,6 +407,7 @@ void SerialPort_setVTime_impl(long vtime, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
+    if (vtime < 0) vtime = 0;
     attr.c_cc[VTIME] = (cc_t)vtime;
     
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {

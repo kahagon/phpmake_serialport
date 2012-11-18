@@ -209,6 +209,10 @@ zend_bool SerialPort_property_get__win32Rts(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__win32Rts(zend_bool _rts, GORILLA_METHOD_PARAMETERS);
 zend_bool SerialPort_property_get__win32Dtr(GORILLA_METHOD_PARAMETERS);
 void SerialPort_property_set__win32Dtr(zend_bool _dtr, GORILLA_METHOD_PARAMETERS);
+long SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__win32VMin(long vmin, GORILLA_METHOD_PARAMETERS);
+long SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAMETERS);
+void SerialPort_property_set__win32VTime(long vtime, GORILLA_METHOD_PARAMETERS);
 
 PHP_METHOD(SerialPort, __construct);
 #if (PHP_MAJOR_VERSION >= 5)

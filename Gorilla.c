@@ -97,6 +97,22 @@ void SerialPort_property_set__win32Dtr(zend_bool dtr, GORILLA_METHOD_PARAMETERS)
     zend_update_property_bool(_this_ce, _this_zval, "_win32Dtr", strlen("_win32Dtr"), dtr TSRMLS_CC);
 }
 
+long SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAMETERS) {
+    return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_win32VMin", strlen("_win32VMin"), 1 TSRMLS_CC));
+}
+
+void SerialPort_property_set__win32VMin(long vmin, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_long(_this_ce, _this_zval, "_win32VMin", strlen("_win32VMin"), vmin TSRMLS_CC);
+}
+
+long SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAMETERS) {
+    return Z_LVAL_P(zend_read_property(_this_ce, _this_zval, "_win32VTime", strlen("_win32VTime"), 1 TSRMLS_CC));
+}
+
+void SerialPort_property_set__win32VTime(long vtime, GORILLA_METHOD_PARAMETERS) {
+    zend_update_property_long(_this_ce, _this_zval, "_win32VTime", strlen("_win32VTime"), vtime TSRMLS_CC);
+}
+
 /* {{{ Methods */
 
 
@@ -798,7 +814,7 @@ PHP_METHOD(SerialPort, setVMin)
         return;
     }
 
-    if (vMin < 0 || vMin > 255) {
+    if (vMin < -1 || vMin > 255) {
         zend_throw_exception(NULL, "range exception. VMIN must be greater than or equal to 0, and less than or equal to 255.", 4395 TSRMLS_CC);
         RETURN_NULL();
     }
@@ -843,7 +859,7 @@ PHP_METHOD(SerialPort, setVTime)
             return;
     }
 
-    if (vTime < 0 || vTime > 255) {
+    if (vTime < -1 || vTime > 255) {
         zend_throw_exception(NULL, "range exception. VTIME must be greater than or equal to 0, and less than or equal to 255.", 4324 TSRMLS_CC);
         RETURN_NULL();
     }
@@ -1147,6 +1163,14 @@ static void class_init_SerialPort(TSRMLS_D)
 
             zend_declare_property_null(SerialPort_ce_ptr, 
                 "_win32Rts", 9, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
+            zend_declare_property_long(SerialPort_ce_ptr, 
+                "_win32VTime", 11, -1, 
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
+            zend_declare_property_long(SerialPort_ce_ptr, 
+                "_win32VMin", 10, -1, 
                 ZEND_ACC_PRIVATE TSRMLS_CC);
             
            /* }}} Property registration */

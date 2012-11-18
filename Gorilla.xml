@@ -72,6 +72,8 @@
     <property name="_win32NewLine" access="private" type="string"></property>
     <property name="_win32Dtr" access="private" ></property>
     <property name="_win32Rts" access="private" ></property>
+    <property name="_win32VTime" access="private" type="int"></property>
+    <property name="_win32VMin" access="private" type="int"></property>
     <function name="__construct">
       <proto>object __construct([string device])</proto>
     </function>

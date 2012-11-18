@@ -239,7 +239,31 @@ long SerialPort_read_vmin1_vtime0_impl(long serial_port_fd, char *buf, int buf_l
 }
 
 long SerialPort_read_vmin1_vtime1_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
+    char _buf[1];
+    long written = 0, vmin;
+    DWORD started = 0, vtime;
     
+    vmin = SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU);;
+    vtime = (DWORD)(SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAM_PASSTHRU) * 100);
+    
+    while (written < buf_len) {
+        if (!read(serial_port_fd, _buf, 1)) {
+            if (started == 0) {
+                continue;
+            } else if (written >= vmin) {
+                break;
+            } else if (GetTickCount() - started >= vtime && written > 0) {
+                break;
+            } else {
+                continue;
+            }
+        } else if (written == 0) {
+            started = GetTickCount();
+        }
+        buf[written++] = _buf[0];
+    }
+    
+    return written;
 }
 
 long SerialPort_read_vmin0_vtime1_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
@@ -328,6 +352,14 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
             SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU) > 0 
             && SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAM_PASSTHRU) > 0) 
     {
+        timeouts.ReadIntervalTimeout = MAXDWORD;
+        timeouts.ReadTotalTimeoutMultiplier = 0;
+        timeouts.ReadTotalTimeoutConstant = 50;
+        SET_COMM_TIMEOUTS(win32Handle, &timeouts, {
+            zend_throw_exception(NULL, "failed to set timeouts property for vmin > 0, vtime > 0.", 427 TSRMLS_CC);
+            goto exit_read;
+        });
+        
         actual_length = SerialPort_read_vmin1_vtime1_impl(serial_port_fd, buf, length, GORILLA_METHOD_PARAM_PASSTHRU);
     } else if ( // POSIX non canonical read VTIME > 0 VMIN = 0
             SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU) == 0 

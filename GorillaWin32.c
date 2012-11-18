@@ -45,15 +45,6 @@
             SET_COMM_TIMEOUTS(win32Handle, &timeouts, {}); \
         }
 
-#define SerialPort_set_win32_timeouts_for_posix_read(win32Handle, timeouts, _ReadIntervalTimeout, _ReadTotalTimeoutMultiplier, _ReadTotalTimeoutConstant) { \
-            win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU); \
-            GET_COMM_TIMEOUTS(win32Handle, &timeouts, { return; }); \
-            timeouts.ReadIntervalTimeout = _ReadIntervalTimeout; \
-            timeouts.ReadTotalTimeoutMultiplier = _ReadTotalTimeoutMultiplier; \
-            timeouts.ReadTotalTimeoutConstant = _ReadTotalTimeoutConstant; \
-            SET_COMM_TIMEOUTS(win32Handle, &timeouts, {}); \
-        }
-
 #define SerialPort_check_vtime_vmin_is_negative() \
         if (SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAM_PASSTHRU) != -1 \
                 || SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU) != -1) { \
@@ -252,7 +243,24 @@ long SerialPort_read_vmin1_vtime1_impl(long serial_port_fd, char *buf, int buf_l
 }
 
 long SerialPort_read_vmin0_vtime1_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
+    char _buf[1];
+    long written = 0;
+    DWORD started, vtime;
+
+    vtime = (DWORD)(SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAM_PASSTHRU) * 100);
+    started = GetTickCount();
+    while (written < buf_len && (GetTickCount() - started < vtime)) {
+        if (!read(serial_port_fd, _buf, 1)) {
+            if (written > 0) {
+                break;
+            } else {
+                continue;
+            }
+        }
+        buf[written++] = _buf[0];
+    }
     
+    return written;
 }
 
 zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
@@ -263,7 +271,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
                 _ReadTotalTimeoutConstant;
     zval *zval_data;
     char *buf;
-    long serial_port_fd, actual_length;
+    long serial_port_fd, actual_length = 0;
     
     win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
     GET_COMM_TIMEOUTS(win32Handle, &timeouts, {
@@ -277,7 +285,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     
     ALLOC_INIT_ZVAL(zval_data);
-    buf = emalloc(length);
+    buf = ecalloc(1, length);
 
     // POSIX canonical read
     if (SerialPort_property_get__win32IsCanonical(GORILLA_METHOD_PARAM_PASSTHRU)) {
@@ -286,7 +294,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
         timeouts.ReadTotalTimeoutConstant = 50;
         SET_COMM_TIMEOUTS(win32Handle, &timeouts, {
             zend_throw_exception(NULL, "failed to set timeouts property for canonical read.", 424 TSRMLS_CC);
-            return 0;
+            goto exit_read;
         });
         
         actual_length = SerialPort_read_canonical_impl(serial_port_fd, buf, length, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -299,7 +307,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
         timeouts.ReadTotalTimeoutConstant = 0;
         SET_COMM_TIMEOUTS(win32Handle, &timeouts, {
             zend_throw_exception(NULL, "failed to set timeouts property for vmin = 0, vtime = 0.", 425 TSRMLS_CC);
-            return 0;
+            goto exit_read;
         });
         
         actual_length = SerialPort_read_vmin0_vtime0_impl(serial_port_fd, buf, length, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -312,7 +320,7 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
         timeouts.ReadTotalTimeoutConstant = 50;
         SET_COMM_TIMEOUTS(win32Handle, &timeouts, {
             zend_throw_exception(NULL, "failed to set timeouts property for vmin > 0, vtime = 0.", 426 TSRMLS_CC);
-            return 0;
+            goto exit_read;
         });
         
         actual_length = SerialPort_read_vmin1_vtime0_impl(serial_port_fd, buf, length, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -325,11 +333,20 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
             SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU) == 0 
             && SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAM_PASSTHRU) > 0) 
     {
+        timeouts.ReadIntervalTimeout = MAXDWORD;
+        timeouts.ReadTotalTimeoutMultiplier = 0;
+        timeouts.ReadTotalTimeoutConstant = 50;
+        SET_COMM_TIMEOUTS(win32Handle, &timeouts, {
+            zend_throw_exception(NULL, "failed to set timeouts property for vmin = 0, vtime > 0.", 428 TSRMLS_CC);
+            goto exit_read;
+        });
+        
         actual_length = SerialPort_read_vmin0_vtime1_impl(serial_port_fd, buf, length, GORILLA_METHOD_PARAM_PASSTHRU);
     } else {
         actual_length = read(serial_port_fd, buf, length);
     }
     
+exit_read:
     ZVAL_STRINGL(zval_data, buf, actual_length, 1);
     efree(buf);
     

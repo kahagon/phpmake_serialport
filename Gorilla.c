@@ -166,7 +166,9 @@ PHP_METHOD(SerialPort, open)
 }
 /* }}} open */
 
-
+static zend_bool SerialPort_isOpen_impl(GORILLA_METHOD_PARAMETERS) {
+    return (zend_bool)(SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU) != -1);
+}
 
 /* {{{ proto bool close()
    */
@@ -174,9 +176,6 @@ PHP_METHOD(SerialPort, close)
 {
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
-    zval *zval_stream;
-    php_stream *stream;
-    int result = -1;
 
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
         return;
@@ -184,7 +183,12 @@ PHP_METHOD(SerialPort, close)
 
     _this_ce = Z_OBJCE_P(_this_zval);
 
-    RETURN_BOOL(SerialPort_close_impl(GORILLA_METHOD_PARAM_PASSTHRU));
+    if (SerialPort_isOpen_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        RETURN_BOOL(SerialPort_close_impl(GORILLA_METHOD_PARAM_PASSTHRU));
+    } else {
+        RETURN_TRUE;
+    }
+    
 }
 /* }}} close */
 
@@ -197,7 +201,6 @@ PHP_METHOD(SerialPort, isOpen)
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
     zval *zval_stream;
-    long serial_port_fd = -1;
 
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
         return;
@@ -205,8 +208,7 @@ PHP_METHOD(SerialPort, isOpen)
 
     _this_ce = Z_OBJCE_P(_this_zval);
     
-    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
-    if (serial_port_fd != -1) {
+    if (SerialPort_isOpen_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
         RETURN_TRUE;
     } else {
         RETURN_FALSE;

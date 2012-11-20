@@ -87,6 +87,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     SerialPort_canonical_buffer *canonical_buffer;
     HANDLE win32Handle = NULL;
     DCB dcb;
+    int commError;
     int serial_port_fd;
     int flags = O_CREAT|O_APPEND|O_RDWR|O_BINARY;
     
@@ -116,12 +117,22 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     }
     SerialPort_property_set__streamFd(serial_port_fd, GORILLA_METHOD_PARAM_PASSTHRU);
     
+    ClearCommError(win32Handle, &commError, NULL);
+    SetupComm(win32Handle, 4096, 4096);
+    if (!PurgeComm(win32Handle, PURGE_TXABORT|PURGE_RXABORT|PURGE_TXCLEAR|PURGE_RXCLEAR)) {
+        zend_throw_exception(NULL, "failed to PurgeComm()", 3436 TSRMLS_CC);
+        return;
+    }
+    
     memset(&dcb, 0, sizeof(DCB));
     GetCommState(win32Handle, &dcb);
+    dcb.DCBlength = sizeof(DCB);
+    dcb.BaudRate = BAUD_RATE_1200;
     dcb.fDtrControl = DTR_CONTROL_ENABLE;
     dcb.fRtsControl = RTS_CONTROL_ENABLE;
+    dcb.ByteSize = 8;
     SET_COMM_STATE(win32Handle, &dcb);
-    
+
     SerialPort_setDTR_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);
     SerialPort_setRTS_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);
     

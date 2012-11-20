@@ -13,7 +13,7 @@
       <role>lead</role>
     </maintainer>
   </maintainers>
-  <license>GPL v2 or later</license>
+  <license>PHP</license>
   <release>
     <version>0.0.1</version>
     <state>alpha</state>
@@ -76,6 +76,9 @@
     <property name="_win32VMin" access="private" type="int"></property>
     <function name="__construct">
       <proto>object __construct([string device])</proto>
+    </function>
+    <function name="__destruct">
+      <proto>void __destruct()</proto>
     </function>
     <function name="open">
       <proto>object open(string device)</proto>

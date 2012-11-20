@@ -140,6 +140,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
 }
 
 zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
+    zval *zval_win32Handle, *zval_win32CanonicalBuffer;
     long serial_port_fd;
     int result = -1;
     
@@ -147,6 +148,10 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
     result = _close(serial_port_fd);
     SerialPort_property_set__streamFd(-1, GORILLA_METHOD_PARAM_PASSTHRU);
     
+    zval_win32Handle = SerialPort_property_get__win32Handle(GORILLA_METHOD_PARAM_PASSTHRU);
+    ZVAL_NULL(zval_win32Handle);
+    zval_win32CanonicalBuffer = SerialPort_property_get__win32CanonicalBuffer(GORILLA_METHOD_PARAM_PASSTHRU);
+    ZVAL_NULL(zval_win32CanonicalBuffer);
     return (zend_bool)(result == 0);
 }
 

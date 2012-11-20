@@ -115,6 +115,9 @@ void SerialPort_property_set__win32VTime(long vtime, GORILLA_METHOD_PARAMETERS) 
 
 /* {{{ Methods */
 
+static zend_bool SerialPort_isOpen_impl(GORILLA_METHOD_PARAMETERS) {
+    return (zend_bool)(SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU) != -1);
+}
 
 /* {{{ proto object __construct([string device])
    */
@@ -143,6 +146,24 @@ PHP_METHOD(SerialPort, __construct)
 /* }}} __construct */
 
 
+/* {{{ proto void __destruct()
+   */
+PHP_METHOD(SerialPort, __destruct)
+{
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+            return;
+    }
+
+    _this_ce = Z_OBJCE_P(_this_zval);
+    if (SerialPort_isOpen_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
+        SerialPort_close_impl(GORILLA_METHOD_PARAM_PASSTHRU);
+    }
+}
+/* }}} __destruct */
+
 
 /* {{{ proto object open(string device)
    */
@@ -166,9 +187,6 @@ PHP_METHOD(SerialPort, open)
 }
 /* }}} open */
 
-static zend_bool SerialPort_isOpen_impl(GORILLA_METHOD_PARAMETERS) {
-    return (zend_bool)(SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU) != -1);
-}
 
 /* {{{ proto bool close()
    */
@@ -1076,6 +1094,7 @@ PHP_METHOD(SerialPort, setWin32WriteTotalTimeoutConstant)
 
 static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, __construct, NULL, /**/ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+	PHP_ME(SerialPort, __destruct, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, open, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, close, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, isOpen, NULL, /**/ZEND_ACC_PUBLIC)

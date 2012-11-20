@@ -1674,8 +1674,7 @@ PHP_MINFO_FUNCTION(Gorilla)
 	php_printf("API for talking to serialport and arduino\n");
 	php_info_print_table_start();
 	php_info_print_table_row(2, "Version",PHP_GORILLA_VERSION " (alpha)");
-	php_info_print_table_row(2, "Released", "2012-10-25");
-	php_info_print_table_row(2, "CVS Revision", "$Id: $");
+	php_info_print_table_row(2, "Released", "2012-11-21");
 	php_info_print_table_row(2, "Authors", "Keng-ichi Ahagon 'k.ahagon@n-3.so' (lead)\n");
 	php_info_print_table_end();
 	/* add your stuff here */

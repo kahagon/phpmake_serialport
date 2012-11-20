@@ -15,11 +15,24 @@
   </maintainers>
   <license>PHP</license>
   <release>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
+    <date>2012-11-21</date>
     <state>alpha</state>
-    <notes></notes>
+    <notes>
+      implement SerialPort class for Windows.
+    </notes>
   </release>
-  <changelog></changelog>
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2012-10-31</date>
+      <state>alpha</state>
+      <notes>
+        First release. 
+        implement SerialPort class for POSIX.
+      </notes>
+    </release>
+  </changelog>
 
   <resources>
     <resource name="Win32Handle" payload="void" alloc="no"></resource>

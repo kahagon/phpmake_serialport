@@ -131,6 +131,8 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     dcb.fDtrControl = DTR_CONTROL_ENABLE;
     dcb.fRtsControl = RTS_CONTROL_ENABLE;
     dcb.ByteSize = 8;
+    dcb.XonLim = 0;
+    dcb.XoffLim = 0;
     SET_COMM_STATE(win32Handle, &dcb);
 
     SerialPort_setDTR_impl((zend_bool)1, GORILLA_METHOD_PARAM_PASSTHRU);

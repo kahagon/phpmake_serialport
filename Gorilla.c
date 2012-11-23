@@ -1593,7 +1593,7 @@ static void class_init_Arduino(TSRMLS_D)
 /* }}} Class definitions*/
 
 /* {{{ Gorilla_functions[] */
-function_entry Gorilla_functions[] = {
+zend_function_entry Gorilla_functions[] = {
 	{ NULL, NULL, NULL }
 };
 /* }}} */

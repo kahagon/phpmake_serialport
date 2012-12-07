@@ -77,15 +77,13 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     zval *zval_stream, *zval_data;
     php_stream *stream;
     char *buf;
-    long actual_length;
+    long serial_port_fd, actual_length;
     
     ALLOC_INIT_ZVAL(zval_data);
     buf = emalloc(length);
     
-    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
-    php_stream_from_zval(stream, &zval_stream);
-    
-    actual_length = php_stream_read(stream, buf, length);
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    actual_length = read(serial_port_fd, buf, length);
     
     ZVAL_STRINGL(zval_data, buf, actual_length, 1);
     efree(buf);

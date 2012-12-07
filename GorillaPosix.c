@@ -62,7 +62,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
-    attr.c_lflag &= ~ECHO;
+    attr.c_lflag &= ~ECHO && ~ECHONL;
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;

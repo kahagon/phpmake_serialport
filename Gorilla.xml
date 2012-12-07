@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE extension SYSTEM "../extension.dtd">
-<extension name="Gorilla" version="0.0.1">
-  <summary>API for talking to serialport and arduino</summary>
+<extension name="Gorilla" version="0.1.1">
+  <summary>API for talking to serialport</summary>
   <description>
-    API for talking to serialport and arduino.
+    API for talking to serialport.
   </description>
   <maintainers>
     <maintainer>
@@ -15,14 +15,22 @@
   </maintainers>
   <license>PHP</license>
   <release>
-    <version>0.1.0</version>
-    <date>2012-11-21</date>
+    <version>0.1.1</version>
+    <date>2012-12-08</date>
     <state>alpha</state>
     <notes>
-      implement SerialPort class for Windows.
+      fix a bug which cause echo-back on Linux
     </notes>
   </release>
   <changelog>
+    <release>
+      <version>0.1.0</version>
+      <date>2012-11-21</date>
+      <state>alpha</state>
+      <notes>
+        implement SerialPort class for Windows.
+      </notes>
+    </release>
     <release>
       <version>0.0.1</version>
       <date>2012-10-31</date>
@@ -38,6 +46,10 @@
     <resource name="Win32Handle" payload="void" alloc="no"></resource>
     <resource name="CanonicalBuffer" payload="SerialPort_canonical_buffer" alloc="yes"></resource>
   </resources>
+
+  <constants>
+    <constant name="GORILLA_VERSION" type="string" value="PHP_GORILLA_VERSION" />
+  </constants>
 
   <class name="SerialPort">
     <constant type="int" name="BAUD_RATE_50" value="50"></constant>

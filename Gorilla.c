@@ -1623,6 +1623,7 @@ ZEND_GET_MODULE(Gorilla)
 /* {{{ PHP_MINIT_FUNCTION */
 PHP_MINIT_FUNCTION(Gorilla)
 {
+	REGISTER_STRINGL_CONSTANT("GORILLA_VERSION", PHP_GORILLA_VERSION, strlen(PHP_GORILLA_VERSION), CONST_PERSISTENT | CONST_CS);
 	le_Win32Handle = zend_register_list_destructors_ex(Win32Handle_dtor, 
 						   NULL, "Win32Handle", module_number);
 	le_CanonicalBuffer = zend_register_list_destructors_ex(CanonicalBuffer_dtor, 

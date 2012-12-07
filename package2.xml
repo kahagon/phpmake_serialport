@@ -10,10 +10,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <name>Gorilla</name>
   <channel>pecl.n-3.so</channel>
 
-  <summary>API for talking to serialport and arduino</summary>
+  <summary>API for talking to serialport</summary>
 
   <description>
-    API for talking to serialport and arduino.
+    API for talking to serialport.
   </description>
 
   <lead>
@@ -23,10 +23,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
     <active>yes</active>
   </lead>
 
-  <date>2012-11-21</date>
+  <date>2012-12-08</date>
   <version>
-    <release>0.1.0</release>
-    <api>0.1.0</api>
+    <release>0.1.1</release>
+    <api>0.1.1</api>
   </version>
   <stability>
     <release>alpha</release>
@@ -36,7 +36,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
   <license uri="http://php.net/license" filesource="LICENSE">PHP</license>
 
   <notes>
-      implement SerialPort class for Windows.
+      fix a bug which cause echo-back on Linux
 
   </notes>
 

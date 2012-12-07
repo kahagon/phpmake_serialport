@@ -44,6 +44,7 @@ static void SerialPort_setLineStatus(zend_bool stat, int line, GORILLA_METHOD_PA
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     php_stream *stream;
     zval *zval_stream;
+    struct termios attr;
     
     int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY);
     if (serial_port_fd == -1) {
@@ -55,6 +56,17 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     stream = php_stream_fopen_from_fd_rel(serial_port_fd, "r+", NULL);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_to_zval(stream, zval_stream);
+    
+    if (tcgetattr(serial_port_fd, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+    
+    attr.c_lflag &= ~ECHO;
+    if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
     
     return;
 }

@@ -305,13 +305,12 @@ long SerialPort_read_vmin0_vtime1_impl(long serial_port_fd, char *buf, int buf_l
     return written;
 }
 
-zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
+void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS) {
     HANDLE win32Handle;
     COMMTIMEOUTS timeouts;
     DWORD _ReadIntervalTimeout, 
                 _ReadTotalTimeoutMultiplier, 
                 _ReadTotalTimeoutConstant;
-    zval *zval_data;
     char *buf;
     long serial_port_fd, actual_length = 0;
     
@@ -326,7 +325,6 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     
     serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     
-    ALLOC_INIT_ZVAL(zval_data);
     buf = ecalloc(1, length);
 
     // POSIX canonical read

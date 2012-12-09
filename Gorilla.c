@@ -242,11 +242,6 @@ PHP_METHOD(SerialPort, read)
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
     long length = 1;
-    zval *data;
-    zval *zval_stream;
-    php_stream *stream;
-    char *buf;
-    long actual_length;
 
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O|l", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
         return;
@@ -261,9 +256,7 @@ PHP_METHOD(SerialPort, read)
 
     _this_ce = Z_OBJCE_P(_this_zval);
 
-    data = SerialPort_read_impl(length, GORILLA_METHOD_PARAM_PASSTHRU);
-    RETVAL_STRINGL(Z_STRVAL_P(data), Z_STRLEN_P(data), 1);
-    zval_dtor(data);
+    SerialPort_read_impl(length, return_value, GORILLA_METHOD_PARAM_PASSTHRU);
     return;
 }
 /* }}} read */

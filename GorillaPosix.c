@@ -86,13 +86,10 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
     return (zend_bool)(result == 0);
 }
 
-zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
-    zval *zval_stream, *zval_data;
-    php_stream *stream;
+void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS) {
     char *buf;
     long serial_port_fd, actual_length;
     
-    ALLOC_INIT_ZVAL(zval_data);
     buf = emalloc(length);
     
     serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
@@ -100,7 +97,6 @@ zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS) {
     
     ZVAL_STRINGL(zval_data, buf, actual_length, 1);
     efree(buf);
-    return zval_data;
 }
 
 size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PARAMETERS) {

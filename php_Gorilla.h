@@ -160,7 +160,7 @@ typedef struct _SerialPort_canonical_buffer {
 
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
 zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS);
-zval *SerialPort_read_impl(int length, GORILLA_METHOD_PARAMETERS);
+void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS);
 size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PARAMETERS);
 long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_setBaudRate_impl(long baud_rate, GORILLA_METHOD_PARAMETERS);

@@ -66,6 +66,8 @@
       <file role='src' name='Gorilla.dsp'/>
       <file role='src' name='config.w32'/>
       <file role='src' name='Gorilla.c'/>
+      <file role='src' name='GorillaPosix.c'/>
+      <file role='src' name='GorillaWin32.c'/>
       <file role='src' name='php_Gorilla.h'/>
       <dir name="tests">
         <file role='test' name='SerialPort____construct.phpt'/>

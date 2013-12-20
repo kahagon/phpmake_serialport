@@ -37,3 +37,5 @@ tmp-php.ini
 php_test_results*
 
 *.swp
+config.h.in
+*~

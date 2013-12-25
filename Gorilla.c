@@ -1138,7 +1138,7 @@ static void class_init_SerialPort(TSRMLS_D)
 {
 	zend_class_entry ce;
 
-	INIT_CLASS_ENTRY(ce, "SerialPort", SerialPort_methods);
+	INIT_NS_CLASS_ENTRY(ce, "PHPMake", "SerialPort", SerialPort_methods);
 	SerialPort_ce_ptr = zend_register_internal_class(&ce TSRMLS_CC);
 
            /* {{{ Property registration */

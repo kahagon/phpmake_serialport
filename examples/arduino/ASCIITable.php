@@ -4,6 +4,8 @@ if ($argc<2) {
     exit(1);
 }
 
+use PHPMake\SerialPort as SerialPort;
+
 $retval = 0;
 $device = $argv[1];
 $baudRate = 9600;

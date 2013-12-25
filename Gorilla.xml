@@ -15,6 +15,16 @@
   </maintainers>
   <license>PHP</license>
   <release>
+    <version>0.5.0</version>
+    <state>beta</state>
+    <notes>
+        introduce namespace 'PHPMake'.
+        remove 'Arduino' class definition.
+</notes>
+    <date>2013-12-25</date>
+  </release>
+  <changelog>
+  <release>
     <version>0.1.2</version>
     <date>2012-12-09</date>
     <state>alpha</state>
@@ -22,7 +32,6 @@
       fix a bug which cause memory leak when call SerialPort::read()
     </notes>
   </release>
-  <changelog>
     <release>
       <version>0.1.1</version>
       <date>2012-12-08</date>
@@ -235,48 +244,6 @@
     </function>
     <function name="setWin32WriteTotalTimeoutConstant">
       <proto>object setWin32WriteTotalTimeoutConstant(int time)</proto>
-    </function>
-  </class>
-  <class name="Arduino">
-    <constant type="int" name="HIGH" value="1"></constant>
-    <constant type="int" name="LOW" value="0"></constant>
-    <property name="_serialPort" access="protected"></property>
-    <property name="_pinList" access="protected"></property>
-    <function name="__construct">
-      <proto>object __construct(object serialPort)</proto>
-    </function>
-    <function name="output">
-      <proto>object output(array pinList)</proto>
-    </function>
-    <function name="close">
-      <proto>bool close()</proto>
-    </function>
-    <function name="digitalWrite">
-      <proto>object digitalWrite(int pin, int value)</proto>
-    </function>
-    <function name="setHigh">
-      <proto>object setHigh(int pin)</proto>
-      <description>digitalWrite(pin, Arduino::HIGH)</description>
-    </function>
-    <function name="setLow">
-      <proto>object setLow(int pin)</proto>
-      <description>digitalWrite(pin, Arduino::LOW)</description>
-    </function>
-    <function name="digitalRead">
-      <proto>int digitalRead(int pin)</proto>
-    </function>
-    <function name="getState">
-      <proto>int getState(int pin)</proto>
-      <description>this method is an alias of digitalRead()</description>
-    </function>
-    <function name="isHigh">
-      <proto>bool isHigh(int pin)</proto>
-    </function>
-    <function name="isLow">
-      <proto>bool isLow(int pin)</proto>
-    </function>
-    <function name="turnOff">
-      <proto>object turnOff()</proto>
     </function>
   </class>
 </extension>

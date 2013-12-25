@@ -18,7 +18,17 @@
       <role>lead</role>
     </maintainer>
   </maintainers>
+  <release>
+    <version>0.5.0</version>
+    <state>beta</state>
+    <notes>
+        introduce namespace 'PHPMake'.
+        remove 'Arduino' class definition.
+</notes>
+    <date>2013-12-25</date>
+  </release>
 
+  <changelog>
   <release>
     <version>0.1.2</version>
     <state>alpha</state>
@@ -26,7 +36,6 @@
 </notes>
     <date>2012-12-09</date>
   </release>
-  <changelog>
     <release>
       <version>0.1.1</version>
       <date>2012-12-08</date>
@@ -113,17 +122,6 @@
         <file role='test' name='SerialPort__setWin32WriteTotalTimeoutMultiplier.phpt'/>
         <file role='test' name='SerialPort__getWin32WriteTotalTimeoutConstant.phpt'/>
         <file role='test' name='SerialPort__setWin32WriteTotalTimeoutConstant.phpt'/>
-        <file role='test' name='Arduino____construct.phpt'/>
-        <file role='test' name='Arduino__output.phpt'/>
-        <file role='test' name='Arduino__close.phpt'/>
-        <file role='test' name='Arduino__digitalWrite.phpt'/>
-        <file role='test' name='Arduino__setHigh.phpt'/>
-        <file role='test' name='Arduino__setLow.phpt'/>
-        <file role='test' name='Arduino__digitalRead.phpt'/>
-        <file role='test' name='Arduino__getState.phpt'/>
-        <file role='test' name='Arduino__isHigh.phpt'/>
-        <file role='test' name='Arduino__isLow.phpt'/>
-        <file role='test' name='Arduino__turnOff.phpt'/>
       </dir>
     </dir>
   </filelist>

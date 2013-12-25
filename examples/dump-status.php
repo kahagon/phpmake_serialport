@@ -1,4 +1,7 @@
 <?php
+
+use PHPMake\SerialPort as SerialPort;
+
 function serialPortDump(SerialPort $sp) {
     printf(
             'flow control: %s' . PHP_EOL .
@@ -44,7 +47,7 @@ $sp->setFlowControl(SerialPort::FLOW_CONTROL_HARD)
         ->setBaudRate(SerialPort::BAUD_RATE_38400)
         ->setCanonical(!$sp->isCanonical())
         ->setCharSize(SerialPort::CHAR_SIZE_8)
-        ->setNumOfStopBits(2)
+        ->setNumOfStopBits(SerialPort::STOP_BITS_2_0)
         ->setVMin(1)
         ->setVTime(0)
         ->setParity(SerialPort::PARITY_NONE);

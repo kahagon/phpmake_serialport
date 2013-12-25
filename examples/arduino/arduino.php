@@ -1,7 +1,7 @@
 <?php
 /*
  * このスクリプトの実行には arduino が必要です。
- * このスクリプトと一緒にバンドルされている ardu.ino スケッチが arduino に
+ * このスクリプトと一緒にバンドルされている arduino.ino スケッチが arduino に
  * アップロードされている必要があります。
  */
 
@@ -14,6 +14,8 @@ if ($argc != 2) {
 EOU;
     exit(1);
 }
+
+use PHPMake\SerialPort as SerialPort;
 
 //$pins = array(chr(55), chr(56), chr(57), chr(58), chr(59), chr(60), chr(61));
 $pins = array('7', '8', '9', ':', ';', '<', '=');

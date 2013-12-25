@@ -6,6 +6,8 @@ if ($argc != 2) {
     exit (1);
 }
 
+use PHPMake\SerialPort as SerialPort;
+
 $status = 0;
 $portString = $argv[1];
 

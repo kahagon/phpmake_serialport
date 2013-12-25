@@ -1,4 +1,5 @@
 <?php
+use PHPMake\SerialPort as SerialPort;
 
 class Server {
 

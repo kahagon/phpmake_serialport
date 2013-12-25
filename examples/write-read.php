@@ -1,5 +1,7 @@
 <?php
 
+use PHPMake\SerialPort as SerialPort;
+
 /* シリアルポートを開きます */
 $port = new SerialPort('COM3');
 

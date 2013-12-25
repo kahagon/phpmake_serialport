@@ -1,4 +1,5 @@
 <?php
+namespace PHPMake;
 /**
  * この PHP ファイルは PHP 拡張 Gorilla の SerialPort クラスのインタフェースと簡単な説明を示したものです。
  * 本来 PHP 拡張のドキュメンテーションは docbook 形式で書き PhD というツールを用いるべきですが、

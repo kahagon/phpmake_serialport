@@ -237,46 +237,4 @@
       <proto>object setWin32WriteTotalTimeoutConstant(int time)</proto>
     </function>
   </class>
-  <class name="Arduino">
-    <constant type="int" name="HIGH" value="1"></constant>
-    <constant type="int" name="LOW" value="0"></constant>
-    <property name="_serialPort" access="protected"></property>
-    <property name="_pinList" access="protected"></property>
-    <function name="__construct">
-      <proto>object __construct(object serialPort)</proto>
-    </function>
-    <function name="output">
-      <proto>object output(array pinList)</proto>
-    </function>
-    <function name="close">
-      <proto>bool close()</proto>
-    </function>
-    <function name="digitalWrite">
-      <proto>object digitalWrite(int pin, int value)</proto>
-    </function>
-    <function name="setHigh">
-      <proto>object setHigh(int pin)</proto>
-      <description>digitalWrite(pin, Arduino::HIGH)</description>
-    </function>
-    <function name="setLow">
-      <proto>object setLow(int pin)</proto>
-      <description>digitalWrite(pin, Arduino::LOW)</description>
-    </function>
-    <function name="digitalRead">
-      <proto>int digitalRead(int pin)</proto>
-    </function>
-    <function name="getState">
-      <proto>int getState(int pin)</proto>
-      <description>this method is an alias of digitalRead()</description>
-    </function>
-    <function name="isHigh">
-      <proto>bool isHigh(int pin)</proto>
-    </function>
-    <function name="isLow">
-      <proto>bool isLow(int pin)</proto>
-    </function>
-    <function name="turnOff">
-      <proto>object turnOff()</proto>
-    </function>
-  </class>
 </extension>

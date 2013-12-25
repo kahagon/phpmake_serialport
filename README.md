@@ -1,10 +1,10 @@
 Gorilla
 =======
-シリアルポート(RS-232)を介して他のデバイスと通信を行うための PHP 拡張です。  
-このモジュールは Linux などの POSIX システムと Windows で動作します。
-
-The PHP extension for communicate other device via serial-port(COM).
+The PHP extension for communicate other device via serial-port(COM).  
 This module is able to run on POSIX system and Windows.
+
+シリアルポート(COM)を介して他のデバイスと通信を行うための PHP 拡張です。  
+このモジュールは Linux などの POSIX システムと Windows で動作します。
 
 This is a standalone PHP extension created using CodeGen_PECL 1.1.3
 

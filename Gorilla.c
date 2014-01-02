@@ -1317,10 +1317,10 @@ PHP_RSHUTDOWN_FUNCTION(Gorilla)
 /* {{{ PHP_MINFO_FUNCTION */
 PHP_MINFO_FUNCTION(Gorilla)
 {
-	php_printf("API for talking to serialport and arduino\n");
+	php_printf("API for talking to serialport\n");
 	php_info_print_table_start();
-	php_info_print_table_row(2, "Version",PHP_GORILLA_VERSION " (alpha)");
-	php_info_print_table_row(2, "Released", "2012-11-21");
+	php_info_print_table_row(2, "Version",PHP_GORILLA_VERSION " (beta)");
+	php_info_print_table_row(2, "Released", "2013-01-03");
 	php_info_print_table_row(2, "Authors", "Keng-ichi Ahagon 'k.ahagon@n-3.so' (lead)\n");
 	php_info_print_table_end();
 	/* add your stuff here */

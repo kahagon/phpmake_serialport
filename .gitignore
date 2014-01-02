@@ -39,3 +39,8 @@ php_test_results*
 *.swp
 config.h.in
 *~
+
+Release
+config.nice.bat
+configure.bat
+configure.js

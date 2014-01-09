@@ -157,6 +157,15 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
     return (zend_bool)(result == 0);
 }
 
+int SerialPort_flush_impl(GORILLA_METHOD_PARAMETERS) {
+    HANDLE win32Handle = NULL;
+    long serial_port_fd, actual_length;
+    
+    win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
+    return FlushFileBuffers(win32Handle);
+}
+
+
 long SerialPort_read_canonical_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
     char previous, current, _buf[1], *nl;
     int actual_read = 0, nl_len, written = 0;

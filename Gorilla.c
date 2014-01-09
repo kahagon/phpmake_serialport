@@ -234,6 +234,24 @@ PHP_METHOD(SerialPort, isOpen)
 }
 /* }}} isOpen */
 
+/* {{{ proto bool flush()
+   */
+PHP_METHOD(SerialPort, flush)
+{
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
+
+    _this_ce = Z_OBJCE_P(_this_zval);
+
+    RETURN_BOOL(SerialPort_flush_impl(GORILLA_METHOD_PARAM_PASSTHRU));
+    
+}
+/* }}} flush */
+
 
 /* {{{ proto string read([int length])
    */
@@ -1091,6 +1109,7 @@ static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, open, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, close, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, isOpen, NULL, /**/ZEND_ACC_PUBLIC)
+	PHP_ME(SerialPort, flush, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, read, SerialPort__read_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, write, SerialPort__write_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getCTS, NULL, /**/ZEND_ACC_PUBLIC)

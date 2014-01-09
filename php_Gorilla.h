@@ -255,6 +255,14 @@ ZEND_END_ARG_INFO()
 #define SerialPort__isOpen_args NULL
 #endif
 
+PHP_METHOD(SerialPort, flush);
+#if (PHP_MAJOR_VERSION >= 5)
+ZEND_BEGIN_ARG_INFO_EX(SerialPort__flush_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
+ZEND_END_ARG_INFO()
+#else /* PHP 4.x */
+#define SerialPort__close_args NULL
+#endif
+
 PHP_METHOD(SerialPort, read);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(SerialPort__read_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)

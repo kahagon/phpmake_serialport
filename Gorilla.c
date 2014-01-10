@@ -252,6 +252,28 @@ PHP_METHOD(SerialPort, flush)
 }
 /* }}} flush */
 
+/* {{{ proto bool waitToRead()
+   */
+PHP_METHOD(SerialPort, waitToRead)
+{
+    zend_class_entry * _this_ce;
+    zval * _this_zval = NULL;
+
+    if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
+        return;
+    }
+
+    _this_ce = Z_OBJCE_P(_this_zval);
+
+#ifndef PHP_WIN32
+    php_error(E_WARNING, "waitToRead: not yet implemented"); RETURN_FALSE;
+#else
+    SerialPort_waitToRead_impl(GORILLA_METHOD_PARAM_PASSTHRU);
+#endif
+    
+    RETVAL_ZVAL(_this_zval, 1, 0);
+}
+/* }}} waitToRead */
 
 /* {{{ proto string read([int length])
    */
@@ -1110,6 +1132,7 @@ static zend_function_entry SerialPort_methods[] = {
 	PHP_ME(SerialPort, close, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, isOpen, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, flush, NULL, /**/ZEND_ACC_PUBLIC)
+        PHP_ME(SerialPort, waitToRead, NULL, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, read, SerialPort__read_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, write, SerialPort__write_args, /**/ZEND_ACC_PUBLIC)
 	PHP_ME(SerialPort, getCTS, NULL, /**/ZEND_ACC_PUBLIC)

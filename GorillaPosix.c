@@ -64,6 +64,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     
     attr.c_lflag &= ~ECHO;
     attr.c_lflag &= ~ECHONL;
+    attr.c_cflag |= HUPCL;
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
@@ -95,6 +96,17 @@ int SerialPort_flush_impl(GORILLA_METHOD_PARAMETERS) {
     php_stream_from_zval(stream, &zval_stream);
     
     return _php_stream_flush(stream, 0 TSRMLS_CC)==0;
+}
+
+void SerialPort_waitToRead_impl(GORILLA_METHOD_PARAMETERS) {
+    long serial_port_fd;
+
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    
+    fd_set rfds;
+    FD_ZERO(&rfds);
+    FD_SET(serial_port_fd, &rfds);
+    select(serial_port_fd+1, &rfds, NULL, NULL, NULL);
 }
 
 void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS) {

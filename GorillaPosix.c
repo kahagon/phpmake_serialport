@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <linux/serial.h>
 
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
     int serial_port_fd, line_status;
@@ -57,14 +58,12 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_to_zval(stream, zval_stream);
     
-    if (tcgetattr(serial_port_fd, &attr) != 0) {
-        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
-        return;
-    }
+    memset(&attr, 0, sizeof(struct termios));
     
     attr.c_lflag &= ~ECHO;
     attr.c_lflag &= ~ECHONL;
-    attr.c_cflag |= HUPCL;
+    attr.c_cflag = CS8 | CREAD | HUPCL;
+    
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;

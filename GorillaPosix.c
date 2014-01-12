@@ -4,7 +4,6 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <sys/ioctl.h>
-#include <linux/serial.h>
 
 static int SerialPort_getLineStatus(GORILLA_METHOD_PARAMETERS) {
     int serial_port_fd, line_status;

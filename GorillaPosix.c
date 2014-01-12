@@ -97,17 +97,6 @@ int SerialPort_flush_impl(GORILLA_METHOD_PARAMETERS) {
     return _php_stream_flush(stream, 0 TSRMLS_CC)==0;
 }
 
-void SerialPort_waitToRead_impl(GORILLA_METHOD_PARAMETERS) {
-    long serial_port_fd;
-
-    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
-    
-    fd_set rfds;
-    FD_ZERO(&rfds);
-    FD_SET(serial_port_fd, &rfds);
-    select(serial_port_fd+1, &rfds, NULL, NULL, NULL);
-}
-
 void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS) {
     char *buf;
     long serial_port_fd, actual_length;

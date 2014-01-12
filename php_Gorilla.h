@@ -161,7 +161,6 @@ typedef struct _SerialPort_canonical_buffer {
 void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS);
 zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS);
 int SerialPort_flush_impl(GORILLA_METHOD_PARAMETERS);
-void SerialPort_waitToRead_impl(GORILLA_METHOD_PARAMETERS);
 void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS);
 size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PARAMETERS);
 long SerialPort_getBaudRate_impl(GORILLA_METHOD_PARAMETERS);
@@ -265,14 +264,6 @@ ZEND_END_ARG_INFO()
 #define SerialPort__flush_args NULL
 #endif
         
-PHP_METHOD(SerialPort, waitToRead);
-#if (PHP_MAJOR_VERSION >= 5)
-ZEND_BEGIN_ARG_INFO_EX(SerialPort__waitToRead_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)
-ZEND_END_ARG_INFO()
-#else /* PHP 4.x */
-#define SerialPort__waitToRead_args NULL
-#endif
-
 PHP_METHOD(SerialPort, read);
 #if (PHP_MAJOR_VERSION >= 5)
 ZEND_BEGIN_ARG_INFO_EX(SerialPort__read_args, ZEND_SEND_BY_VAL, ZEND_RETURN_VALUE, 0)

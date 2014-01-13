@@ -1,5 +1,5 @@
-Gorilla
-=======
+Gorilla PHPMake\SerialPort
+==========================
 The PHP extension for communicate other device via serial-port(COM).  
 This module is able to run on POSIX system and Windows.
 

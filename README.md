@@ -37,7 +37,7 @@ DLL features (PHP version, TS or NTS and architecture) must be matched php.exe's
 TS means Thread Safe, and NTS means Non Thread Safe.  
 Architecture may be x86 or x64.
 
-For example, Gorilla-0.5.0-5.5-ts-x86.zip includes DLL for PHP-5.5 which is 32bit and Non Thread Safe.
+For example, Gorilla-0.5.0-5.5-ts-x86.zip includes DLL for thread safe PHP-5.5 which is 32bit.
 
 
 ### Install DLL

@@ -34,10 +34,12 @@ These zip files are named with next rule.
 Gorilla-[version of Gorilla]-[version of PHP]-[ts or nts]-[architecture].zip
 
 DLL features (PHP version, TS or NTS and architecture) must be matched php.exe's.  
-TS means Thread Safe, and NTS means Non Thread Safe.  
-Architecture may be x86 or x64.
+TS means Thread Safe, and NTS means Non Thread Safe. Architecture may be x86 or x64.  
+For example, Gorilla-0.5.0-5.5-ts-x86.zip includes DLL for php.exe which is,
 
-For example, Gorilla-0.5.0-5.5-ts-x86.zip includes DLL for thread safe PHP-5.5 which is 32bit.
+ * version 5.5.x
+ * thread safe 
+ * 32bit(x86)
 
 
 ### Install DLL
@@ -47,7 +49,7 @@ Follow next step to enable Gorilla.
  1. save php_Gorilla.dll into your ```extension_dir```.
  2. add ```extension=php_Gorilla.dll``` to your php.ini
 
-Please confirm extension_dir directive in php.ini.
+Please confirm ```extension_dir``` directive in php.ini.
 
 Run next command, to make sure that installation has succeeded.
 
@@ -82,11 +84,11 @@ TESTING
 
 You can now load the extension using a php.ini directive
 
-  extension="Gorilla.[so|dll]"
+    extension="Gorilla.[so|dll]"
 
 or load it at runtime using the dl() function
 
-  dl("Gorilla.[so|dll]");
+    dl("Gorilla.[so|dll]");
 
 The extension should now be available, you can test this
 using the extension_loaded() function:

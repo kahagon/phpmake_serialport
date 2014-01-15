@@ -91,10 +91,10 @@ or load it at runtime using the dl() function
 The extension should now be available, you can test this
 using the extension_loaded() function:
 
-  if (extension_loaded("Gorilla"))
-    echo "Gorilla loaded :)";
-  else
-    echo "something is wrong :(";
+    if (extension_loaded("Gorilla"))
+      echo "Gorilla loaded :)";
+    else
+      echo "something is wrong :(";
 
 The extension will also add its own block to the output
 of phpinfo();

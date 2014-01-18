@@ -63,20 +63,73 @@ Or run phpinfo() script,
 You can see information about this extension.
 
 
-BUILDING ON WINDOWS
-===================
+BASIC USAGE
+===========
 
-The extension provides the VisualStudio V6 project file 
+```php
+    <?php
 
-  Gorilla.dsp
-To compile the extension you open this file using VisualStudio,
-select the apropriate configuration for your installation
-(either "Release_TS" or "Debug_TS") and create "php_Gorilla.dll"
+    // $device = 'COM4'; // on Windows
+    $device = '/dev/ttyUSB0'; // on Linux 
 
-After successfull compilation you have to copy the newly
-created "Gorilla.dll" to the PHP
-extension directory (default: C:\PHP\extensions).
+    /*
+     * create new instance
+     */
+    $port = new SerialPort();
 
+    try {
+        /* 
+         * open the port
+         */
+        $port->open($device);
+    
+        /*
+         * configure baud rate
+         *
+         * you can specify baud rate as integer, 
+         * or other class constants like SerialPort::BAUD_RATE_*
+         */
+        $port->setBaudRate(SerialPort::BAUD_RATE_9600);
+    
+        /*
+         * configure flow control
+         * 
+         * any other options are below.
+         * SerialPort::FLOW_CONTROL_SOFT is software flow control.
+         * SerialPort::FLOW_CONTROL_HARD is hardware flow control.
+         */
+        $port->setFlowControl(SerialPort::FLOW_CONTROL_NONE);
+    
+        /*
+         * configure canonical mode
+         * 
+         * canonical mode is for text-based communication.
+         * non-canonical mode is binary-safe.
+         * more detail information about VMIN and VTIME, 
+         * see http://www.unixwiz.net/techtips/termios-vmin-vtime.html
+         */
+        $port->setCanonical(false)
+                ->setVTime(1)->setVMin(0);
+    
+        /*
+         * read data from port.
+         * you can get size of actual read data with strlen($data) .
+         */
+        $data = $port->read(256);
+    
+        /*
+         * send data.
+         */
+        $port->write($data);
+    
+    } catch (Exception $e) {
+        print $e->getMessage() . PHP_EOL;
+        $status = 2;
+    }
+
+    if ($port->isOpen()) $port->close();
+
+```
 
 
 TESTING

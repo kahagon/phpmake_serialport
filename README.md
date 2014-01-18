@@ -124,7 +124,6 @@ BASIC USAGE
     
     } catch (Exception $e) {
         print $e->getMessage() . PHP_EOL;
-        $status = 2;
     }
 
     if ($port->isOpen()) $port->close();

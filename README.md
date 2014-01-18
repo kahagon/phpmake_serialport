@@ -68,7 +68,7 @@ BASIC USAGE
 
 ```php
     <?php
-
+    use PHPMake\SerialPort;
     // $device = 'COM4'; // on Windows
     $device = '/dev/ttyUSB0'; // on Linux 
 

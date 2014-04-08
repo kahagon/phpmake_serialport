@@ -46,27 +46,44 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     zval *zval_stream;
     struct termios attr;
     
-    int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY);
+    GORILLA_PRINTF_DEBUG("opening device:%s\n", device);
+    int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY|O_NONBLOCK);
     if (serial_port_fd == -1) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }
-    
+    GORILLA_PRINTF_DEBUG("opened\n");
+
+    if (ioctl(serial_port_fd, TIOCEXCL) == -1) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+
+    if (fcntl(serial_port_fd, F_SETFL, 0) == -1) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+
     SerialPort_property_set__streamFd(serial_port_fd, GORILLA_METHOD_PARAM_PASSTHRU);
     stream = php_stream_fopen_from_fd_rel(serial_port_fd, "r+", NULL);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_to_zval(stream, zval_stream);
     
     memset(&attr, 0, sizeof(struct termios));
+    if (tcgetattr(serial_port_fd, &attr) == -1) {
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
     
     attr.c_lflag &= ~ECHO;
     attr.c_lflag &= ~ECHONL;
-    attr.c_cflag = CS8 | CREAD | HUPCL;
-    
+    attr.c_cflag = CS8 | CREAD | HUPCL | CLOCAL;
+    GORILLA_PRINTF_DEBUG("setting terminal attributes\n");
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }
+    GORILLA_PRINTF_DEBUG("set\n");
     
     return;
 }
@@ -112,11 +129,17 @@ void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS
 size_t SerialPort_write_impl(const char * data, int data_len, GORILLA_METHOD_PARAMETERS) {
     zval *zval_stream;
     php_stream *stream;
-    long actual_size;
     
+    GORILLA_PRINTF_DEBUG("writing data(%d)\n", data_len);
+    GORILLA_PRINTF_DEBUG("php_stream_write()\n");
+
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
     php_stream_from_zval(stream, &zval_stream);
-    return php_stream_write(stream, data, data_len);
+    size_t written = php_stream_write(stream, data, data_len);
+
+    GORILLA_PRINTF_DEBUG("written: %d\n", written);
+
+    return written;
 }
 
 void SerialPort_setCanonical_impl(zend_bool canonical, GORILLA_METHOD_PARAMETERS) {

@@ -18,7 +18,7 @@ if test "$PHP_GORILLA" != "no"; then
 [AC_MSG_RESULT(ok)],
 [AC_MSG_ERROR([need at least PHP 5.0.0])])
 
-  export CPPFLAGS="$OLD_CPPFLAGS"
+  export CPPFLAGS="-Wno-return-type $OLD_CPPFLAGS"
 
 
   PHP_SUBST(GORILLA_SHARED_LIBADD)

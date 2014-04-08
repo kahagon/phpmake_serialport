@@ -1160,6 +1160,9 @@ static void class_init_SerialPort(TSRMLS_D)
 	SerialPort_ce_ptr = zend_register_internal_class(&ce TSRMLS_CC);
 
            /* {{{ Property registration */
+            zend_declare_property_string(SerialPort_ce_ptr,
+                "debug", 6, "",
+                ZEND_ACC_PUBLIC TSRMLS_CC);
 
             zend_declare_property_string(SerialPort_ce_ptr,
                 "_device", 7, "",

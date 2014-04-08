@@ -141,8 +141,15 @@ PHP_MINFO_FUNCTION(Gorilla);
                 c == PARITY_MARK ? PARITY_MARK_STR : \
                 c == PARITY_SPACE ? PARITY_SPACE_STR : PARITY_INVALID_STR
 
-int le_Win32Handle;
-int le_CanonicalBuffer;
+#define GORILLA_PRINTF_DEBUG(...) \
+{\
+    if (PROP_GET_LONG(debug)) {\
+        php_printf("[PHPMake\\SerialPort debug] " __VA_ARGS__);\
+    }\
+}
+
+extern int le_Win32Handle;
+extern int le_CanonicalBuffer;
 
 #define CANONICAL_BUFFER_SIZE 4096
 typedef struct _SerialPort_canonical_buffer {

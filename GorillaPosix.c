@@ -75,8 +75,8 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
-    attr.c_lflag &= ~ECHO;
-    attr.c_lflag &= ~ECHONL;
+    attr.c_lflag = 0;
+    attr.c_iflag = IGNBRK | IGNPAR;
     attr.c_cflag = CS8 | CREAD | HUPCL | CLOCAL;
     GORILLA_PRINTF_DEBUG("setting terminal attributes\n");
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {

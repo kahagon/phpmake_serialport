@@ -45,6 +45,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     php_stream *stream;
     zval *zval_stream;
     struct termios attr;
+    int bits;
     
     GORILLA_PRINTF_DEBUG("opening device:%s\n", device);
     int serial_port_fd = open(PROP_GET_STRING(_device), O_RDWR|O_NOCTTY|O_NONBLOCK);
@@ -64,6 +65,20 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         return;
     }
 
+
+    if (ioctl(serial_port_fd, TIOCMGET, &bits) < 0) {
+        close(serial_port_fd);
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+
+    bits &= ~(TIOCM_DTR | TIOCM_RTS);
+    if (ioctl(serial_port_fd, TIOCMSET, &bits) < 0) {
+        close(serial_port_fd);
+        zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
+        return;
+    }
+
     SerialPort_property_set__streamFd(serial_port_fd, GORILLA_METHOD_PARAM_PASSTHRU);
     stream = php_stream_fopen_from_fd_rel(serial_port_fd, "r+", NULL);
     zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
@@ -71,6 +86,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     
     memset(&attr, 0, sizeof(struct termios));
     if (tcgetattr(serial_port_fd, &attr) == -1) {
+        close(serial_port_fd);
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }
@@ -80,6 +96,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
     attr.c_cflag = CS8 | CREAD | HUPCL | CLOCAL;
     GORILLA_PRINTF_DEBUG("setting terminal attributes\n");
     if (tcsetattr(serial_port_fd, TCSANOW, &attr) != 0) {
+        close(serial_port_fd);
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }

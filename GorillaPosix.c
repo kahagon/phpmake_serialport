@@ -91,7 +91,8 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         return;
     }
     
-    attr.c_lflag = 0;
+    attr.c_lflag &= ~(ECHO | ECHONL | ISIG);
+    attr.c_oflag &= ~OPOST;
     attr.c_iflag = IGNBRK | IGNPAR;
     attr.c_cflag = CS8 | CREAD | HUPCL | CLOCAL;
     GORILLA_PRINTF_DEBUG("setting terminal attributes\n");
@@ -100,7 +101,7 @@ void SerialPort_open_impl(const char *device, GORILLA_METHOD_PARAMETERS) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
         return;
     }
-    GORILLA_PRINTF_DEBUG("set\n");
+    GORILLA_PRINTF_DEBUG("attributes setting ok\n");
     
     return;
 }

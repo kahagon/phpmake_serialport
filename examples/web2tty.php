@@ -54,7 +54,6 @@ if ($deviceName) {
       
       /*
        * $data を送信します。
-       * 読み込んだデータをそのまま返すこの挙動は echo server に似ています。
        */
       $port->write($data);
   } catch (Exception $e) {

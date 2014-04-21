@@ -43,7 +43,7 @@ if ($deviceName) {
        */
       $port->setCanonical(false)
               ->setVTime(1)->setVMin(0);
-      //sleep(2);
+              
       /*
        * リクエストパラメータ data を端末に送信します。
        * この例では単純に変数に代入して端末に送信しますが、
@@ -82,7 +82,7 @@ if ($deviceName) {
       <label for="deviceName">deviceName</label>: 
         <input type="text" name="deviceName" id="deviceName" value="<?php print htmlspecialchars($deviceName); ?>" /><br />
       <label for="data">data</label><br />
-      <textarea name="data" id="data"></textarea><br />
+      <textarea name="data" id="data" cols="50" rows="10"></textarea><br />
       <input type="submit" value="submit" />
     </form>
   </body>

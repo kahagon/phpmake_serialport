@@ -2,7 +2,7 @@
 use PHPMake\SerialPort as SerialPort;
 
 $status = 0;
-$deviceName = $_POST['device'];
+$deviceName = array_key_exists('deviceName', $_POST) ? $_POST['deviceName'] : null;
 
 if ($deviceName) {
   /**
@@ -43,21 +43,20 @@ if ($deviceName) {
        */
       $port->setCanonical(false)
               ->setVTime(1)->setVMin(0);
-      
+      //sleep(2);
       /*
        * リクエストパラメータ data を端末に送信します。
        * この例では単純に変数に代入して端末に送信しますが、
        * 本来は実際のアプリケーションに即したバリデーションや
        * フィルタリングなどを行うべきです。
        */
-      $data = $_POST['data'];
+      $data = array_key_exists('data', $_POST) ? $_POST['data'] : null;
       
       /*
        * $data を送信します。
        * 読み込んだデータをそのまま返すこの挙動は echo server に似ています。
        */
       $port->write($data);
-      
   } catch (Exception $e) {
       print $e->getMessage() . PHP_EOL;
       $status = 2;
@@ -80,7 +79,8 @@ if ($deviceName) {
   </head>
   <body>
     <form action="<?php print basename(__FILE__); ?>" method="POST">
-      <label for="deviceName">deviceName</label>: <input type="text" name="deviceName" id="deviceName" /><br />
+      <label for="deviceName">deviceName</label>: 
+        <input type="text" name="deviceName" id="deviceName" value="<?php print htmlspecialchars($deviceName); ?>" /><br />
       <label for="data">data</label><br />
       <textarea name="data" id="data"></textarea><br />
       <input type="submit" value="submit" />

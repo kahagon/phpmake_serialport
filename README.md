@@ -1,7 +1,7 @@
 Gorilla PHPMake\SerialPort
 ==========================
 The PHP extension for communicate other device via serial-port(COM).  
-This module is Cross Platform. Gorilla able to run on POSIX system and Windows.  
+This module is able to run on POSIX system and Windows.  
 You are able to talk to microcontroller(e.g. Arduino, AVR or PIC, etc) with PHP, if you use this extension.
 
 シリアルポート(COM)を介して他のデバイスと通信を行うための PHP 拡張です。  

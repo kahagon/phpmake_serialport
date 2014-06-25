@@ -162,7 +162,7 @@ int SerialPort_flush_impl(GORILLA_METHOD_PARAMETERS) {
     long serial_port_fd, actual_length;
     
     win32Handle = SerialPort_property__win32Handle_entity(GORILLA_METHOD_PARAM_PASSTHRU);
-    return FlushFileBuffers(win32Handle);
+    return PurgeComm(win32Handle, PURGE_TXCLEAR|PURGE_RXCLEAR);
 }
 
 

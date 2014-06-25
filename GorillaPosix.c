@@ -121,14 +121,12 @@ zend_bool SerialPort_close_impl(GORILLA_METHOD_PARAMETERS) {
 }
 
 int SerialPort_flush_impl(GORILLA_METHOD_PARAMETERS) {
-    zval *zval_stream;
-    php_stream *stream;
-    int result = -1;
+    long serial_port_fd;
+    int result;
 
-    zval_stream = zend_read_property(_this_ce, _this_zval, "_stream", strlen("_stream"), 1 TSRMLS_CC);
-    php_stream_from_zval(stream, &zval_stream);
-    
-    return _php_stream_flush(stream, 0 TSRMLS_CC)==0;
+    serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
+    result = tcflush(serial_port_fd, TCIFLUSH);
+    return result == 0;
 }
 
 void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS) {

@@ -1343,8 +1343,9 @@ PHP_MINFO_FUNCTION(Gorilla)
 	php_printf("API for talking to serialport\n");
 	php_info_print_table_start();
 	php_info_print_table_row(2, "Version",PHP_GORILLA_VERSION " (beta)");
-	php_info_print_table_row(2, "Released", "2013-01-03");
+	php_info_print_table_row(2, "Released", "2014-07-23");
 	php_info_print_table_row(2, "Authors", "Keng-ichi Ahagon 'k.ahagon@n-3.so' (lead)\n");
+	php_info_print_table_row(2, "Contributors", "T-4 @horothewolf\n");
 	php_info_print_table_end();
 	/* add your stuff here */
 

@@ -247,21 +247,7 @@ long SerialPort_read_vmin0_vtime0_impl(long serial_port_fd, char *buf, int buf_l
 }
 
 long SerialPort_read_vmin1_vtime0_impl(long serial_port_fd, char *buf, int buf_len, GORILLA_METHOD_PARAMETERS) {
-    char _buf[1];
-    long written = 0, vmin;
-    
-    vmin = SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU);
-    while (written < buf_len) {
-        if (!read(serial_port_fd, _buf, 1)) {
-            if (written >= vmin) {
-                break;
-            } else {
-                continue;
-            }
-        }
-        buf[written++] = _buf[0];
-    }
-    
+    long written = read(serial_port_fd, buf, buf_len);
     return written;
 }
 
@@ -364,7 +350,7 @@ void SerialPort_read_impl(int length, zval *zval_data, GORILLA_METHOD_PARAMETERS
             SerialPort_property_get__win32VMin(GORILLA_METHOD_PARAM_PASSTHRU) > 0 
             && SerialPort_property_get__win32VTime(GORILLA_METHOD_PARAM_PASSTHRU) == 0) 
     {
-        timeouts.ReadIntervalTimeout = MAXDWORD;
+        timeouts.ReadIntervalTimeout = 50;
         timeouts.ReadTotalTimeoutMultiplier = 0;
         timeouts.ReadTotalTimeoutConstant = 50;
         SET_COMM_TIMEOUTS(win32Handle, &timeouts, {

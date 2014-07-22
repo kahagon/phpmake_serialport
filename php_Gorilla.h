@@ -28,7 +28,7 @@ extern "C" {
 #include <php.h>
 
 #ifdef HAVE_GORILLA
-#define PHP_GORILLA_VERSION "0.5.3"
+#define PHP_GORILLA_VERSION "0.5.4"
 
 
 #include <php_ini.h>

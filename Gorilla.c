@@ -12,7 +12,7 @@
    +----------------------------------------------------------------------+
 */
 
-/* $ Id: $ */ 
+/* $ Id: $ */
 
 #include "php_Gorilla.h"
 
@@ -34,7 +34,7 @@ void CanonicalBuffer_dtor(zend_rsrc_list_entry *rsrc TSRMLS_DC)
 	SerialPort_canonical_buffer * resource = (SerialPort_canonical_buffer *)(rsrc->ptr);
 
 	do {
-            
+
 	} while (0);
 	efree(resource);
 }
@@ -137,12 +137,12 @@ PHP_METHOD(SerialPort, __construct)
     _this_ce = Z_OBJCE_P(_this_zval);
 
     PROP_SET_LONG(debug, 0);
-    
+
     if (device_len > 0) {
         PROP_SET_STRINGL(_device, device, device_len);
         SerialPort_open_impl(PROP_GET_STRING(_device), GORILLA_METHOD_PARAM_PASSTHRU);
     }
-    
+
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} __construct */
@@ -184,7 +184,7 @@ PHP_METHOD(SerialPort, open)
 
     PROP_SET_STRINGL(_device, device, device_len);
     SerialPort_open_impl(PROP_GET_STRING(_device), GORILLA_METHOD_PARAM_PASSTHRU);
-    
+
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} open */
@@ -208,7 +208,7 @@ PHP_METHOD(SerialPort, close)
     } else {
         RETURN_TRUE;
     }
-    
+
 }
 /* }}} close */
 
@@ -227,7 +227,7 @@ PHP_METHOD(SerialPort, isOpen)
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
-    
+
     if (SerialPort_isOpen_impl(GORILLA_METHOD_PARAM_PASSTHRU)) {
         RETURN_TRUE;
     } else {
@@ -250,7 +250,7 @@ PHP_METHOD(SerialPort, flush)
     _this_ce = Z_OBJCE_P(_this_zval);
 
     RETURN_BOOL(SerialPort_flush_impl(GORILLA_METHOD_PARAM_PASSTHRU));
-    
+
 }
 /* }}} flush */
 
@@ -265,7 +265,7 @@ PHP_METHOD(SerialPort, read)
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O|l", &_this_zval, SerialPort_ce_ptr, &length) == FAILURE) {
         return;
     }
-    
+
     if (length == 0) {
         RETURN_STRINGL("", 0, 1);
     } else if (length < 0) {
@@ -295,7 +295,7 @@ PHP_METHOD(SerialPort, write)
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
-    
+
     RETURN_LONG((long)SerialPort_write_impl(data, data_len, GORILLA_METHOD_PARAM_PASSTHRU));
 }
 /* }}} write */
@@ -516,7 +516,7 @@ PHP_METHOD(SerialPort, setBaudRate)
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setBaudRate_impl(baudRate, GORILLA_METHOD_PARAM_PASSTHRU);
-    
+
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
 /* }}} setBaudRate */
@@ -535,7 +535,7 @@ PHP_METHOD(SerialPort, getCharSize)
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
-    
+
     RETURN_LONG(SerialPort_getCharSize_impl(GORILLA_METHOD_PARAM_PASSTHRU));
 }
 /* }}} getCharSize */
@@ -555,7 +555,7 @@ PHP_METHOD(SerialPort, setCharSize)
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
-    
+
     SerialPort_setCharSize_impl(charSize, GORILLA_METHOD_PARAM_PASSTHRU);
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
@@ -601,7 +601,7 @@ PHP_METHOD(SerialPort, setFlowControl)
     }
 
     _this_ce = Z_OBJCE_P(_this_zval);
-    
+
     if (strncmp(flowControl, FLOW_CONTROL_HARD_STR, flowControl_len) == 0) {
         flow_control = FLOW_CONTROL_HARD;
     } else if (strncmp(flowControl, FLOW_CONTROL_SOFT_STR, flowControl_len) == 0) {
@@ -612,7 +612,7 @@ PHP_METHOD(SerialPort, setFlowControl)
         zend_throw_exception(NULL, "invalid flow control", FLOW_CONTROL_INVALID TSRMLS_CC);
         return;
     }
-    
+
     SerialPort_setFlowControl_impl(flow_control, GORILLA_METHOD_PARAM_PASSTHRU);
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
@@ -626,7 +626,7 @@ PHP_METHOD(SerialPort, getNumOfStopBits)
 {
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
-    
+
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
         return;
     }
@@ -677,7 +677,7 @@ PHP_METHOD(SerialPort, getParity)
 
     parity = SerialPort_getParity_impl(GORILLA_METHOD_PARAM_PASSTHRU);
     parity_str = PARITY_STR(parity);
-    
+
     RETURN_STRINGL(parity_str, strlen(parity_str), 1);
 }
 /* }}} getParity */
@@ -700,22 +700,22 @@ PHP_METHOD(SerialPort, setParity)
 
     _this_ce = Z_OBJCE_P(_this_zval);
 
-    
+
     if (strncmp(parity, PARITY_EVEN_STR, parity_len) == 0) {
         _parity = PARITY_EVEN;
     } else if (strncmp(parity, PARITY_ODD_STR, parity_len) == 0) {
         _parity = PARITY_ODD;
-    } else if (strncmp(parity, PARITY_NONE_STR, parity) == 0) {
+    } else if (strncmp(parity, PARITY_NONE_STR, parity_len) == 0) {
         _parity = PARITY_NONE;
-    } else if (strncmp(parity, PARITY_MARK_STR, parity) == 0) {
+    } else if (strncmp(parity, PARITY_MARK_STR, parity_len) == 0) {
         _parity = PARITY_MARK;
-    } else if (strncmp(parity, PARITY_SPACE_STR, parity) == 0) {
+    } else if (strncmp(parity, PARITY_SPACE_STR, parity_len) == 0) {
         _parity = PARITY_SPACE;
     } else {
         zend_throw_exception(NULL, "invalid parity specified.", PARITY_INVALID TSRMLS_CC);
         return;
     }
-    
+
     SerialPort_setParity_impl(_parity, GORILLA_METHOD_PARAM_PASSTHRU);
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
@@ -735,7 +735,7 @@ PHP_METHOD(SerialPort, setCanonical)
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ob", &_this_zval, SerialPort_ce_ptr, &canonical) == FAILURE) {
         return;
     }
-    
+
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setCanonical_impl(canonical, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -808,7 +808,7 @@ PHP_METHOD(SerialPort, setWin32NewLine)
         zend_throw_exception(NULL, "invalid string. newline must be CR, LF or CRLF.", 435 TSRMLS_CC);
         RETURN_NULL();
     }
-    
+
     SerialPort_property_set__win32NewLine(nl, nl_len, GORILLA_METHOD_PARAM_PASSTHRU);
     RETVAL_ZVAL(_this_zval, 1, 0);
 }
@@ -841,7 +841,7 @@ PHP_METHOD(SerialPort, setVMin)
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
     long vMin = 0;
-    
+
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &vMin) == FAILURE) {
         return;
     }
@@ -850,7 +850,7 @@ PHP_METHOD(SerialPort, setVMin)
         zend_throw_exception(NULL, "range exception. VMIN must be greater than or equal to 0, and less than or equal to 255.", 4395 TSRMLS_CC);
         RETURN_NULL();
     }
-    
+
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setVMin_impl(vMin, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -866,7 +866,7 @@ PHP_METHOD(SerialPort, getVTime)
 {
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
-    
+
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &_this_zval, SerialPort_ce_ptr) == FAILURE) {
         return;
     }
@@ -895,7 +895,7 @@ PHP_METHOD(SerialPort, setVTime)
         zend_throw_exception(NULL, "range exception. VTIME must be greater than or equal to 0, and less than or equal to 255.", 4324 TSRMLS_CC);
         RETURN_NULL();
     }
-    
+
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setVTime_impl(vTime, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -930,11 +930,11 @@ PHP_METHOD(SerialPort, setWin32ReadIntervalTimeout)
     zend_class_entry * _this_ce;
     zval * _this_zval = NULL;
     long time = 0;
-    
+
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "Ol", &_this_zval, SerialPort_ce_ptr, &time) == FAILURE) {
         return;
     }
-    
+
     _this_ce = Z_OBJCE_P(_this_zval);
 
     SerialPort_setWin32ReadIntervalTimeout_impl(time, GORILLA_METHOD_PARAM_PASSTHRU);
@@ -1170,46 +1170,46 @@ static void class_init_SerialPort(TSRMLS_D)
                 "_device", 7, "",
                 ZEND_ACC_PROTECTED TSRMLS_CC);
 
-            zend_declare_property_null(SerialPort_ce_ptr, 
-                "_stream", 7, 
+            zend_declare_property_null(SerialPort_ce_ptr,
+                "_stream", 7,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_long(SerialPort_ce_ptr, 
-                "_streamFd", 9, -1, 
+            zend_declare_property_long(SerialPort_ce_ptr,
+                "_streamFd", 9, -1,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_null(SerialPort_ce_ptr, 
-                "_win32Handle", 12, 
+            zend_declare_property_null(SerialPort_ce_ptr,
+                "_win32Handle", 12,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_null(SerialPort_ce_ptr, 
-                "_win32CanonicalBuffer", 21, 
+            zend_declare_property_null(SerialPort_ce_ptr,
+                "_win32CanonicalBuffer", 21,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_bool(SerialPort_ce_ptr, 
-                "_win32IsCanonical", 17, 0, 
+            zend_declare_property_bool(SerialPort_ce_ptr,
+                "_win32IsCanonical", 17, 0,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_string(SerialPort_ce_ptr, 
-                "_win32NewLine", 13, PHP_EOL, 
-                ZEND_ACC_PRIVATE TSRMLS_CC);
-        
-            zend_declare_property_null(SerialPort_ce_ptr, 
-                "_win32Dtr", 9, 
+            zend_declare_property_string(SerialPort_ce_ptr,
+                "_win32NewLine", 13, PHP_EOL,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_null(SerialPort_ce_ptr, 
-                "_win32Rts", 9, 
+            zend_declare_property_null(SerialPort_ce_ptr,
+                "_win32Dtr", 9,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_long(SerialPort_ce_ptr, 
-                "_win32VTime", 11, -1, 
+            zend_declare_property_null(SerialPort_ce_ptr,
+                "_win32Rts", 9,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
 
-            zend_declare_property_long(SerialPort_ce_ptr, 
-                "_win32VMin", 10, -1, 
+            zend_declare_property_long(SerialPort_ce_ptr,
+                "_win32VTime", 11, -1,
                 ZEND_ACC_PRIVATE TSRMLS_CC);
-            
+
+            zend_declare_property_long(SerialPort_ce_ptr,
+                "_win32VMin", 10, -1,
+                ZEND_ACC_PRIVATE TSRMLS_CC);
+
            /* }}} Property registration */
 
 	/* {{{ Constant registration */
@@ -1274,12 +1274,12 @@ zend_module_entry Gorilla_module_entry = {
 	STANDARD_MODULE_HEADER,
 	"Gorilla",
 	Gorilla_functions,
-	PHP_MINIT(Gorilla),     /* Replace with NULL if there is nothing to do at php startup   */ 
+	PHP_MINIT(Gorilla),     /* Replace with NULL if there is nothing to do at php startup   */
 	PHP_MSHUTDOWN(Gorilla), /* Replace with NULL if there is nothing to do at php shutdown  */
 	PHP_RINIT(Gorilla),     /* Replace with NULL if there is nothing to do at request start */
 	PHP_RSHUTDOWN(Gorilla), /* Replace with NULL if there is nothing to do at request end   */
 	PHP_MINFO(Gorilla),
-	PHP_GORILLA_VERSION, 
+	PHP_GORILLA_VERSION,
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
@@ -1293,9 +1293,9 @@ ZEND_GET_MODULE(Gorilla)
 PHP_MINIT_FUNCTION(Gorilla)
 {
 	REGISTER_STRINGL_CONSTANT("GORILLA_VERSION", PHP_GORILLA_VERSION, strlen(PHP_GORILLA_VERSION), CONST_PERSISTENT | CONST_CS);
-	le_Win32Handle = zend_register_list_destructors_ex(Win32Handle_dtor, 
+	le_Win32Handle = zend_register_list_destructors_ex(Win32Handle_dtor,
 						   NULL, "Win32Handle", module_number);
-	le_CanonicalBuffer = zend_register_list_destructors_ex(CanonicalBuffer_dtor, 
+	le_CanonicalBuffer = zend_register_list_destructors_ex(CanonicalBuffer_dtor,
 						   NULL, "CanonicalBuffer", module_number);
 	class_init_SerialPort(TSRMLS_C);
 

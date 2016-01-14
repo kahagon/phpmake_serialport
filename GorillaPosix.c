@@ -222,7 +222,7 @@ void SerialPort_setFlowControl_impl(int flow_control, GORILLA_METHOD_PARAMETERS)
     serial_port_fd = SerialPort_property_get__streamFd(GORILLA_METHOD_PARAM_PASSTHRU);
     if (tcgetattr(serial_port_fd, &attr) != 0) {
         zend_throw_exception(NULL, strerror(errno), errno TSRMLS_CC);
-        return FLOW_CONTROL_INVALID;
+        return;
     }
 
     if (flow_control & FLOW_CONTROL_HARD) {
